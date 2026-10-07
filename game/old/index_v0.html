@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Game Card Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="color"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .card-preview {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .card-text {
+            font-weight: bold;
+            text-align: center;
+            word-wrap: break-word;
+            width: 100%;
+            direction: ltr !important;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .saved-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card-item {
+            position: relative;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .card-actions button {
+            flex: 1;
+            padding: 5px;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        #printView {
+            display: none;
+        }
+
+        #printView.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 1000;
+            overflow: auto;
+            padding: 20px;
+        }
+
+        .print-page {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto 20mm;
+            padding: 10mm;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .print-grid {
+            display: grid;
+            gap: 5mm;
+        }
+
+        @media screen {
+            .print-page {
+                border: 1px solid #ddd;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            #printView {
+                display: block !important;
+                position: static !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+            
+            .print-page {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+                border: none;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            
+            .print-page:last-child {
+                page-break-after: auto;
+            }
+            
+            .print-grid {
+                display: grid;
+                gap: 5mm;
+            }
+            
+            .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
+
+        .svg-preview {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .svg-preview svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container no-print">
+        <h1>Board Game Card Generator</h1>
+
+        <div class="panel" style="margin-bottom: 20px;">
+            <h2>Project Management</h2>
+            <button class="btn-primary" onclick="saveProject()">💾 Save Project</button>
+            <button class="btn-success" onclick="document.getElementById('loadFile').click()">📂 Load Project</button>
+            <button class="btn-secondary" onclick="loadSample()">📋 Load Sample</button>
+            <input type="file" id="loadFile" accept=".json" style="display: none;" onchange="loadProject(event)">
+        </div>
+
+        <div class="main-grid">
+            <!-- Configuration Panel -->
+            <div class="panel">
+                <h2 id="panelTitle">Design New Card</h2>
+
+                <div class="form-group">
+                    <label>Card Type Name</label>
+                    <input type="text" id="cardType" value="Default" placeholder="e.g., Action, Defense, Attack">
+                </div>
+
+                <div class="form-group">
+                    <label>Card Dimensions (mm)</label>
+                    <div class="grid-2">
+                        <input type="number" id="cardWidth" value="70" min="30" max="150">
+                        <input type="number" id="cardHeight" value="70" min="30" max="150">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Border</label>
+                    <div class="grid-2">
+                        <input type="color" id="borderColor" value="#2563eb">
+                        <input type="number" id="borderThickness" value="4" min="1" max="20" placeholder="Thickness">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Border Radius (px)</label>
+                    <input type="number" id="borderRadius" value="8" min="0" max="50">
+                </div>
+
+                <div class="form-group">
+                    <label>Background Color</label>
+                    <input type="color" id="backgroundColor" value="#ffffff">
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px;">Front Side</h3>
+                
+                <div class="form-group">
+                    <label>Top Text</label>
+                    <input type="text" id="frontTopText" value="Top Text">
+                    <div class="grid-2" style="margin-top: 5px;">
+                        <input type="color" id="frontTopColor" value="#000000">
+                        <input type="number" id="frontTopSize" value="20" min="8" max="50" placeholder="Size">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Bottom Text</label>
+                    <input type="text" id="frontBottomText" value="Bottom Text">
+                    <div class="grid-2" style="margin-top: 5px;">
+                        <input type="color" id="frontBottomColor" value="#000000">
+                        <input type="number" id="frontBottomSize" value="20" min="8" max="50" placeholder="Size">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="frontShowSVG"> Show Abacus SVG</label>
+                </div>
+
+                <div class="form-group" id="frontSVGControls" style="display: none;">
+                    <label>Abacus Number</label>
+                    <input type="number" id="frontSVGNumber" value="" min="0" max="9999999">
+                    <label style="margin-top: 10px;">SVG Size (%)</label>
+                    <input type="number" id="frontSVGSize" value="80" min="10" max="200" placeholder="% of card">
+                    <!-- <div class="svg-preview" id="frontSVGPreview"></div> -->
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px;">Rear Side</h3>
+                
+                <div class="form-group">
+                    <label>Top Text</label>
+                    <input type="text" id="rearTopText" value="Rear Top">
+                    <div class="grid-2" style="margin-top: 5px;">
+                        <input type="color" id="rearTopColor" value="#000000">
+                        <input type="number" id="rearTopSize" value="20" min="8" max="50" placeholder="Size">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Bottom Text</label>
+                    <input type="text" id="rearBottomText" value="Rear Bottom">
+                    <div class="grid-2" style="margin-top: 5px;">
+                        <input type="color" id="rearBottomColor" value="#000000">
+                        <input type="number" id="rearBottomSize" value="20" min="8" max="50" placeholder="Size">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="rearShowSVG"> Show Abacus SVG</label>
+                </div>
+
+                <div class="form-group" id="rearSVGControls" style="display: none;">
+                    <label>Abacus Number</label>
+                    <input type="number" id="rearSVGNumber" value="" min="0" max="9999999">
+                    <label style="margin-top: 10px;">SVG Size (%)</label>
+                    <input type="number" id="rearSVGSize" value="80" min="10" max="200" placeholder="% of card">
+                    <!-- <div class="svg-preview" id="rearSVGPreview"></div> -->
+                </div>
+
+                <div>
+                    <button class="btn-success" onclick="saveCard()" id="saveCardBtn">💾 Save New Card</button>
+                    <button class="btn-secondary" onclick="cancelEdit()" id="cancelBtn" style="display: none;">✖ Cancel</button>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="panel">
+                <h2>Preview</h2>
+                <div class="card-preview" id="preview"></div>
+            </div>
+        </div>
+
+        <!-- Saved Cards -->
+        <div class="panel">
+            <h2>Saved Cards (<span id="cardCount">0</span>)</h2>
+            <button class="btn-primary" onclick="showPrintView()">🖨️ Print All Cards</button>
+            <button class="btn-success" onclick="showTypeEditor()" style="margin-left: 10px;">✏️ Edit by Type</button>
+            <div class="saved-cards" id="savedCards"></div>
+        </div>
+    </div>
+
+    <!-- Print View -->
+    <div id="printView">
+        <div class="no-print" style="margin-bottom: 20px;">
+            <button class="btn-secondary" onclick="closePrintView()">✖ Close Preview</button>
+            <button class="btn-primary" onclick="window.print()">🖨️ Print</button>
+            <p style="margin-top: 10px; color: #666;" id="printInfo"></p>
+        </div>
+        <div id="printContent"></div>
+    </div>
+
+    <!-- Type Editor Modal -->
+    <div id="typeEditorModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; overflow: auto;">
+        <div style="max-width: 90vw; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; max-height: 90vh; overflow-y: auto;">
+            <h2>Edit Cards by Type</h2>
+            <div class="form-group">
+                <label>Select Card Type(s) - Hold Ctrl/Cmd to select multiple</label>
+                <select id="typeSelector" multiple onchange="loadTypeForEdit()" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 120px;">
+                </select>
+            </div>
+            <div id="typeEditForm" style="display: none;">
+                <p style="margin: 10px 0; color: #666;">Cards selected: <span id="typeCardCount">0</span></p>
+                <p style="margin-bottom: 15px; font-size: 14px; color: #999;">Only modified fields will be updated</p>
+                
+                <h3 style="margin-top: 15px; margin-bottom: 10px; font-size: 16px; color: #333;">Card Appearance</h3>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editCardWidth"> Card Width (mm)</label>
+                    <input type="number" id="typeCardWidth" disabled min="30" max="150">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editCardHeight"> Card Height (mm)</label>
+                    <input type="number" id="typeCardHeight" disabled min="30" max="150">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editBorderRadius"> Border Radius (px)</label>
+                    <input type="number" id="typeBorderRadius" disabled min="0" max="50">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editBorderColor"> Border Color</label>
+                    <input type="color" id="typeBorderColor" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editBorderThickness"> Border Thickness (px)</label>
+                    <input type="number" id="typeBorderThickness" disabled min="1" max="20">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editBackgroundColor"> Background Color</label>
+                    <input type="color" id="typeBackgroundColor" disabled>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; color: #333;">Front Side</h3>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontTopText"> Front Top Text</label>
+                    <input type="text" id="typeFrontTopText" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontTopColor"> Front Top Color</label>
+                    <input type="color" id="typeFrontTopColor" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontTopSize"> Front Top Size (px)</label>
+                    <input type="number" id="typeFrontTopSize" disabled min="8" max="50">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontBottomText"> Front Bottom Text</label>
+                    <input type="text" id="typeFrontBottomText" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontBottomColor"> Front Bottom Color</label>
+                    <input type="color" id="typeFrontBottomColor" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontBottomSize"> Front Bottom Size (px)</label>
+                    <input type="number" id="typeFrontBottomSize" disabled min="8" max="50">
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; color: #333;">Rear Side</h3>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearTopText"> Rear Top Text</label>
+                    <input type="text" id="typeRearTopText" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearTopColor"> Rear Top Color</label>
+                    <input type="color" id="typeRearTopColor" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearTopSize"> Rear Top Size (px)</label>
+                    <input type="number" id="typeRearTopSize" disabled min="8" max="50">
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearBottomText"> Rear Bottom Text</label>
+                    <input type="text" id="typeRearBottomText" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearBottomColor"> Rear Bottom Color</label>
+                    <input type="color" id="typeRearBottomColor" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearBottomSize"> Rear Bottom Size (px)</label>
+                    <input type="number" id="typeRearBottomSize" disabled min="8" max="50">
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; color: #333;">Front SVG</h3>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontShowSVG"> Front Show SVG</label>
+                    <input type="checkbox" id="typeFrontShowSVG" disabled style="width: auto; margin-left: 10px;">
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontSVGNumber"> Front SVG Number</label>
+                    <input type="number" id="typeFrontSVGNumber" disabled min="0" max="9999999">
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editFrontSVGSize"> Front SVG Size (%)</label>
+                    <input type="number" id="typeFrontSVGSize" disabled min="10" max="200">
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 16px; color: #333;">Rear SVG</h3>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearShowSVG"> Rear Show SVG</label>
+                    <input type="checkbox" id="typeRearShowSVG" disabled style="width: auto; margin-left: 10px;">
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearSVGNumber"> Rear SVG Number</label>
+                    <input type="number" id="typeRearSVGNumber" disabled min="0" max="9999999">
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="editRearSVGSize"> Rear SVG Size (%)</label>
+                    <input type="number" id="typeRearSVGSize" disabled min="10" max="200">
+                </div>
+                
+                <button class="btn-primary" onclick="applyTypeEdit()">Apply Changes</button>
+            </div>
+            <button class="btn-secondary" onclick="closeTypeEditor()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        var cards = [];
+        var editingIndex = null;
+
+        function getCardConfig() {
+            return {
+                cardType: document.getElementById('cardType').value || 'Default',
+                width: parseInt(document.getElementById('cardWidth').value),
+                height: parseInt(document.getElementById('cardHeight').value),
+                borderRadius: parseInt(document.getElementById('borderRadius').value),
+                borderColor: document.getElementById('borderColor').value,
+                borderThickness: parseInt(document.getElementById('borderThickness').value),
+                backgroundColor: document.getElementById('backgroundColor').value,
+                frontTopText: document.getElementById('frontTopText').value,
+                frontTopColor: document.getElementById('frontTopColor').value,
+                frontTopSize: parseInt(document.getElementById('frontTopSize').value),
+                frontBottomText: document.getElementById('frontBottomText').value,
+                frontBottomColor: document.getElementById('frontBottomColor').value,
+                frontBottomSize: parseInt(document.getElementById('frontBottomSize').value),
+                frontShowSVG: document.getElementById('frontShowSVG').checked,
+                frontSVGNumber: parseInt(document.getElementById('frontSVGNumber').value) || 0,
+                frontSVGSize: parseInt(document.getElementById('frontSVGSize').value) || 80,
+                rearTopText: document.getElementById('rearTopText').value,
+                rearTopColor: document.getElementById('rearTopColor').value,
+                rearTopSize: parseInt(document.getElementById('rearTopSize').value),
+                rearBottomText: document.getElementById('rearBottomText').value,
+                rearBottomColor: document.getElementById('rearBottomColor').value,
+                rearBottomSize: parseInt(document.getElementById('rearBottomSize').value),
+                rearShowSVG: document.getElementById('rearShowSVG').checked,
+                rearSVGNumber: parseInt(document.getElementById('rearSVGNumber').value) || 0,
+                rearSVGSize: parseInt(document.getElementById('rearSVGSize').value) || 80
+            };
+        }
+
+        function createCardElement(config, side) {
+            var card = document.createElement('div');
+            card.className = 'card';
+            card.style.width = config.width + 'mm';
+            card.style.height = config.height + 'mm';
+            card.style.border = config.borderThickness + 'px solid ' + config.borderColor;
+            card.style.borderRadius = config.borderRadius + 'px';
+            card.style.backgroundColor = config.backgroundColor;
+
+            var topText = side === 'front' ? config.frontTopText : config.rearTopText;
+            var topColor = side === 'front' ? config.frontTopColor : config.rearTopColor;
+            var topSize = side === 'front' ? config.frontTopSize : config.rearTopSize;
+            var bottomText = side === 'front' ? config.frontBottomText : config.rearBottomText;
+            var bottomColor = side === 'front' ? config.frontBottomColor : config.rearBottomColor;
+            var bottomSize = side === 'front' ? config.frontBottomSize : config.rearBottomSize;
+            var showSVG = side === 'front' ? config.frontShowSVG : config.rearShowSVG;
+            var svgNumber = side === 'front' ? config.frontSVGNumber : config.rearSVGNumber;
+            var svgSize = side === 'front' ? (config.frontSVGSize || 80) : (config.rearSVGSize || 80);
+
+            var topDiv = document.createElement('div');
+            topDiv.className = 'card-text';
+            topDiv.style.color = topColor;
+            topDiv.style.fontSize = topSize + 'px';
+            topDiv.textContent = topText;
+
+            var middleDiv = document.createElement('div');
+            middleDiv.style.flex = '1';
+            middleDiv.style.display = 'flex';
+            middleDiv.style.alignItems = 'center';
+            middleDiv.style.justifyContent = 'center';
+            middleDiv.style.width = '100%';
+            
+            if (showSVG) {
+                var baseWidth = config.width * 2.5;
+                var baseHeight = config.height * 1.5;
+                var scaledWidth = baseWidth * (svgSize / 100);
+                var scaledHeight = baseHeight * (svgSize / 100);
+                var svgCode = generateAbacusSVG(svgNumber || 0, scaledWidth, scaledHeight);
+                middleDiv.innerHTML = svgCode;
+            }
+
+            var bottomDiv = document.createElement('div');
+            bottomDiv.className = 'card-text';
+            bottomDiv.style.color = bottomColor;
+            bottomDiv.style.fontSize = bottomSize + 'px';
+            bottomDiv.textContent = bottomText;
+
+            card.appendChild(topDiv);
+            card.appendChild(middleDiv);
+            card.appendChild(bottomDiv);
+
+            return card;
+        }
+
+        function updatePreview() {
+            var config = getCardConfig();
+            var preview = document.getElementById('preview');
+            preview.innerHTML = '<div><p style="font-size: 12px; margin-bottom: 10px;">Front</p></div><div><p style="font-size: 12px; margin-bottom: 10px;">Rear</p></div>';
+            preview.children[0].appendChild(createCardElement(config, 'front'));
+            preview.children[1].appendChild(createCardElement(config, 'rear'));
+        }
+
+        function saveCard() {
+            var config = getCardConfig();
+            
+            if (editingIndex !== null) {
+                cards[editingIndex] = config;
+                editingIndex = null;
+                document.getElementById('cancelBtn').style.display = 'none';
+                document.getElementById('panelTitle').textContent = 'Design New Card';
+            } else {
+                cards.push(config);
+            }
+            
+            sortCardsByType();
+            updateSavedCards();
+            updatePreview();
+        }
+
+        function editCard(index) {
+            var config = cards[index];
+            editingIndex = index;
+            
+            document.getElementById('cardType').value = config.cardType || 'Default';
+            document.getElementById('cardWidth').value = config.width;
+            document.getElementById('cardHeight').value = config.height;
+            document.getElementById('borderRadius').value = config.borderRadius;
+            document.getElementById('borderColor').value = config.borderColor;
+            document.getElementById('borderThickness').value = config.borderThickness;
+            document.getElementById('backgroundColor').value = config.backgroundColor;
+            document.getElementById('frontTopText').value = config.frontTopText;
+            document.getElementById('frontTopColor').value = config.frontTopColor;
+            document.getElementById('frontTopSize').value = config.frontTopSize;
+            document.getElementById('frontBottomText').value = config.frontBottomText;
+            document.getElementById('frontBottomColor').value = config.frontBottomColor;
+            document.getElementById('frontBottomSize').value = config.frontBottomSize;
+            document.getElementById('rearTopText').value = config.rearTopText;
+            document.getElementById('rearTopColor').value = config.rearTopColor;
+            document.getElementById('rearTopSize').value = config.rearTopSize;
+            document.getElementById('rearBottomText').value = config.rearBottomText;
+            document.getElementById('rearBottomColor').value = config.rearBottomColor;
+            document.getElementById('rearBottomSize').value = config.rearBottomSize;
+            
+            document.getElementById('cancelBtn').style.display = 'inline-block';
+            document.getElementById('panelTitle').textContent = 'Edit Card';
+            document.getElementById('saveCardBtn').textContent = '💾 Edit Card';
+
+            document.getElementById('frontShowSVG').checked = config.frontShowSVG || false;
+            document.getElementById('frontSVGNumber').value = config.frontSVGNumber || 0;
+            document.getElementById('frontSVGSize').value = config.frontSVGSize || 80;
+            document.getElementById('frontSVGControls').style.display = config.frontShowSVG ? 'block' : 'none';
+            // if (config.frontShowSVG) {
+            //     var frontSvg = generateAbacusSVG(config.frontSVGNumber || 0, 200, 120);
+            //     document.getElementById('frontSVGPreview').innerHTML = frontSvg;
+            // }
+
+            document.getElementById('rearShowSVG').checked = config.rearShowSVG || false;
+            document.getElementById('rearSVGNumber').value = config.rearSVGNumber || 0;
+            document.getElementById('rearSVGSize').value = config.rearSVGSize || 80;
+            document.getElementById('rearSVGControls').style.display = config.rearShowSVG ? 'block' : 'none';
+            // if (config.rearShowSVG) {
+            //     var rearSvg = generateAbacusSVG(config.rearSVGNumber || 0, 200, 120);
+            //     document.getElementById('rearSVGPreview').innerHTML = rearSvg;
+            // }
+
+            updatePreview();
+            window.scrollTo(0, 0);
+        }
+
+        function deleteCard(index) {
+            if (confirm('Delete this card?')) {
+                cards.splice(index, 1);
+                updateSavedCards();
+            }
+        }
+
+        function cancelEdit() {
+            editingIndex = null;
+            document.getElementById('cancelBtn').style.display = 'none';
+            document.getElementById('panelTitle').textContent = 'Design New Card';
+            document.getElementById('saveCardBtn').textContent = '💾 Save New Card';
+        }
+
+        function updateSavedCards() {
+            var container = document.getElementById('savedCards');
+            container.innerHTML = '';
+            document.getElementById('cardCount').textContent = cards.length;
+            
+            cards.forEach(function(config, index) {
+                var item = document.createElement('div');
+                item.className = 'card-item';
+                
+                var typeLabel = document.createElement('p');
+                typeLabel.style.fontSize = '11px';
+                typeLabel.style.color = '#666';
+                typeLabel.style.marginBottom = '5px';
+                typeLabel.textContent = config.cardType || 'Default';
+                
+                var card = createCardElement(config, 'front');
+                card.style.transform = 'scale(0.5)';
+                card.style.transformOrigin = 'top left';
+                card.style.width = config.width + 'mm';
+                card.style.height = config.height + 'mm';
+                
+                var wrapper = document.createElement('div');
+                wrapper.style.width = (config.width / 2) + 'mm';
+                wrapper.style.height = (config.height / 2) + 'mm';
+                wrapper.style.overflow = 'hidden';
+                wrapper.appendChild(card);
+                
+                var actions = document.createElement('div');
+                actions.className = 'card-actions';
+                
+                var editBtn = document.createElement('button');
+                editBtn.className = 'btn-primary';
+                editBtn.textContent = 'Edit';
+                editBtn.onclick = function() { editCard(index); };
+                
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-danger';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = function() { deleteCard(index); };
+                
+                actions.appendChild(editBtn);
+                actions.appendChild(deleteBtn);
+                
+                item.appendChild(typeLabel);
+                item.appendChild(wrapper);
+                item.appendChild(actions);
+                container.appendChild(item);
+            });
+        }
+
+        function sortCardsByType() {
+            cards.sort(function(a, b) {
+                var typeA = (a.cardType || 'Default').toLowerCase();
+                var typeB = (b.cardType || 'Default').toLowerCase();
+                if (typeA < typeB) return -1;
+                if (typeA > typeB) return 1;
+                return 0;
+            });
+        }
+
+        // Type Editor Functions
+        function showTypeEditor() {
+            if (cards.length === 0) {
+                alert('No cards to edit!');
+                return;
+            }
+            
+            var types = {};
+            cards.forEach(function(card) {
+                var type = card.cardType || 'Default';
+                types[type] = (types[type] || 0) + 1;
+            });
+            
+            var selector = document.getElementById('typeSelector');
+            selector.innerHTML = '';
+            for (var type in types) {
+                var option = document.createElement('option');
+                option.value = type;
+                option.textContent = type + ' (' + types[type] + ' cards)';
+                selector.appendChild(option);
+            }
+            
+            document.getElementById('typeEditorModal').style.display = 'block';
+        }
+
+        function closeTypeEditor() {
+            document.getElementById('typeEditorModal').style.display = 'none';
+            document.getElementById('typeEditForm').style.display = 'none';
+        }
+
+        function loadTypeForEdit() {
+            var selector = document.getElementById('typeSelector');
+            var selectedOptions = Array.prototype.slice.call(selector.selectedOptions);
+            var selectedTypes = selectedOptions.map(function(opt) { return opt.value; });
+            
+            if (selectedTypes.length === 0) {
+                document.getElementById('typeEditForm').style.display = 'none';
+                return;
+            }
+            
+            var typeCards = cards.filter(function(card) {
+                return selectedTypes.indexOf(card.cardType || 'Default') !== -1;
+            });
+            
+            document.getElementById('typeCardCount').textContent = typeCards.length;
+            
+            if (typeCards.length > 0) {
+                var sample = typeCards[0];
+                document.getElementById('typeCardWidth').value = sample.width;
+                document.getElementById('typeCardHeight').value = sample.height;
+                document.getElementById('typeBorderRadius').value = sample.borderRadius;
+                document.getElementById('typeBorderColor').value = sample.borderColor;
+                document.getElementById('typeBorderThickness').value = sample.borderThickness;
+                document.getElementById('typeBackgroundColor').value = sample.backgroundColor;
+                document.getElementById('typeFrontTopText').value = sample.frontTopText;
+                document.getElementById('typeFrontTopColor').value = sample.frontTopColor;
+                document.getElementById('typeFrontTopSize').value = sample.frontTopSize;
+                document.getElementById('typeFrontBottomText').value = sample.frontBottomText;
+                document.getElementById('typeFrontBottomColor').value = sample.frontBottomColor;
+                document.getElementById('typeFrontBottomSize').value = sample.frontBottomSize;
+                document.getElementById('typeRearTopText').value = sample.rearTopText;
+                document.getElementById('typeRearTopColor').value = sample.rearTopColor;
+                document.getElementById('typeRearTopSize').value = sample.rearTopSize;
+                document.getElementById('typeRearBottomText').value = sample.rearBottomText;
+                document.getElementById('typeRearBottomColor').value = sample.rearBottomColor;
+                document.getElementById('typeRearBottomSize').value = sample.rearBottomSize;
+                document.getElementById('typeFrontShowSVG').checked = sample.frontShowSVG || false;
+                document.getElementById('typeFrontSVGNumber').value = sample.frontSVGNumber || 0;
+                document.getElementById('typeFrontSVGSize').value = sample.frontSVGSize || 80;
+                document.getElementById('typeRearShowSVG').checked = sample.rearShowSVG || false;
+                document.getElementById('typeRearSVGNumber').value = sample.rearSVGNumber || 0;
+                document.getElementById('typeRearSVGSize').value = sample.rearSVGSize || 80;
+            }
+            
+            document.getElementById('typeEditForm').style.display = 'block';
+        }
+
+        // Enable/disable inputs based on checkbox
+        var checkboxes = ['editCardWidth', 'editCardHeight', 'editBorderRadius', 'editBorderColor', 
+                 'editBorderThickness', 'editBackgroundColor', 'editFrontTopText',
+                 'editFrontTopColor', 'editFrontTopSize', 'editFrontBottomText',
+                 'editFrontBottomColor', 'editFrontBottomSize', 'editFrontShowSVG',
+                 'editFrontSVGNumber', 'editFrontSVGSize', 'editRearTopText',
+                 'editRearTopColor', 'editRearTopSize', 'editRearBottomText',
+                 'editRearBottomColor', 'editRearBottomSize', 'editRearShowSVG',
+                 'editRearSVGNumber', 'editRearSVGSize'];
+        
+        checkboxes.forEach(function(id) {
+            setTimeout(function() {
+                var checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        var inputId = id.replace('edit', 'type');
+                        inputId = inputId.charAt(0).toLowerCase() + inputId.slice(1);
+                        var input = document.getElementById(inputId);
+                        if (input) {
+                            input.disabled = !checkbox.checked;
+                        }
+                    });
+                }
+            }, 100);
+        });
+
+        function applyTypeEdit() {
+            var selector = document.getElementById('typeSelector');
+            var selectedOptions = Array.prototype.slice.call(selector.selectedOptions);
+            var selectedTypes = selectedOptions.map(function(opt) { return opt.value; });
+            
+            if (selectedTypes.length === 0) return;
+            
+            var updates = {};
+            if (document.getElementById('editCardWidth').checked) 
+                updates.width = parseInt(document.getElementById('typeCardWidth').value);
+            if (document.getElementById('editCardHeight').checked) 
+                updates.height = parseInt(document.getElementById('typeCardHeight').value);
+            if (document.getElementById('editBorderRadius').checked) 
+                updates.borderRadius = parseInt(document.getElementById('typeBorderRadius').value);
+            if (document.getElementById('editBorderColor').checked) 
+                updates.borderColor = document.getElementById('typeBorderColor').value;
+            if (document.getElementById('editBorderThickness').checked) 
+                updates.borderThickness = parseInt(document.getElementById('typeBorderThickness').value);
+            if (document.getElementById('editBackgroundColor').checked) 
+                updates.backgroundColor = document.getElementById('typeBackgroundColor').value;
+            if (document.getElementById('editFrontTopText').checked) 
+                updates.frontTopText = document.getElementById('typeFrontTopText').value;
+            if (document.getElementById('editFrontTopColor').checked) 
+                updates.frontTopColor = document.getElementById('typeFrontTopColor').value;
+            if (document.getElementById('editFrontTopSize').checked) 
+                updates.frontTopSize = parseInt(document.getElementById('typeFrontTopSize').value);
+            if (document.getElementById('editFrontBottomText').checked) 
+                updates.frontBottomText = document.getElementById('typeFrontBottomText').value;
+            if (document.getElementById('editFrontBottomColor').checked) 
+                updates.frontBottomColor = document.getElementById('typeFrontBottomColor').value;
+            if (document.getElementById('editFrontBottomSize').checked) 
+                updates.frontBottomSize = parseInt(document.getElementById('typeFrontBottomSize').value);
+            if (document.getElementById('editRearTopText').checked) 
+                updates.rearTopText = document.getElementById('typeRearTopText').value;
+            if (document.getElementById('editRearTopColor').checked) 
+                updates.rearTopColor = document.getElementById('typeRearTopColor').value;
+            if (document.getElementById('editRearTopSize').checked) 
+                updates.rearTopSize = parseInt(document.getElementById('typeRearTopSize').value);
+            if (document.getElementById('editRearBottomText').checked) 
+                updates.rearBottomText = document.getElementById('typeRearBottomText').value;
+            if (document.getElementById('editRearBottomColor').checked) 
+                updates.rearBottomColor = document.getElementById('typeRearBottomColor').value;
+            if (document.getElementById('editRearBottomSize').checked) 
+                updates.rearBottomSize = parseInt(document.getElementById('typeRearBottomSize').value);
+            if (document.getElementById('editFrontShowSVG').checked) 
+                updates.frontShowSVG = document.getElementById('typeFrontShowSVG').checked;
+            if (document.getElementById('editFrontSVGNumber').checked) 
+                updates.frontSVGNumber = parseInt(document.getElementById('typeFrontSVGNumber').value);
+            if (document.getElementById('editFrontSVGSize').checked) 
+                updates.frontSVGSize = parseInt(document.getElementById('typeFrontSVGSize').value);
+            if (document.getElementById('editRearShowSVG').checked) 
+                updates.rearShowSVG = document.getElementById('typeRearShowSVG').checked;
+            if (document.getElementById('editRearSVGNumber').checked) 
+                updates.rearSVGNumber = parseInt(document.getElementById('typeRearSVGNumber').value);
+            if (document.getElementById('editRearSVGSize').checked) 
+                updates.rearSVGSize = parseInt(document.getElementById('typeRearSVGSize').value);
+            
+            var updatedCount = 0;
+            cards.forEach(function(card) {
+                if (selectedTypes.indexOf(card.cardType || 'Default') !== -1) {
+                    for (var key in updates) {
+                        card[key] = updates[key];
+                    }
+                    updatedCount++;
+                }
+            });
+            
+            sortCardsByType();
+            alert('Updated ' + updatedCount + ' cards across ' + selectedTypes.length + ' type(s)');
+            updateSavedCards();
+            closeTypeEditor();
+        }
+
+        // Save/Load Project Functions
+        function saveProject() {
+            if (cards.length === 0) {
+                alert('No cards to save!');
+                return;
+            }
+            
+            var project = {
+                version: 1,
+                cards: cards,
+                savedDate: new Date().toISOString()
+            };
+            
+            var dataStr = JSON.stringify(project, null, 2);
+            var dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'board-game-cards-' + new Date().toISOString().slice(0,10) + '.json';
+            link.click();
+        }
+
+        function loadProject(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var project = JSON.parse(e.target.result);
+                    if (project.cards && Array.isArray(project.cards)) {
+                        if (cards.length > 0) {
+                            if (!confirm('This will replace all current cards. Continue?')) {
+                                return;
+                            }
+                        }
+                        cards = project.cards;
+                        sortCardsByType();
+                        updateSavedCards();
+                        alert('Project loaded successfully! ' + cards.length + ' cards imported.');
+                    } else {
+                        alert('Invalid project file format.');
+                    }
+                } catch (error) {
+                    alert('Error loading project file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function loadSample() {
+            fetch('sample.json')
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Sample file not found');
+                    }
+                    return response.json();
+                })
+                .then(function(project) {
+                    if (project.cards && Array.isArray(project.cards)) {
+                        if (cards.length > 0) {
+                            if (!confirm('This will replace all current cards. Continue?')) {
+                                return;
+                            }
+                        }
+                        cards = project.cards;
+                        sortCardsByType();
+                        updateSavedCards();
+                        alert('Sample project loaded successfully! ' + cards.length + ' cards imported.');
+                    } else {
+                        alert('Invalid sample file format.');
+                    }
+                })
+                .catch(function(error) {
+                    alert('Error loading sample file: ' + error.message + '\nMake sure sample.json is in the same folder as this HTML file.');
+                });
+        }
+
+        function showPrintView() {
+            if (cards.length === 0) {
+                alert('No cards to print!');
+                return;
+            }
+
+            var config = cards[0];
+            var a4Width = 210;
+            var a4Height = 297;
+            var margin = 10;
+            var gap = 5;
+
+            var cardsPerRow = Math.floor((a4Width - 2 * margin + gap) / (config.width + gap));
+            var cardsPerCol = Math.floor((a4Height - 2 * margin + gap) / (config.height + gap));
+            var cardsPerPage = cardsPerRow * cardsPerCol;
+
+            document.getElementById('printInfo').textContent = 
+                cardsPerRow + ' x ' + cardsPerCol + ' = ' + cardsPerPage + ' cards per page';
+
+            var printContent = document.getElementById('printContent');
+            printContent.innerHTML = '';
+
+            var totalPages = Math.ceil(cards.length / cardsPerPage);
+
+            for (var pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+                var page = document.createElement('div');
+                page.className = 'print-page';
+                
+                var grid = document.createElement('div');
+                grid.className = 'print-grid';
+                grid.style.gridTemplateColumns = 'repeat(' + cardsPerRow + ', ' + config.width + 'mm)';
+                grid.style.gap = gap + 'mm';
+
+                var startIndex = pageIndex * cardsPerPage;
+                var endIndex = Math.min(startIndex + cardsPerPage, cards.length);
+
+                for (var i = startIndex; i < endIndex; i++) {
+                    grid.appendChild(createCardElement(cards[i], 'front'));
+                }
+
+                page.appendChild(grid);
+                printContent.appendChild(page);
+            }
+            
+            for (var pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+                var page = document.createElement('div');
+                page.className = 'print-page';
+                
+                var grid = document.createElement('div');
+                grid.className = 'print-grid';
+                grid.style.gridTemplateColumns = 'repeat(' + cardsPerRow + ', ' + config.width + 'mm)';
+                grid.style.gap = gap + 'mm';
+                grid.style.direction = 'rtl';
+
+                var startIndex = pageIndex * cardsPerPage;
+                var endIndex = Math.min(startIndex + cardsPerPage, cards.length);
+
+                for (var i = startIndex; i < endIndex; i++) {
+                    grid.appendChild(createCardElement(cards[i], 'rear'));
+                }
+
+                page.appendChild(grid);
+                printContent.appendChild(page);
+            }
+
+            document.getElementById('printView').classList.add('active');
+        }
+
+        function closePrintView() {
+            document.getElementById('printView').classList.remove('active');
+        }
+
+        // Generate SVG Abacus representation
+        function generateAbacusSVG(number, width, height) {
+            const COLUMNS = 7;
+            const LOWER_BEADS = 4;
+            const UPPER_BEADS = 1;
+            
+            // Parse number into columns
+            const numStr = number.toString().padStart(COLUMNS, '0');
+            const columns = [];
+            
+            for (var i = 0; i < COLUMNS; i++) {
+                const digit = parseInt(numStr[i]);
+                var upperActive = 0;
+                var lowerActive = 0;
+                
+                if (digit >= 5) {
+                    upperActive = 1;
+                    lowerActive = digit - 5;
+                } else {
+                    upperActive = 0;
+                    lowerActive = digit;
+                }
+                
+                columns.push({ upperActive: upperActive, lowerActive: lowerActive });
+            }
+            
+            // SVG dimensions and spacing
+            const padding = width * 0.05;
+            const innerWidth = width - 2 * padding;
+            const innerHeight = height - 2 * padding;
+            const colWidth = innerWidth / COLUMNS;
+            const dividerY = padding + innerHeight * 0.3;
+            const beadRadius = Math.min(colWidth * 0.32, innerHeight * 0.075);
+            
+            const UPPER_BEAD_MARGIN = beadRadius * 1.0;
+            const LOWER_BEAD_MARGIN = beadRadius * 1.0;
+            const BEAD_SPACING = beadRadius * 1.6;
+            const ACTIVE_UPPER_OFFSET = beadRadius * 1.5;
+            const ACTIVE_LOWER_OFFSET = beadRadius * 1.5;
+            
+            // Start SVG
+            var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg">';
+            
+            // Border frame (single line)
+            var frameColor = '#5d3a1a';
+            svg += '<rect x="1" y="1" width="' + (width - 2) + '" height="' + (height - 2) + '" ';
+            svg += 'fill="none" stroke="' + frameColor + '" stroke-width="2"/>';
+            
+            // Divider bar
+            var dividerColor = '#3d2812';
+            svg += '<line x1="' + padding + '" y1="' + dividerY + '" ';
+            svg += 'x2="' + (padding + innerWidth) + '" y2="' + dividerY + '" ';
+            svg += 'stroke="' + dividerColor + '" stroke-width="3"/>';
+            
+            // Draw rods and beads
+            var rodColor = '#c9b18a'; // '#8b7355';
+            var upperBeadColor = '#ffd700'; //'#c41e3a';
+            var lowerBeadColor = '#ffd700'; //'#1a1a1a';
+            
+            for (var i = 0; i < COLUMNS; i++) {
+                var x = padding + colWidth * (i + 0.5);
+                
+                // Rod
+                svg += '<line x1="' + x + '" y1="2" x2="' + x + '" y2="' + (height - 2) + '" ';
+                svg += 'stroke="' + rodColor + '" stroke-width="2"/>';
+                
+                // Upper bead
+                var upperY = 2 + UPPER_BEAD_MARGIN;
+                var upperActive = columns[i].upperActive;
+                var upperBeadY = upperActive ? dividerY - ACTIVE_UPPER_OFFSET : upperY;
+                
+                svg += drawBeadSVG(x, upperBeadY, beadRadius, upperBeadColor);
+                
+                // Lower beads
+                var lowerActive = columns[i].lowerActive;
+                
+                for (var j = 0; j < LOWER_BEADS; j++) {
+                    var beadY;
+                    
+                    if (j < lowerActive) {
+                        beadY = dividerY + ACTIVE_LOWER_OFFSET + j * BEAD_SPACING;
+                    } else {
+                        var numInactive = LOWER_BEADS - lowerActive;
+                        var inactiveIndex = j - lowerActive;
+                        var endY = height - 2 - LOWER_BEAD_MARGIN;
+                        beadY = endY - (numInactive - 1 - inactiveIndex) * BEAD_SPACING;
+                    }
+
+                    let beadColor = lowerBeadColor;                    
+                    // Columna desde la derecha (0 = unidades, 2 = centenas, 5 = centenas de millar)
+                    const colFromRight = COLUMNS - 1 - i;
+                    // Primera cuenta (j=0) de centenas (col 2) o centenas de millar (col 5)
+                    if (j === 0 && (colFromRight === 2 || colFromRight === 5)) {
+                        beadColor = '#ff0000'; // Rojo
+                    }
+                    
+                    svg += drawBeadSVG(x, beadY, beadRadius, beadColor);
+                }
+            }
+            
+            svg += '</svg>';
+            return svg;
+        }
+
+        function drawBeadSVG(x, y, radius, color) {      
+            radius *= 1.35      
+            var verticalRadius = radius * 0.45; //0.8
+            var svg = '';
+            
+            // Shadow
+            svg += '<ellipse cx="' + (x + radius * 0.08) + '" cy="' + (y + radius * 0.15) + '" ';
+            svg += 'rx="' + (radius * 0.95) + '" ry="' + (verticalRadius * 0.8) + '" ';
+            svg += 'fill="rgba(0,0,0,0.25)"/>';
+            
+            // Main bead
+            svg += '<ellipse cx="' + x + '" cy="' + y + '" ';
+            svg += 'rx="' + radius + '" ry="' + verticalRadius + '" ';
+            svg += 'fill="' + color + '"/>';
+            
+            // Highlight gradient
+            var gradientId = 'grad_' + Math.random().toString(36).substr(2, 9);
+            svg += '<defs><radialGradient id="' + gradientId + '">';
+            svg += '<stop offset="0%" style="stop-color:rgba(255,255,255,0.4)"/>';
+            svg += '<stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>';
+            svg += '</radialGradient></defs>';
+            
+            svg += '<ellipse cx="' + x + '" cy="' + y + '" ';
+            svg += 'rx="' + radius + '" ry="' + verticalRadius + '" ';
+            svg += 'fill="url(#' + gradientId + ')"/>';
+            
+            // Border
+            var borderColor = (color === '#ff0000') ? '#cc0000' : '#daa520'; // === '#1a1a1a' ? '#000' : '#8b1a1a';
+            svg += '<ellipse cx="' + x + '" cy="' + y + '" ';
+            svg += 'rx="' + radius + '" ry="' + verticalRadius + '" ';
+            svg += 'fill="none" stroke="' + borderColor + '" stroke-width="' + (radius * 0.1) + '"/>';
+            
+            return svg;
+        }        
+
+        var inputs = document.querySelectorAll('input');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('input', updatePreview);
+        }
+
+        // SVG Controls event listeners
+        document.getElementById('frontShowSVG').addEventListener('change', function() {
+            document.getElementById('frontSVGControls').style.display = this.checked ? 'block' : 'none';
+            updatePreview();
+        });
+
+        document.getElementById('rearShowSVG').addEventListener('change', function() {
+            document.getElementById('rearSVGControls').style.display = this.checked ? 'block' : 'none';
+            updatePreview();
+        });
+
+        document.getElementById('frontSVGNumber').addEventListener('input', function() {
+            // if (this.value < 0) this.value = 0;
+            // if (this.value > 9999999) this.value = 9999999;
+            
+            // var svg = generateAbacusSVG(parseInt(this.value) || 0, 200, 120);
+            //document.getElementById('frontSVGPreview').innerHTML = svg;
+            updatePreview();
+        });
+
+        document.getElementById('frontSVGSize').addEventListener('input', function() {
+            if (this.value < 10) this.value = 10;
+            if (this.value > 200) this.value = 200;
+            updatePreview();
+        });
+
+        document.getElementById('rearSVGNumber').addEventListener('input', function() {
+            // if (this.value < 0) this.value = 0;
+            // if (this.value > 9999999) this.value = 9999999;
+            
+            // var svg = generateAbacusSVG(parseInt(this.value) || 0, 200, 120);
+            // document.getElementById('rearSVGPreview').innerHTML = svg;
+            updatePreview();
+        });
+
+        document.getElementById('rearSVGSize').addEventListener('input', function() {
+            if (this.value < 10) this.value = 10;
+            if (this.value > 200) this.value = 200;
+            updatePreview();
+        });
+
+        updatePreview();
+    </script>
+</body>
+</html>
