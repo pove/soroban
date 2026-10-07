@@ -6,7 +6,7 @@ import { readString, writeString } from '../core/storage.js';
 import en from './locales/en/index.js';
 import es from './locales/es/index.js';
 
-const DICTIONARIES = { en, es };
+export const DICTIONARIES = { en, es };
 const NUMBER_LOCALES = { en: 'en-US', es: 'es-ES' };
 
 export const SUPPORTED_LANGUAGES = Object.keys(DICTIONARIES);

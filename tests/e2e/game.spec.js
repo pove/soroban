@@ -1,7 +1,7 @@
 import { test, expect, columnsFor, confettiShown, savedState } from './fixtures.js';
 
-// Characterization tests: they describe what the game does today (Spanish UI, es-ES number format)
-// and run against both the original code and the refactored app.
+// Behavior of the three game modes. These specs were first written against the pre-refactor code
+// (see docs/architecture.md) and still describe the same observable behavior.
 
 const baseState = {
   mode: 'libre',

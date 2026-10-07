@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
+  DICTIONARIES,
   SUPPORTED_LANGUAGES,
   applyTranslations,
   detectLanguage,
@@ -12,7 +13,6 @@ import {
   translate,
 } from '../../src/i18n/index.js';
 import en from '../../src/i18n/locales/en/index.js';
-import es from '../../src/i18n/locales/es/index.js';
 
 describe('language detection', () => {
   it.each([
@@ -57,15 +57,16 @@ describe('translate', () => {
 });
 
 describe('dictionaries', () => {
+  const languages = Object.entries(DICTIONARIES);
+
   it('have exactly the same keys in every language', () => {
-    expect(Object.keys(es).sort()).toEqual(Object.keys(en).sort());
+    for (const [name, dictionary] of languages) {
+      expect(Object.keys(dictionary).sort(), name).toEqual(Object.keys(en).sort());
+    }
   });
 
   it('have no empty texts', () => {
-    for (const [name, dictionary] of [
-      ['en', en],
-      ['es', es],
-    ]) {
+    for (const [name, dictionary] of languages) {
       for (const [key, text] of Object.entries(dictionary)) {
         expect(text.trim(), `${name}:${key}`).not.toBe('');
       }
@@ -74,8 +75,11 @@ describe('dictionaries', () => {
 
   it('use the same placeholders in every language', () => {
     const placeholders = (text) => (text.match(/\{\w+\}/g) ?? []).sort();
-    for (const key of Object.keys(en)) {
-      expect(placeholders(es[key]), key).toEqual(placeholders(en[key]));
+    expect(placeholders('a {x} b {y}')).toEqual(['{x}', '{y}']); // guards the regex itself
+    for (const [name, dictionary] of languages) {
+      for (const key of Object.keys(en)) {
+        expect(placeholders(dictionary[key]), `${name}:${key}`).toEqual(placeholders(en[key]));
+      }
     }
   });
 
@@ -106,6 +110,7 @@ describe('dictionaries', () => {
         ).toBe(true);
       }
     }
+    expect(used.size).toBeGreaterThan(100); // the scan itself must find the keys
     const missing = [...used].filter((key) => !(key in en));
     expect(missing).toEqual([]);
   });

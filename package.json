@@ -11,9 +11,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:legacy": "playwright test --project=legacy",
+    "test:all": "npm run lint && npm test && npm run test:e2e",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "license": "MIT",
   "devDependencies": {
@@ -28,5 +29,24 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pove/soroban.git"
+  },
+  "homepage": "https://pove.github.io/soroban/",
+  "bugs": {
+    "url": "https://github.com/pove/soroban/issues"
+  },
+  "keywords": [
+    "soroban",
+    "abacus",
+    "education",
+    "math",
+    "pwa",
+    "printable-cards"
+  ]
 }

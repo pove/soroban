@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures.js';
 
-// Card generator characterization tests (English UI).
+// Card generator behavior (English UI). First written against the pre-refactor code.
 test.use({ locale: 'en-US' });
 
 test.beforeEach(({ page }) => {

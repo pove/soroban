@@ -1,19 +1,17 @@
 import { test as base, expect } from '@playwright/test';
-import { readFileSync } from 'node:fs';
-
-const confettiSource = readFileSync(
-  new URL('../../node_modules/canvas-confetti/dist/confetti.browser.js', import.meta.url),
-  'utf8',
-);
 
 export const COLUMNS = 7;
 
-// Element ids differ between the original code (Spanish ids) and the refactored app (English).
-const sharedSelectors = {
+/** Ids of the elements the specs interact with. */
+export const SELECTORS = {
+  freeMode: '#btnFree',
+  representMode: '#btnRepresent',
+  operateMode: '#btnOperate',
   reset: '#btnReset',
   display: '#numberDisplay',
   canvas: '#abacusCanvas',
   representPanel: '#representPanel',
+  operatePanel: '#operatePanel',
   representQuestion: '#representQuestion',
   question: '#question',
   validateRepresent: '#btnValidateRepresent',
@@ -27,22 +25,6 @@ const sharedSelectors = {
   confettiSelect: '#confettiMode',
   styleSelect: '#abacusStyle',
 };
-export const SELECTORS = {
-  legacy: {
-    ...sharedSelectors,
-    freeMode: '#btnLibre',
-    representMode: '#btnRepresentar',
-    operateMode: '#btnJuego',
-    operatePanel: '#gamePanel',
-  },
-  app: {
-    ...sharedSelectors,
-    freeMode: '#btnFree',
-    representMode: '#btnRepresent',
-    operateMode: '#btnOperate',
-    operatePanel: '#operatePanel',
-  },
-};
 
 /** Abacus column state for a number (same encoding the app persists). */
 export function columnsFor(n) {
@@ -52,22 +34,14 @@ export function columnsFor(n) {
 
 export const test = base.extend({
   gamePath: ['/index.html', { option: true }],
-  cardsPath: ['/game/index.html', { option: true }],
-  stubCdnConfetti: [false, { option: true }],
-  selectorSet: ['app', { option: true }],
-  ui: async ({ selectorSet }, use) => use(SELECTORS[selectorSet]),
+  cardsPath: ['/cards/index.html', { option: true }],
+  // eslint-disable-next-line no-empty-pattern
+  ui: async ({}, use) => use(SELECTORS),
 
-  // The legacy page loads confetti from a CDN; serve the local copy so tests are offline-safe.
-  context: async ({ context, stubCdnConfetti }, use) => {
-    if (stubCdnConfetti) {
-      await context.route('**/canvas-confetti@*/**', (route) =>
-        route.fulfill({ contentType: 'text/javascript', body: confettiSource }),
-      );
-    }
-    await use(context);
-  },
-
-  /** Opens the game with an optional persisted state and a deterministic Math.random. */
+  /**
+   * Opens the game with an optional persisted state (in the pre-3.0 format, which also
+   * exercises the migration) and a deterministic Math.random.
+   */
   openGame: async ({ page, gamePath }, use) => {
     await use(async ({ state, random } = {}) => {
       await page.addInitScript(

@@ -1,7 +1,8 @@
 import { fileURLToPath } from 'node:url';
 import { COLUMNS, columnsFor, expect, savedState, test } from './fixtures.js';
 
-// Features that only exist in the refactored app (the legacy project skips this file).
+// Features added in the 3.0 rewrite: languages, tapping, score, custom-input errors, navigation,
+// and compatibility with files saved by earlier versions.
 
 const fixture = (name) => fileURLToPath(new URL(`../fixtures/${name}`, import.meta.url));
 
@@ -17,7 +18,7 @@ const baseState = {
   abacusColumns: columnsFor(0),
 };
 
-/** Clicks a button that opens the file picker and answers the picker with . */
+/** Clicks a button that opens the file picker and answers the picker with the given files. */
 async function chooseFile(page, buttonSelector, files) {
   const [chooser] = await Promise.all([
     page.waitForEvent('filechooser'),
