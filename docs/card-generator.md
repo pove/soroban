@@ -12,7 +12,10 @@ link in the game header, or go to `/cards/`.
 3. Click **Print All** and, in the preview, choose how you will print (see below).
 4. Cut the cards along the borders.
 
-Prefer to look first? **Load Sample** fills the page with a small example deck.
+Prefer to look first? **Load Sample** fills the page with a small example deck. When a deck is generated or loaded the
+designer folds away so the cards are the first thing you see; click its title to open it again.
+
+![A generated deck](images/cards-deck.png)
 
 ## Card types
 
@@ -54,6 +57,7 @@ Cards of different sizes are printed on separate pages, so you can mix sizes in 
 
 ## Designing your own cards
 
+- The designer is collapsible (click its title). It reopens by itself when you edit a card.
 - Fill the form on the left: type name, size in millimetres, border and background, and for each side a top text, a
   bottom text (with colour and size) and optionally an **abacus picture** showing any number from 0 to 9 999 999.
 - The preview on the right updates as you type. **Save New Card** adds it to the list.
