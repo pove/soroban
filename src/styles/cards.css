@@ -1,0 +1,414 @@
+/* Card generator page */
+
+body.cards-page {
+  background: #f3f4fb;
+}
+
+body.cards-page .site-header {
+  max-width: none;
+  margin: 0;
+  padding: 12px max(20px, calc((100vw - 1200px) / 2));
+  background: var(--brand-gradient);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.lead {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+  color: #3c3a55;
+}
+
+h3 {
+  margin: 22px 0 10px;
+  font-size: 1rem;
+  color: #3c3a55;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.panel {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 20, 80, 0.1);
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.main-grid .panel {
+  margin-bottom: 0;
+}
+
+.preview-panel {
+  align-self: start;
+  position: sticky;
+  top: 12px;
+}
+
+@media (max-width: 768px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-panel {
+    order: -1;
+    position: static;
+  }
+}
+
+/* --- Forms ------------------------------------------------------------------------------- */
+
+.form-group {
+  margin-bottom: 14px;
+  border: 0;
+  padding: 0;
+}
+
+label,
+legend {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #55536b;
+}
+
+label.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='color'],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
+}
+
+input[type='color'] {
+  height: 36px;
+  padding: 2px;
+}
+
+input[type='checkbox'] {
+  width: auto;
+  accent-color: var(--brand-1);
+}
+
+input.inline-check {
+  margin-left: 10px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.grid-2.tight {
+  margin-top: 6px;
+}
+
+.button-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-success {
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
+}
+.btn-success:hover {
+  background: #059669;
+}
+.btn-danger {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+}
+.btn-danger:hover {
+  background: #dc2626;
+}
+.btn-secondary {
+  background: #6b7280;
+  border-color: #6b7280;
+  color: #fff;
+}
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+/* --- Cards ------------------------------------------------------------------------------- */
+
+.card-preview {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.preview-caption {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: #000;
+}
+
+.card-text {
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  word-wrap: break-word;
+  direction: ltr !important;
+}
+
+.card-middle {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-middle svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.empty-note {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.saved-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.card-item {
+  position: relative;
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: #f9f9fc;
+  cursor: pointer;
+}
+
+.card-item:hover {
+  background: #f0f0f8;
+}
+
+.card-item.selected {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+.card-type-label {
+  min-height: 28px;
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.card-wrapper {
+  position: relative;
+  height: 80px;
+  overflow: hidden;
+}
+
+.card-thumbnail {
+  transform: scale(0.3);
+  transform-origin: top left;
+}
+
+.card-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.card-actions .btn {
+  flex: 1;
+  margin: 0;
+  padding: 4px;
+  font-size: 0.8rem;
+}
+
+/* --- Dialogs ----------------------------------------------------------------------------- */
+
+dialog {
+  width: min(600px, 94vw);
+  max-height: 90vh;
+  padding: 26px;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  color: var(--text);
+}
+
+dialog.wide {
+  width: min(760px, 94vw);
+}
+
+dialog::backdrop {
+  background: rgba(20, 15, 45, 0.55);
+}
+
+.settings-box,
+.note {
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.settings-box p {
+  margin: 0 0 10px;
+}
+
+.note {
+  background: #f0f9ff;
+  border: 0;
+  border-left: 4px solid #2563eb;
+  color: #1e40af;
+}
+
+.status-ok {
+  color: #059669;
+}
+
+.editor-row input:not([type='checkbox']) {
+  margin-top: 4px;
+}
+
+/* --- Print view -------------------------------------------------------------------------- */
+
+#printView {
+  display: none;
+}
+
+#printView.active {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: auto;
+  padding: 20px;
+  background: #fff;
+}
+
+.print-toolbar {
+  margin-bottom: 20px;
+}
+
+.duplex-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0 12px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.print-page {
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto 20mm;
+  padding: 10mm;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+.print-grid {
+  display: grid;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  #printView {
+    display: block !important;
+    position: static !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .print-page {
+    margin: 0;
+    box-shadow: none;
+    border: none;
+    break-after: page;
+    break-inside: avoid;
+  }
+
+  .print-page:last-child {
+    break-after: auto;
+  }
+
+  .card {
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

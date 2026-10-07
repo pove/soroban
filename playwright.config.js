@@ -10,7 +10,7 @@ export default defineConfig({
   timeout: 30_000,
   fullyParallel: true,
   reporter: [['list']],
-  use: { channel: 'chrome', locale: 'es-ES', trace: 'retain-on-failure' },
+  use: { channel: process.env.CI ? undefined : 'chrome', locale: 'es-ES', trace: 'retain-on-failure' },
   projects: [
     {
       name: 'legacy',
@@ -19,6 +19,7 @@ export default defineConfig({
         gamePath: '/index.html',
         cardsPath: '/game/index.html',
         stubCdnConfetti: true,
+        selectorSet: 'legacy',
       },
     },
     {

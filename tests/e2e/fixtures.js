@@ -8,6 +8,42 @@ const confettiSource = readFileSync(
 
 export const COLUMNS = 7;
 
+// Element ids differ between the original code (Spanish ids) and the refactored app (English).
+const sharedSelectors = {
+  reset: '#btnReset',
+  display: '#numberDisplay',
+  canvas: '#abacusCanvas',
+  representPanel: '#representPanel',
+  representQuestion: '#representQuestion',
+  question: '#question',
+  validateRepresent: '#btnValidateRepresent',
+  validate: '#btnValidate',
+  newRepresent: '#btnNewRepresent',
+  newQuestion: '#btnNewQuestion',
+  representResult: '#representResult',
+  result: '#result',
+  numberInput: '#numberInput',
+  manualInput: '#manualInput',
+  confettiSelect: '#confettiMode',
+  styleSelect: '#abacusStyle',
+};
+export const SELECTORS = {
+  legacy: {
+    ...sharedSelectors,
+    freeMode: '#btnLibre',
+    representMode: '#btnRepresentar',
+    operateMode: '#btnJuego',
+    operatePanel: '#gamePanel',
+  },
+  app: {
+    ...sharedSelectors,
+    freeMode: '#btnFree',
+    representMode: '#btnRepresent',
+    operateMode: '#btnOperate',
+    operatePanel: '#operatePanel',
+  },
+};
+
 /** Abacus column state for a number (same encoding the app persists). */
 export function columnsFor(n) {
   const digits = String(n).padStart(COLUMNS, '0').split('').map(Number);
@@ -18,6 +54,8 @@ export const test = base.extend({
   gamePath: ['/index.html', { option: true }],
   cardsPath: ['/game/index.html', { option: true }],
   stubCdnConfetti: [false, { option: true }],
+  selectorSet: ['app', { option: true }],
+  ui: async ({ selectorSet }, use) => use(SELECTORS[selectorSet]),
 
   // The legacy page loads confetti from a CDN; serve the local copy so tests are offline-safe.
   context: async ({ context, stubCdnConfetti }, use) => {

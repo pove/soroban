@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soroban Card Generator</title>
+    <meta
+      name="description"
+      content="Design, generate and print double-sided practice cards for a physical soroban."
+    />
+    <meta name="theme-color" content="#667eea" />
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png" />
+  </head>
+  <body class="cards-page">
+    <header class="site-header no-print" id="siteHeader"></header>
+
+    <div class="container no-print">
+      <p class="lead" data-i18n="cards.subtitle"></p>
+
+      <section class="panel project-bar">
+        <h2 data-i18n="cards.project.title"></h2>
+        <div class="button-bar">
+          <button type="button" class="btn btn-primary" id="btnSaveProject" data-i18n="cards.project.save"></button>
+          <button type="button" class="btn btn-success" id="btnLoadProject" data-i18n="cards.project.load"></button>
+          <button type="button" class="btn btn-secondary" id="btnLoadSample" data-i18n="cards.project.sample"></button>
+          <button type="button" class="btn btn-primary" id="btnAutoGen" data-i18n="cards.project.autoGen"></button>
+          <input type="file" id="loadFile" accept=".json,application/json" hidden />
+        </div>
+      </section>
+
+      <div class="main-grid">
+        <!-- Card designer -->
+        <section class="panel">
+          <h2 id="panelTitle" data-i18n="cards.design.new"></h2>
+
+          <div class="form-group">
+            <label for="cardType" data-i18n="cards.design.cardType"></label>
+            <input type="text" id="cardType" data-i18n-placeholder="cards.design.cardTypePlaceholder" />
+          </div>
+
+          <div class="form-group">
+            <label for="cardWidth" data-i18n="cards.design.dimensions"></label>
+            <div class="grid-2">
+              <input type="number" id="cardWidth" min="30" max="150" aria-label="Width" />
+              <input type="number" id="cardHeight" min="30" max="150" aria-label="Height" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="borderColor" data-i18n="cards.design.border"></label>
+            <div class="grid-2">
+              <input type="color" id="borderColor" />
+              <input type="number" id="borderThickness" min="1" max="20" data-i18n-placeholder="cards.design.thickness" data-i18n-aria-label="cards.design.thickness" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="borderRadius" data-i18n="cards.design.borderRadius"></label>
+            <input type="number" id="borderRadius" min="0" max="50" />
+          </div>
+
+          <div class="form-group">
+            <label for="backgroundColor" data-i18n="cards.design.background"></label>
+            <input type="color" id="backgroundColor" />
+          </div>
+
+          <h3 data-i18n="cards.design.frontSide"></h3>
+          <div class="form-group">
+            <label for="frontTopText" data-i18n="cards.design.topText"></label>
+            <input type="text" id="frontTopText" />
+            <div class="grid-2 tight">
+              <input type="color" id="frontTopColor" />
+              <input type="number" id="frontTopSize" min="8" max="50" data-i18n-placeholder="cards.design.size" data-i18n-aria-label="cards.design.size" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="frontBottomText" data-i18n="cards.design.bottomText"></label>
+            <input type="text" id="frontBottomText" />
+            <div class="grid-2 tight">
+              <input type="color" id="frontBottomColor" />
+              <input type="number" id="frontBottomSize" min="8" max="50" data-i18n-placeholder="cards.design.size" data-i18n-aria-label="cards.design.size" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="check"><input type="checkbox" id="frontShowSVG" /> <span data-i18n="cards.design.showSvg"></span></label>
+          </div>
+          <div class="form-group" id="frontSVGControls" hidden>
+            <label for="frontSVGNumber" data-i18n="cards.design.svgNumber"></label>
+            <input type="number" id="frontSVGNumber" min="0" max="9999999" />
+            <label for="frontSVGSize" data-i18n="cards.design.svgSize"></label>
+            <input type="number" id="frontSVGSize" min="10" max="200" data-i18n-placeholder="cards.design.svgSizeHint" />
+          </div>
+
+          <h3 data-i18n="cards.design.rearSide"></h3>
+          <div class="form-group">
+            <label for="rearTopText" data-i18n="cards.design.topText"></label>
+            <input type="text" id="rearTopText" />
+            <div class="grid-2 tight">
+              <input type="color" id="rearTopColor" />
+              <input type="number" id="rearTopSize" min="8" max="50" data-i18n-placeholder="cards.design.size" data-i18n-aria-label="cards.design.size" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rearBottomText" data-i18n="cards.design.bottomText"></label>
+            <input type="text" id="rearBottomText" />
+            <div class="grid-2 tight">
+              <input type="color" id="rearBottomColor" />
+              <input type="number" id="rearBottomSize" min="8" max="50" data-i18n-placeholder="cards.design.size" data-i18n-aria-label="cards.design.size" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="check"><input type="checkbox" id="rearShowSVG" /> <span data-i18n="cards.design.showSvg"></span></label>
+          </div>
+          <div class="form-group" id="rearSVGControls" hidden>
+            <label for="rearSVGNumber" data-i18n="cards.design.svgNumber"></label>
+            <input type="number" id="rearSVGNumber" min="0" max="9999999" />
+            <label for="rearSVGSize" data-i18n="cards.design.svgSize"></label>
+            <input type="number" id="rearSVGSize" min="10" max="200" data-i18n-placeholder="cards.design.svgSizeHint" />
+          </div>
+
+          <div class="button-bar">
+            <button type="button" class="btn btn-success" id="saveCardBtn" data-i18n="cards.design.saveNew"></button>
+            <button type="button" class="btn btn-secondary" id="cancelBtn" data-i18n="cards.design.cancel" hidden></button>
+          </div>
+        </section>
+
+        <!-- Preview -->
+        <section class="panel preview-panel">
+          <h2 data-i18n="cards.preview.title"></h2>
+          <div class="card-preview" id="preview"></div>
+        </section>
+      </div>
+
+      <!-- Saved cards -->
+      <section class="panel">
+        <h2><span data-i18n="cards.saved.title"></span> (<span id="cardCount">0</span>)</h2>
+        <div class="button-bar">
+          <button type="button" class="btn btn-primary" id="btnPrintAll" data-i18n="cards.action.printAll"></button>
+          <button type="button" class="btn btn-success" id="btnPrintSelected">
+            <span data-i18n="cards.action.printSelected"></span> (<span id="selectedCount">0</span>)
+          </button>
+          <button type="button" class="btn btn-primary" id="btnSelectByType" data-i18n="cards.action.selectByType"></button>
+          <button type="button" class="btn btn-success" id="btnEditByType">
+            <span id="editByTypeLabel" data-i18n="cards.action.editByType"></span>
+          </button>
+          <button type="button" class="btn btn-danger" id="btnCleanDuplicates" data-i18n="cards.action.cleanDuplicates"></button>
+          <button type="button" class="btn btn-danger" id="btnDeleteSelected">
+            <span data-i18n="cards.action.deleteSelected"></span> (<span id="selectedCountToDelete">0</span>)
+          </button>
+          <button type="button" class="btn btn-secondary" id="btnDeselectAll" data-i18n="cards.action.deselectAll" data-i18n-title="cards.action.deselectAllTitle" data-i18n-aria-label="cards.action.deselectAllTitle"></button>
+        </div>
+        <p class="empty-note" id="emptyNote" data-i18n="cards.saved.empty"></p>
+        <div class="saved-cards" id="savedCards"></div>
+      </section>
+    </div>
+
+    <!-- Print view -->
+    <div id="printView">
+      <div class="no-print print-toolbar">
+        <button type="button" class="btn btn-secondary" id="btnClosePrint" data-i18n="cards.print.close"></button>
+        <button type="button" class="btn btn-primary" id="btnPrint" data-i18n="cards.print.print"></button>
+        <label class="duplex-option">
+          <input type="checkbox" id="autoDuplexMode" />
+          <span data-i18n="cards.print.duplex"></span>
+        </label>
+        <p id="printInfo"></p>
+      </div>
+      <div id="printContent"></div>
+    </div>
+
+    <!-- Auto-generate dialog -->
+    <dialog id="autoGenDialog" class="no-print">
+      <h2 data-i18n="cards.auto.title"></h2>
+      <p class="muted" data-i18n="cards.auto.description"></p>
+
+      <div class="settings-box">
+        <p>
+          <strong data-i18n="cards.auto.currentSettings"></strong>
+          <span id="settingsStatus"></span>
+        </p>
+        <div class="button-bar">
+          <button type="button" class="btn btn-success" id="btnLoadSettings" data-i18n="cards.auto.loadSettings" data-i18n-title="cards.auto.loadSettingsTitle"></button>
+          <button type="button" class="btn btn-secondary" id="btnDownloadSettings" data-i18n="cards.auto.downloadSample" data-i18n-title="cards.auto.downloadSampleTitle"></button>
+          <input type="file" id="loadSettingsFile" accept=".json,application/json" hidden />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="autoGenCount" data-i18n="cards.auto.perLevel"></label>
+        <input type="number" id="autoGenCount" value="10" min="1" max="100" />
+      </div>
+
+      <fieldset class="form-group">
+        <legend data-i18n="cards.auto.types"></legend>
+        <label class="check"><input type="checkbox" id="genAddRemove" data-type="addRemove" checked /> <span data-i18n="cards.type.addRemove"></span></label>
+        <label class="check"><input type="checkbox" id="genRepresent" data-type="represent" checked /> <span data-i18n="cards.type.represent"></span></label>
+        <label class="check"><input type="checkbox" id="genAdd" data-type="add" checked /> <span data-i18n="cards.type.add"></span></label>
+        <label class="check"><input type="checkbox" id="genSubtract" data-type="subtract" checked /> <span data-i18n="cards.type.subtract"></span></label>
+      </fieldset>
+
+      <p class="note"><strong data-i18n="cards.auto.noteLabel"></strong> <span data-i18n="cards.auto.note"></span></p>
+
+      <div class="button-bar">
+        <button type="button" class="btn btn-primary" id="btnGenerate" data-i18n="cards.auto.generate"></button>
+        <button type="button" class="btn btn-secondary" data-close-dialog data-i18n="cards.auto.cancel"></button>
+      </div>
+    </dialog>
+
+    <!-- Edit-by-type dialog -->
+    <dialog id="typeEditorDialog" class="no-print wide">
+      <h2 data-i18n="cards.editor.title"></h2>
+      <div class="form-group">
+        <label for="typeSelector" data-i18n="cards.editor.selectTypes"></label>
+        <select id="typeSelector" multiple size="6"></select>
+      </div>
+      <div id="typeEditForm" hidden>
+        <p class="muted"><span data-i18n="cards.editor.selected"></span> <span id="typeCardCount">0</span></p>
+        <p class="muted small" data-i18n="cards.editor.onlyModified"></p>
+        <div id="typeEditFields"></div>
+        <button type="button" class="btn btn-primary" id="btnApplyTypeEdit" data-i18n="cards.editor.apply"></button>
+      </div>
+      <button type="button" class="btn btn-secondary" data-close-dialog data-i18n="cards.editor.close"></button>
+    </dialog>
+
+    <!-- Select-by-type dialog -->
+    <dialog id="selectByTypeDialog" class="no-print">
+      <h2 data-i18n="cards.select.title"></h2>
+      <p class="muted" data-i18n="cards.select.description"></p>
+      <div class="form-group">
+        <label for="selectTypeSelector" data-i18n="cards.select.types"></label>
+        <select id="selectTypeSelector" multiple size="10"></select>
+      </div>
+      <p class="note">
+        <label class="check"><input type="checkbox" id="addToSelection" /> <span data-i18n="cards.select.addToSelection"></span></label>
+      </p>
+      <div class="button-bar">
+        <button type="button" class="btn btn-primary" id="btnSelectByType2" data-i18n="cards.select.confirm"></button>
+        <button type="button" class="btn btn-secondary" data-close-dialog data-i18n="cards.select.close"></button>
+      </div>
+    </dialog>
+
+    <script type="module" src="/src/cards/main.js"></script>
+  </body>
+</html>

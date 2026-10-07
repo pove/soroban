@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Japanese Abacus - Soroban</title>
+    <meta
+      name="description"
+      content="Learn to calculate with the Japanese abacus (soroban): free play, number reading and arithmetic practice. Printable practice cards included."
+    />
+    <meta name="theme-color" content="#667eea" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png" />
+  </head>
+  <body class="game-page">
+    <header class="site-header" id="siteHeader"></header>
+
+    <main class="game">
+      <div class="modes" role="group" data-i18n-aria-label="game.modes">
+        <button type="button" id="btnFree" class="mode-tab active" aria-pressed="true" data-i18n="game.mode.free"></button>
+        <button type="button" id="btnRepresent" class="mode-tab" aria-pressed="false" data-i18n="game.mode.represent"></button>
+        <button type="button" id="btnOperate" class="mode-tab" aria-pressed="false" data-i18n="game.mode.operate"></button>
+        <button
+          type="button"
+          id="btnReset"
+          class="mode-tab mode-tab--icon"
+          data-i18n-title="game.reset"
+          data-i18n-aria-label="game.reset"
+        >
+          ↻
+        </button>
+      </div>
+
+      <div class="layout">
+        <section class="board">
+          <div class="abacus-container">
+            <canvas id="abacusCanvas" role="img" data-i18n-aria-label="game.abacus.label"></canvas>
+          </div>
+          <p class="hint" id="abacusHint" data-i18n="game.abacus.hint"></p>
+        </section>
+
+        <aside class="side">
+          <div class="display">
+            <div class="number-display" id="numberDisplay" aria-live="polite">0</div>
+            <input
+              type="number"
+              id="numberInput"
+              inputmode="numeric"
+              min="0"
+              max="9999999"
+              data-i18n-placeholder="game.input.numberPlaceholder"
+              data-i18n-aria-label="game.input.numberLabel"
+              hidden
+            />
+          </div>
+
+          <!-- Represent mode -->
+          <section class="game-panel" id="representPanel">
+            <div class="button-row" role="group">
+              <button type="button" class="chip mode-repres active" data-mode="numberToAbacus" data-i18n="game.represent.numberToAbacus"></button>
+              <button type="button" class="chip mode-repres" data-mode="abacusToNumber" data-i18n="game.represent.abacusToNumber"></button>
+            </div>
+            <div class="button-row" role="group" data-i18n-aria-label="game.difficulty.label">
+              <button type="button" class="chip diff-btn" data-diff="veryEasy" data-i18n="game.difficulty.veryEasy"></button>
+              <button type="button" class="chip diff-btn" data-diff="easy" data-i18n="game.difficulty.easy"></button>
+              <button type="button" class="chip diff-btn" data-diff="medium" data-i18n="game.difficulty.medium"></button>
+              <button type="button" class="chip diff-btn" data-diff="hard" data-i18n="game.difficulty.hard"></button>
+            </div>
+            <div class="question-row">
+              <div class="question" id="representQuestion"></div>
+              <button type="button" class="icon-button" id="btnCustomNumber" data-i18n-title="game.action.customTitle" data-i18n-aria-label="game.action.customTitle">✎</button>
+            </div>
+            <div class="custom-editor" id="representEditor" hidden></div>
+            <button type="button" class="btn btn-primary" id="btnValidateRepresent" data-i18n="game.action.validate"></button>
+            <div class="result" id="representResult" role="status"></div>
+            <button type="button" class="btn" id="btnNewRepresent" data-i18n="game.action.newNumber"></button>
+          </section>
+
+          <!-- Operate mode -->
+          <section class="game-panel" id="operatePanel">
+            <div class="button-row" role="group" data-i18n-aria-label="game.operation.label">
+              <button type="button" class="chip op-btn active" data-op="+" data-i18n="game.operation.add"></button>
+              <button type="button" class="chip op-btn" data-op="-" data-i18n="game.operation.subtract"></button>
+              <button type="button" class="chip op-btn" data-op="×" data-i18n="game.operation.multiply"></button>
+              <button type="button" class="chip op-btn" data-op="÷" data-i18n="game.operation.divide"></button>
+            </div>
+            <div class="button-row" role="group" data-i18n-aria-label="game.difficulty.label">
+              <button type="button" class="chip diff-btn" data-diff="veryEasy" data-i18n="game.difficulty.veryEasy"></button>
+              <button type="button" class="chip diff-btn" data-diff="easy" data-i18n="game.difficulty.easy"></button>
+              <button type="button" class="chip diff-btn" data-diff="medium" data-i18n="game.difficulty.medium"></button>
+              <button type="button" class="chip diff-btn" data-diff="hard" data-i18n="game.difficulty.hard"></button>
+            </div>
+            <div class="question-row">
+              <div class="question" id="question"></div>
+              <button type="button" class="icon-button" id="btnCustomOperation" data-i18n-title="game.action.customTitle" data-i18n-aria-label="game.action.customTitle">✎</button>
+            </div>
+            <div class="custom-editor" id="operateEditor" hidden></div>
+            <button type="button" class="btn btn-primary" id="btnValidate" data-i18n="game.action.validate"></button>
+            <div class="result" id="result" role="status"></div>
+            <button type="button" class="btn" id="btnNewQuestion" data-i18n="game.action.newQuestion"></button>
+          </section>
+
+          <section class="stats" id="stats" aria-label="Statistics" hidden>
+            <div class="stat"><span class="stat-value" id="statSolved">0</span><span class="stat-label" data-i18n="game.stats.solved"></span></div>
+            <div class="stat"><span class="stat-value" id="statStreak">0</span><span class="stat-label" data-i18n="game.stats.streak"></span></div>
+            <div class="stat"><span class="stat-value" id="statBest">0</span><span class="stat-label" data-i18n="game.stats.best"></span></div>
+          </section>
+
+          <a class="promo" id="promoCards" href="./cards/">
+            <span class="promo-icon" aria-hidden="true">🖨️</span>
+            <span class="promo-text">
+              <strong data-i18n="game.promo.title"></strong>
+              <small data-i18n="game.promo.text"></small>
+            </span>
+          </a>
+        </aside>
+      </div>
+    </main>
+
+    <!-- On-screen keyboard for touch devices (replaces the native one for custom input) -->
+    <div class="keyboard" id="customKeyboard" hidden>
+      <div class="keyboard-display" id="keyboardDisplay"></div>
+      <div class="keyboard-grid">
+        <button type="button" class="key" data-key="7">7</button>
+        <button type="button" class="key" data-key="8">8</button>
+        <button type="button" class="key" data-key="9">9</button>
+        <button type="button" class="key key-operator" data-key="÷">÷</button>
+        <button type="button" class="key" data-key="4">4</button>
+        <button type="button" class="key" data-key="5">5</button>
+        <button type="button" class="key" data-key="6">6</button>
+        <button type="button" class="key key-operator" data-key="×">×</button>
+        <button type="button" class="key" data-key="1">1</button>
+        <button type="button" class="key" data-key="2">2</button>
+        <button type="button" class="key" data-key="3">3</button>
+        <button type="button" class="key key-operator" data-key="-">-</button>
+        <button type="button" class="key key-wide" data-key="0">0</button>
+        <button type="button" class="key key-danger" data-key="backspace" data-i18n-aria-label="game.custom.backspace">⌫</button>
+        <button type="button" class="key key-operator" data-key="+">+</button>
+        <button type="button" class="key key-done" data-key="done" data-i18n="game.custom.accept"></button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <span class="version" id="appVersion"></span>
+      <label class="setting">
+        <span data-i18n="game.settings.style"></span>
+        <select id="abacusStyle">
+          <option value="classic" data-i18n="game.style.classic"></option>
+          <option value="simple" data-i18n="game.style.simple"></option>
+        </select>
+      </label>
+      <label class="setting">
+        <span data-i18n="game.settings.confetti"></span>
+        <select id="confettiMode">
+          <option value="0" data-i18n="game.confetti.0"></option>
+          <option value="1" data-i18n="game.confetti.1"></option>
+          <option value="2" data-i18n="game.confetti.2"></option>
+          <option value="3" data-i18n="game.confetti.3"></option>
+          <option value="4" data-i18n="game.confetti.4"></option>
+          <option value="5" data-i18n="game.confetti.5"></option>
+          <option value="6" data-i18n="game.confetti.6"></option>
+          <option value="7" data-i18n="game.confetti.7"></option>
+          <option value="8" data-i18n="game.confetti.8"></option>
+          <option value="9" data-i18n="game.confetti.9"></option>
+          <option value="10" data-i18n="game.confetti.10"></option>
+          <option value="surprise" data-i18n="game.confetti.surprise"></option>
+        </select>
+      </label>
+    </footer>
+
+    <script type="module" src="/src/game/main.js"></script>
+  </body>
+</html>
