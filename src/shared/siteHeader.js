@@ -16,7 +16,7 @@ import { getLanguage, setLanguage } from '../i18n/index.js';
 export function mountSiteHeader(container, { active, links, titleKey }) {
   container.innerHTML = `
     <a class="brand" href="${links.game}" aria-label="Soroban">
-      <span class="brand-mark" aria-hidden="true">🧮</span>
+      <img class="brand-mark" src="${links.game}images/icon-96x96.png" alt="" width="40" height="40" />
     </a>
     <h1 class="site-title" data-i18n="${titleKey}"></h1>
     <div class="menu-wrap">

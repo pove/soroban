@@ -411,3 +411,84 @@ test.describe('card generator', () => {
     await expect(page.locator('#emptyNote')).toBeHidden();
   });
 });
+
+test.describe('reading aids and keyboard flow', () => {
+  const digits = (page) => page.locator('#digitStrip span');
+
+  test('shows the digit of every rod under the abacus', async ({ page, openGame }) => {
+    await openGame({ state: { ...baseState, abacusColumns: columnsFor(1234567) } });
+    await expect(digits(page)).toHaveText(['1', '2', '3', '4', '5', '6', '7']);
+  });
+
+  test('dims leading zeros', async ({ page, openGame }) => {
+    await openGame({ state: { ...baseState, abacusColumns: columnsFor(42) } });
+    await expect(digits(page).nth(4)).toHaveClass(/zero/);
+    await expect(digits(page).nth(5)).not.toHaveClass(/zero/);
+  });
+
+  test('is hidden in Represent mode, where it would give the answer away', async ({
+    page,
+    openGame,
+  }) => {
+    await openGame({
+      state: {
+        ...baseState,
+        mode: 'representar',
+        representData: { target: 345, mode: 'number-to-abacus' },
+      },
+    });
+    await expect(page.locator('#digitStrip')).toBeHidden();
+  });
+
+  test('Enter checks the answer, then moves on to the next question', async ({
+    page,
+    openGame,
+    ui,
+  }) => {
+    await openGame({
+      state: {
+        ...baseState,
+        mode: 'juego',
+        gameData: { a: 1, b: 2, op: '+', answer: 3 },
+        abacusColumns: columnsFor(2),
+      },
+    });
+    await page.keyboard.press('Enter');
+    await expect(page.locator(ui.result)).toContainText('Incorrecto');
+
+    await tapUnits(page, ui, 0.801); // 3
+    await page.keyboard.press('Enter');
+    await expect(page.locator(ui.result)).toHaveText('¡Correcto! 🎉');
+    await expect(page.locator(ui.newQuestion)).toBeFocused();
+
+    await page.keyboard.press('Enter');
+    await expect(page.locator(ui.question)).not.toHaveText('1 + 2 = ?');
+    await expect(page.locator(ui.result)).toBeHidden();
+  });
+
+  test('Enter does nothing in free mode', async ({ page, openGame, ui }) => {
+    await openGame();
+    await page.keyboard.press('Enter');
+    await expect(page.locator(ui.display)).toHaveText('0');
+  });
+
+  test('the header shows the app icon', async ({ page, openGame }) => {
+    await openGame();
+    await expect(page.locator('.brand-mark')).toBeVisible();
+    expect(await page.locator('.brand-mark').evaluate((img) => img.naturalWidth)).toBeGreaterThan(
+      0,
+    );
+  });
+
+  test('printing is one click away from the top of the card generator', async ({
+    page,
+    cardsPath,
+  }) => {
+    page.on('dialog', (dialog) => dialog.accept());
+    await page.goto(cardsPath);
+    await page.locator('#btnLoadSample').click();
+    await expect(page.locator('#btnPrintAll')).toBeInViewport();
+    await page.locator('#btnPrintAll').click();
+    await expect(page.locator('#printInfo')).toContainText('32 tarjetas');
+  });
+});
