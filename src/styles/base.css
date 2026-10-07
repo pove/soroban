@@ -68,6 +68,8 @@ body {
 /* --- Site header ------------------------------------------------------------------------- */
 
 .site-header {
+  position: relative;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -91,50 +93,83 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+.menu-wrap {
+  position: relative;
+  flex: none;
+}
+
+.menu-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menu-button:hover,
+.menu-button[aria-expanded='true'] {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.site-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(280px, calc(100vw - 24px));
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.menu-extras {
+  display: contents;
+}
+
 .site-nav {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .nav-link {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  color: var(--text);
   text-decoration: none;
-  font-size: 0.95rem;
-  white-space: nowrap;
   transition: background 0.2s;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: #f1f1fb;
 }
 
 .nav-link[aria-current='page'] {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.8);
+  border-color: var(--brand-1);
+  background: rgba(102, 126, 234, 0.12);
+  font-weight: 700;
 }
 
-.nav-link--cta {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.language-picker select,
-.site-footer select {
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
+.site-menu select {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: #fff;
+  color: var(--text);
   font: inherit;
-  font-size: 0.9rem;
   cursor: pointer;
-}
-
-.language-picker select option,
-.site-footer select option {
-  color: #222;
 }
 
 /* --- Buttons ----------------------------------------------------------------------------- */
@@ -235,29 +270,5 @@ body {
   .chip,
   .nav-link {
     min-height: 44px;
-  }
-}
-
-@media (max-width: 600px) {
-  .site-header {
-    gap: 8px 10px;
-    padding-top: 10px;
-  }
-
-  .brand {
-    font-size: 1.5rem;
-  }
-
-  .site-title {
-    flex-basis: calc(100% - 50px);
-  }
-
-  .site-nav {
-    flex: 1;
-  }
-
-  .nav-link {
-    padding: 6px 10px;
-    font-size: 0.85rem;
   }
 }

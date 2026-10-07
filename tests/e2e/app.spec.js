@@ -1,5 +1,13 @@
 import { fileURLToPath } from 'node:url';
-import { COLUMNS, columnsFor, expect, savedState, test } from './fixtures.js';
+import {
+  COLUMNS,
+  chooseOption,
+  columnsFor,
+  expect,
+  openMenu,
+  savedState,
+  test,
+} from './fixtures.js';
 
 // Features added in the 3.0 rewrite: languages, tapping, score, custom-input errors, navigation,
 // and compatibility with files saved by earlier versions.
@@ -70,7 +78,7 @@ test.describe('language', () => {
     await openGame({
       state: { ...baseState, mode: 'juego', gameData: { a: 2, b: 3, op: '+', answer: 5 } },
     });
-    await page.locator('#languageSelect').selectOption('en');
+    await chooseOption(page, '#languageSelect', 'en');
 
     await expect(page.locator('#btnFree')).toHaveText('Free');
     await expect(page.locator('#btnValidate')).toHaveText('Check answer');
@@ -78,10 +86,10 @@ test.describe('language', () => {
     await expect(page.locator('#result')).toHaveText('Wrong. The right answer is 5');
 
     // dynamic text follows a language change without reloading
-    await page.locator('#languageSelect').selectOption('es');
+    await chooseOption(page, '#languageSelect', 'es');
     await expect(page.locator('#result')).toHaveText('Incorrecto. La respuesta correcta es 5');
 
-    await page.locator('#languageSelect').selectOption('en');
+    await chooseOption(page, '#languageSelect', 'en');
     await page.reload();
     await expect(page.locator('#languageSelect')).toHaveValue('en');
     await expect(page.locator('#btnFree')).toHaveText('Free');
@@ -95,18 +103,18 @@ test.describe('language', () => {
   test('numbers use the grouping of the selected language', async ({ page, openGame }) => {
     await openGame({ state: { ...baseState, abacusColumns: columnsFor(1234567) } });
     await expect(page.locator('#numberDisplay')).toHaveText('1.234.567');
-    await page.locator('#languageSelect').selectOption('en');
+    await chooseOption(page, '#languageSelect', 'en');
     await expect(page.locator('#numberDisplay')).toHaveText('1,234,567');
   });
 
   test('the choice is shared with the card generator', async ({ page, openGame, cardsPath }) => {
     await openGame();
-    await page.locator('#languageSelect').selectOption('en');
+    await chooseOption(page, '#languageSelect', 'en');
     await page.goto(cardsPath);
     await expect(page.locator('#languageSelect')).toHaveValue('en');
     await expect(page.locator('#btnAutoGen')).toContainText('Auto-generate');
 
-    await page.locator('#languageSelect').selectOption('es');
+    await chooseOption(page, '#languageSelect', 'es');
     await expect(page.locator('#btnAutoGen')).toContainText('Generar lote automático');
     await expect(page).toHaveTitle('Generador de tarjetas Soroban');
   });
@@ -257,9 +265,11 @@ test.describe('custom questions', () => {
 test.describe('navigation and robustness', () => {
   test('links lead to the card generator and back', async ({ page, openGame }) => {
     await openGame();
+    await openMenu(page);
     await page.locator('.nav-link--cta').click();
     await expect(page).toHaveURL(/cards\/?$/);
     await expect(page.locator('#btnAutoGen')).toBeVisible();
+    await openMenu(page);
     await page.getByRole('link', { name: 'Juego' }).click();
     await expect(page.locator('#btnFree')).toBeVisible();
   });
@@ -297,14 +307,14 @@ test.describe('card generator', () => {
 
   test('labels generated cards in the active language', async ({ page, cardsPath }) => {
     await page.goto(cardsPath);
-    await page.locator('#languageSelect').selectOption('es');
+    await chooseOption(page, '#languageSelect', 'es');
     await page.locator('#btnAutoGen').click();
     await page.locator('#autoGenCount').fill('1');
     await page.locator('#btnGenerate').click();
     await expect(page.locator('.card-type-label', { hasText: 'Añade-Quita fácil' })).toBeVisible();
     await expect(page.locator('.card-text', { hasText: 'Añade' }).first()).toBeVisible();
 
-    await page.locator('#languageSelect').selectOption('en');
+    await chooseOption(page, '#languageSelect', 'en');
     await page.locator('#btnAutoGen').click();
     await page.locator('#btnGenerate').click();
     await expect(

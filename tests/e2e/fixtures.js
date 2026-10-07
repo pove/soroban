@@ -73,3 +73,16 @@ export async function confettiShown(page) {
 export async function savedState(page) {
   return page.evaluate(() => JSON.parse(localStorage.getItem('sorobanAppState')));
 }
+
+/** Opens the hamburger menu (settings, language and navigation live there). */
+export async function openMenu(page) {
+  const button = page.locator('#menuButton');
+  if ((await button.getAttribute('aria-expanded')) !== 'true') await button.click();
+}
+
+/** Changes a select inside the menu, then closes the menu so it does not cover the page. */
+export async function chooseOption(page, selector, value) {
+  await openMenu(page);
+  await page.locator(selector).selectOption(value);
+  await page.keyboard.press('Escape');
+}

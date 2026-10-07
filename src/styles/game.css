@@ -502,7 +502,7 @@ body.keyboard-open {
 
 .site-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 16px;
@@ -517,12 +517,6 @@ body.keyboard-open {
 .site-footer .version {
   font-size: 0.7rem;
   opacity: 0.85;
-}
-
-.setting {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 @media (max-width: 600px) {

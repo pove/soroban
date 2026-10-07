@@ -54,6 +54,13 @@ await shot('game-desktop', {
   state: operating,
 });
 
+await shot('game-menu', {
+  viewport: { width: 1280, height: 760 },
+  path: '/index.html',
+  state: operating,
+  actions: (page) => page.locator('#menuButton').click(),
+});
+
 await shot('game-mobile', {
   viewport: { width: 390, height: 844 },
   deviceScaleFactor: 2,

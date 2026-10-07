@@ -1,4 +1,4 @@
-import { test, expect, columnsFor, confettiShown, savedState } from './fixtures.js';
+import { test, chooseOption, expect, columnsFor, confettiShown, savedState } from './fixtures.js';
 
 // Behavior of the three game modes. These specs were first written against the pre-refactor code
 // (see docs/architecture.md) and still describe the same observable behavior.
@@ -59,8 +59,8 @@ test.describe('free mode', () => {
 
   test('keeps style and confetti selection after reload', async ({ page, openGame, ui }) => {
     await openGame();
-    await page.locator(ui.styleSelect).selectOption('simple');
-    await page.locator(ui.confettiSelect).selectOption('5');
+    await chooseOption(page, ui.styleSelect, 'simple');
+    await chooseOption(page, ui.confettiSelect, '5');
     await page.reload();
     await expect(page.locator(ui.styleSelect)).toHaveValue('simple');
     await expect(page.locator(ui.confettiSelect)).toHaveValue('5');

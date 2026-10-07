@@ -1,6 +1,7 @@
 /**
- * Header shared by every page: brand, navigation between the game and the card generator, and
- * the language selector.
+ * Header shared by every page: brand, page title and a hamburger menu (top right) holding the
+ * navigation between the game and the card generator, the language selector and any
+ * page-specific settings.
  */
 import { getLanguage, setLanguage } from '../i18n/index.js';
 
@@ -10,6 +11,7 @@ import { getLanguage, setLanguage } from '../i18n/index.js';
  * @param {'game'|'cards'} options.active page being shown
  * @param {{ game: string, cards: string }} options.links relative URLs of both pages
  * @param {string} options.titleKey translation key of the page heading
+ * @returns {{ extras: HTMLElement }} slot at the end of the menu for page-specific controls
  */
 export function mountSiteHeader(container, { active, links, titleKey }) {
   container.innerHTML = `
@@ -17,24 +19,52 @@ export function mountSiteHeader(container, { active, links, titleKey }) {
       <span class="brand-mark" aria-hidden="true">🧮</span>
     </a>
     <h1 class="site-title" data-i18n="${titleKey}"></h1>
-    <nav class="site-nav" data-i18n-aria-label="nav.label">
-      <a class="nav-link" href="${links.game}" ${active === 'game' ? 'aria-current="page"' : ''} data-i18n="nav.game"></a>
-      <a class="nav-link nav-link--cta" href="${links.cards}" ${active === 'cards' ? 'aria-current="page"' : ''}>
-        <span aria-hidden="true">🖨️</span> <span data-i18n="nav.cards"></span>
-      </a>
-    </nav>
-    <label class="language-picker">
-      <span class="sr-only" data-i18n="language.label"></span>
-      <select id="languageSelect">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-      </select>
-    </label>
+    <div class="menu-wrap">
+      <button type="button" id="menuButton" class="menu-button" aria-expanded="false"
+        aria-controls="siteMenu" data-i18n-aria-label="nav.menu" data-i18n-title="nav.menu">
+        <span aria-hidden="true">☰</span>
+      </button>
+      <div id="siteMenu" class="site-menu" hidden>
+        <nav class="site-nav" data-i18n-aria-label="nav.label">
+          <a class="nav-link" href="${links.game}" ${active === 'game' ? 'aria-current="page"' : ''}>
+            <span aria-hidden="true">🧮</span> <span data-i18n="nav.game"></span>
+          </a>
+          <a class="nav-link nav-link--cta" href="${links.cards}" ${active === 'cards' ? 'aria-current="page"' : ''}>
+            <span aria-hidden="true">🖨️</span> <span data-i18n="nav.cards"></span>
+          </a>
+        </nav>
+        <select id="languageSelect" data-i18n-aria-label="language.label">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+        <div class="menu-extras" data-menu-extras></div>
+      </div>
+    </div>
   `;
 
+  const button = container.querySelector('#menuButton');
+  const menu = container.querySelector('#siteMenu');
   const select = container.querySelector('#languageSelect');
+
+  const setOpen = (open) => {
+    menu.hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+  };
+  button.addEventListener('click', () => setOpen(menu.hidden));
+  document.addEventListener('click', (event) => {
+    if (!menu.hidden && !event.target.closest('.menu-wrap')) setOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !menu.hidden) {
+      setOpen(false);
+      button.focus();
+    }
+  });
+
   select.value = getLanguage();
   select.addEventListener('change', () => setLanguage(select.value));
+
+  return { extras: container.querySelector('[data-menu-extras]') };
 }
 
 /** Keeps the selector in sync when the language changes from elsewhere. */

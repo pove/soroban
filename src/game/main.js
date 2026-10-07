@@ -23,11 +23,12 @@ import { loadState, saveState } from './state.js';
 import { getDom, isAbacusLocked, render } from './view.js';
 
 initLanguage();
-mountSiteHeader(document.getElementById('siteHeader'), {
+const { extras } = mountSiteHeader(document.getElementById('siteHeader'), {
   active: 'game',
   links: { game: './', cards: './cards/' },
   titleKey: 'game.title',
 });
+extras.append(document.getElementById('gameSettings').content);
 applyTranslations();
 
 const dom = getDom();

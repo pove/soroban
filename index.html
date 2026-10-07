@@ -287,32 +287,31 @@
       </div>
     </div>
 
+    <!-- Moved into the header menu by main.js -->
+    <template id="gameSettings"
+      ><select id="abacusStyle" data-i18n-aria-label="game.settings.style">
+        <option value="classic" data-i18n="game.style.classic"></option>
+        <option value="simple" data-i18n="game.style.simple"></option>
+      </select>
+
+      <select id="confettiMode" data-i18n-aria-label="game.settings.confetti">
+        <option value="0" data-i18n="game.confetti.0"></option>
+        <option value="1" data-i18n="game.confetti.1"></option>
+        <option value="2" data-i18n="game.confetti.2"></option>
+        <option value="3" data-i18n="game.confetti.3"></option>
+        <option value="4" data-i18n="game.confetti.4"></option>
+        <option value="5" data-i18n="game.confetti.5"></option>
+        <option value="6" data-i18n="game.confetti.6"></option>
+        <option value="7" data-i18n="game.confetti.7"></option>
+        <option value="8" data-i18n="game.confetti.8"></option>
+        <option value="9" data-i18n="game.confetti.9"></option>
+        <option value="10" data-i18n="game.confetti.10"></option>
+        <option value="surprise" data-i18n="game.confetti.surprise"></option>
+      </select>
+    </template>
+
     <footer class="site-footer">
       <span class="version" id="appVersion"></span>
-      <label class="setting">
-        <span data-i18n="game.settings.style"></span>
-        <select id="abacusStyle">
-          <option value="classic" data-i18n="game.style.classic"></option>
-          <option value="simple" data-i18n="game.style.simple"></option>
-        </select>
-      </label>
-      <label class="setting">
-        <span data-i18n="game.settings.confetti"></span>
-        <select id="confettiMode">
-          <option value="0" data-i18n="game.confetti.0"></option>
-          <option value="1" data-i18n="game.confetti.1"></option>
-          <option value="2" data-i18n="game.confetti.2"></option>
-          <option value="3" data-i18n="game.confetti.3"></option>
-          <option value="4" data-i18n="game.confetti.4"></option>
-          <option value="5" data-i18n="game.confetti.5"></option>
-          <option value="6" data-i18n="game.confetti.6"></option>
-          <option value="7" data-i18n="game.confetti.7"></option>
-          <option value="8" data-i18n="game.confetti.8"></option>
-          <option value="9" data-i18n="game.confetti.9"></option>
-          <option value="10" data-i18n="game.confetti.10"></option>
-          <option value="surprise" data-i18n="game.confetti.surprise"></option>
-        </select>
-      </label>
     </footer>
 
     <script type="module" src="/src/game/main.js"></script>
