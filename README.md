@@ -24,6 +24,9 @@ An interactive **soroban** (Japanese abacus) for learning to read numbers and ca
   [`src/game/problems.js`](src/game/problems.js)).
 - **Tap or drag** the beads. Tapping a bead moves it (and the ones between it and the beam), exactly like
   moving it with your finger on a real abacus. Beads are animated and the canvas is sharp on high-DPI screens.
+- **Reading aid**: the digit of every rod is shown under the abacus (in Free and Operate modes), with leading
+  zeros dimmed.
+- **Keyboard**: Enter checks the answer and, once it is right, moves on to the next question.
 - **Your own questions**: type any operation (`23+45`, `12x4`, `84/7` all work) or any number to represent.
 - **Score**: solved questions, current streak and best streak (stored in your browser).
 - **Two abacus styles** (classic wood/red/black and a simple yellow one) and **ten celebration effects**

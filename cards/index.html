@@ -26,26 +26,32 @@
           <button
             type="button"
             class="btn btn-primary"
-            id="btnSaveProject"
-            data-i18n="cards.project.save"
+            id="btnAutoGen"
+            data-i18n="cards.project.autoGen"
           ></button>
           <button
             type="button"
-            class="btn btn-success"
-            id="btnLoadProject"
-            data-i18n="cards.project.load"
-          ></button>
-          <button
-            type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline"
             id="btnLoadSample"
             data-i18n="cards.project.sample"
           ></button>
           <button
             type="button"
-            class="btn btn-primary"
-            id="btnAutoGen"
-            data-i18n="cards.project.autoGen"
+            class="btn btn-outline"
+            id="btnLoadProject"
+            data-i18n="cards.project.load"
+          ></button>
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="btnSaveProject"
+            data-i18n="cards.project.save"
+          ></button>
+          <button
+            type="button"
+            class="btn btn-print"
+            id="btnPrintAll"
+            data-i18n="cards.action.printAll"
           ></button>
           <input type="file" id="loadFile" accept=".json,application/json" hidden />
         </div>
@@ -201,13 +207,13 @@
           <div class="button-bar">
             <button
               type="button"
-              class="btn btn-success"
+              class="btn btn-outline"
               id="saveCardBtn"
               data-i18n="cards.design.saveNew"
             ></button>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-outline"
               id="cancelBtn"
               data-i18n="cards.design.cancel"
               hidden
@@ -226,27 +232,21 @@
       <section class="panel">
         <h2><span data-i18n="cards.saved.title"></span> (<span id="cardCount">0</span>)</h2>
         <div class="button-bar">
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="btnPrintAll"
-            data-i18n="cards.action.printAll"
-          ></button>
-          <button type="button" class="btn btn-success" id="btnPrintSelected">
+          <button type="button" class="btn btn-outline" id="btnPrintSelected">
             <span data-i18n="cards.action.printSelected"></span> (<span id="selectedCount">0</span>)
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-outline"
             id="btnSelectByType"
             data-i18n="cards.action.selectByType"
           ></button>
-          <button type="button" class="btn btn-success" id="btnEditByType">
+          <button type="button" class="btn btn-outline" id="btnEditByType">
             <span id="editByTypeLabel" data-i18n="cards.action.editByType"></span>
           </button>
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-outline"
             id="btnCleanDuplicates"
             data-i18n="cards.action.cleanDuplicates"
           ></button>
@@ -257,7 +257,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline"
             id="btnDeselectAll"
             data-i18n="cards.action.deselectAll"
             data-i18n-title="cards.action.deselectAllTitle"
@@ -274,7 +274,7 @@
       <div class="no-print print-toolbar">
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-outline"
           id="btnClosePrint"
           data-i18n="cards.print.close"
         ></button>
@@ -306,14 +306,14 @@
         <div class="button-bar">
           <button
             type="button"
-            class="btn btn-success"
+            class="btn btn-outline"
             id="btnLoadSettings"
             data-i18n="cards.auto.loadSettings"
             data-i18n-title="cards.auto.loadSettingsTitle"
           ></button>
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline"
             id="btnDownloadSettings"
             data-i18n="cards.auto.downloadSample"
             data-i18n-title="cards.auto.downloadSampleTitle"
@@ -360,7 +360,7 @@
         ></button>
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-outline"
           data-close-dialog
           data-i18n="cards.auto.cancel"
         ></button>
@@ -389,7 +389,7 @@
       </div>
       <button
         type="button"
-        class="btn btn-secondary"
+        class="btn btn-outline"
         data-close-dialog
         data-i18n="cards.editor.close"
       ></button>
@@ -418,7 +418,7 @@
         ></button>
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-outline"
           data-close-dialog
           data-i18n="cards.select.close"
         ></button>

@@ -48,6 +48,10 @@ function validate(transition, ...args) {
   store.set(after);
   if (after.feedback?.kind === 'correct' && before.feedback?.kind !== 'correct') {
     celebrate(after.confettiMode);
+    // Keyboard flow: after a right answer, Enter moves on to the next question. Focus moves in a
+    // later task so the Enter that triggered this does not also press the new button.
+    const next = after.mode === 'operate' ? dom.newQuestion : dom.newRepresent;
+    setTimeout(() => next.focus(), 0);
   }
 }
 
@@ -162,6 +166,25 @@ document.getElementById('btnCustomOperation').addEventListener('click', openOper
 document.getElementById('btnCustomNumber').addEventListener('click', openNumberEditor);
 dom.question.addEventListener('dblclick', openOperationEditor);
 dom.representQuestion.addEventListener('dblclick', openNumberEditor);
+
+// Enter anywhere on the page checks the answer, or moves on once it is solved. Focused buttons and
+// inputs keep their own Enter behavior.
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' || event.target !== document.body) return;
+  const state = store.get();
+  if (state.mode === 'free') return;
+  const solved = state.feedback?.kind === 'correct';
+  if (state.mode === 'operate') {
+    if (solved) apply(actions.newProblem);
+    else validate(actions.validateOperation);
+  } else if (solved) {
+    dom.newRepresent.click();
+  } else if (isAbacusLocked(state)) {
+    dom.numberInput.focus(); // nothing typed yet: take the player to the input
+  } else {
+    validateRepresent();
+  }
+});
 
 // --- Start -----------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
  * Renders the game state into the page. `render` is idempotent: it only reads the state and
  * sets DOM properties, so it can run after every state change or language switch.
  */
-import { columnsToNumber } from '../core/abacus.js';
+import { columnDigit, columnsToNumber } from '../core/abacus.js';
 
 const byId = (id) => document.getElementById(id);
 
@@ -16,6 +16,7 @@ export function getDom() {
     canvas: byId('abacusCanvas'),
     container: document.querySelector('.abacus-container'),
     hint: byId('abacusHint'),
+    digits: [...document.querySelectorAll('#digitStrip span')],
     numberDisplay: byId('numberDisplay'),
     prompt: byId('prompt'),
     numberInput: byId('numberInput'),
@@ -146,6 +147,14 @@ export function render(dom, state, helpers) {
   dom.statSolved.textContent = formatNumber(state.stats.solved);
   dom.statStreak.textContent = formatNumber(state.stats.streak);
   dom.statBest.textContent = formatNumber(state.stats.best);
+
+  // Digit under each rod: a reading aid, hidden in Represent mode where it would give the answer.
+  const firstUsed = state.columns.findIndex((column) => columnDigit(column) > 0);
+  dom.digits.forEach((cell, i) => {
+    cell.textContent = columnDigit(state.columns[i]);
+    cell.classList.toggle('zero', firstUsed === -1 || i < firstUsed);
+  });
+  dom.digits[0].parentElement.hidden = isRepresent;
 
   // Abacus chrome and settings
   dom.container.classList.toggle('simple-style', state.abacusStyle === 'simple');

@@ -145,29 +145,46 @@ input.inline-check {
   gap: 8px;
 }
 
-.btn-success {
-  background: #10b981;
-  border-color: #10b981;
-  color: #fff;
+/* Secondary actions are neutral; colour is kept for the main action and for destructive ones. */
+.btn-outline {
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
 }
-.btn-success:hover {
-  background: #059669;
+.btn-outline:hover {
+  background: #f1f1fb;
+  border-color: var(--brand-1);
 }
 .btn-danger {
-  background: #ef4444;
-  border-color: #ef4444;
-  color: #fff;
+  background: #fff;
+  border: 1px solid #fecaca;
+  color: #dc2626;
 }
 .btn-danger:hover {
   background: #dc2626;
-}
-.btn-secondary {
-  background: #6b7280;
-  border-color: #6b7280;
+  border-color: #dc2626;
   color: #fff;
 }
-.btn-secondary:hover {
-  background: #4b5563;
+.btn-print {
+  margin-left: auto;
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
+  font-weight: 700;
+}
+.btn-print:hover {
+  background: #059669;
+}
+
+@media (max-width: 600px) {
+  .button-bar .btn {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .btn-print {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
 }
 
 /* --- Cards ------------------------------------------------------------------------------- */
