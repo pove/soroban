@@ -135,7 +135,6 @@ export function createCustomEditor({ t, onOperation, onNumber }) {
   return {
     open,
     close,
-    isOpen: () => kind !== null,
     /** Re-applies translated texts after a language switch. */
     refreshLanguage() {
       if (!kind) return;

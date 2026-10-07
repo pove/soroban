@@ -1,6 +1,5 @@
 export default {
   'game.title': 'Japanese Abacus - Soroban',
-  'game.subtitle': 'Learn to calculate with the Japanese abacus',
 
   'game.mode.free': 'Free',
   'game.mode.represent': 'Represent',
@@ -66,7 +65,6 @@ export default {
   'game.stats.streak': 'Streak',
   'game.stats.best': 'Best streak',
 
-  'game.settings.label': 'Settings',
   'game.settings.style': 'Abacus',
   'game.settings.confetti': 'Confetti',
   'game.style.classic': 'Classic abacus',

@@ -1,6 +1,5 @@
 export default {
   'game.title': 'Ábaco Japonés - Soroban',
-  'game.subtitle': 'Aprende a calcular con el ábaco japonés',
 
   'game.mode.free': 'Libre',
   'game.mode.represent': 'Representar',
@@ -66,7 +65,6 @@ export default {
   'game.stats.streak': 'Racha',
   'game.stats.best': 'Mejor racha',
 
-  'game.settings.label': 'Ajustes',
   'game.settings.style': 'Ábaco',
   'game.settings.confetti': 'Confeti',
   'game.style.classic': 'Ábaco Clásico',

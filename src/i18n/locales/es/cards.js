@@ -31,7 +31,6 @@ export default {
   'cards.design.saveNew': '💾 Guardar tarjeta nueva',
   'cards.design.saveEdit': '💾 Guardar cambios de la tarjeta',
   'cards.design.cancel': '✖ Cancelar',
-  'cards.design.defaultType': 'Por defecto',
   'cards.design.sampleFrontTop': 'Texto superior',
   'cards.design.sampleFrontBottom': 'Texto inferior',
   'cards.design.sampleRearTop': 'Reverso superior',
