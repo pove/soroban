@@ -126,9 +126,10 @@ export class AbacusRenderer {
     ctx.lineTo(padding + innerWidth, dividerY);
     ctx.stroke();
 
-    // Unit marks on the beam (units, thousands, millions) to help read big numbers
+    // Marks on the beam at the 3rd and 6th rods from the right (hundreds, hundred-thousands), as on
+    // the physical soroban, to help read big numbers
     ctx.fillStyle = theme.beamDot;
-    for (let fromRight = 0; fromRight < layout.columnCount; fromRight += 3) {
+    for (let fromRight = 2; fromRight < layout.columnCount; fromRight += 3) {
       const x = rodX(layout, layout.columnCount - 1 - fromRight);
       ctx.beginPath();
       ctx.arc(x, dividerY, Math.max(2, layout.beadRadius * 0.18), 0, Math.PI * 2);
