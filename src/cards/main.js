@@ -52,11 +52,19 @@ initDesigner({
   onCancel: () => apply(actions.cancelEditing),
 });
 
+const designer = byId('designer');
+
 function editCard(index) {
   apply(actions.startEditing, index);
   writeCard(store.get().cards[index]);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  designer.open = true;
+  designer.scrollIntoView({ behavior: 'smooth' });
 }
+
+/** A freshly loaded or generated deck is what people want to see, not the long form. */
+const collapseDesigner = () => {
+  designer.open = false;
+};
 
 // --- Dialogs ---------------------------------------------------------------------------------
 
@@ -98,6 +106,7 @@ const autoGenerate = initAutoGenerate({
       const { cards } = generateCards(settings);
       const { state: next, duplicatesRemoved } = actions.appendCards(state, cards);
       store.set(next);
+      collapseDesigner();
       const message = t('cards.msg.generated', { count: cards.length, total: next.cards.length });
       notify(
         duplicatesRemoved
@@ -131,6 +140,7 @@ byId('btnLoadProject').addEventListener('click', async () => {
     const { cards } = parseProject(text);
     if (!confirmReplace()) return;
     apply(actions.replaceCards, cards);
+    collapseDesigner();
     notify(t('cards.msg.projectLoaded', { count: cards.length }));
   } catch (error) {
     const invalid = error.message === 'Invalid project file';
@@ -145,6 +155,7 @@ byId('btnLoadSample').addEventListener('click', () => {
   if (!confirmReplace()) return;
   const cards = buildSample(t);
   apply(actions.replaceCards, cards);
+  collapseDesigner();
   notify(t('cards.msg.sampleLoaded', { count: cards.length }));
 });
 

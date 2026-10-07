@@ -439,3 +439,41 @@ dialog::backdrop {
     print-color-adjust: exact;
   }
 }
+
+/* --- Collapsible designer ---------------------------------------------------------------- */
+
+.designer {
+  margin-bottom: 20px;
+}
+
+.designer-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.designer-summary::-webkit-details-marker {
+  display: none;
+}
+
+.designer-summary h2 {
+  margin: 0;
+}
+
+.designer-summary::after {
+  content: '▾';
+  font-size: 1.2rem;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+
+.designer:not([open]) .designer-summary::after {
+  transform: rotate(-90deg);
+}
+
+.designer[open] .designer-summary {
+  margin-bottom: 20px;
+}

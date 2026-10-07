@@ -57,176 +57,179 @@
         </div>
       </section>
 
-      <div class="main-grid">
-        <!-- Card designer -->
-        <section class="panel">
+      <!-- Card designer: collapsible, because it is long and the deck is what people usually want to see -->
+      <details class="designer" id="designer" open>
+        <summary class="panel designer-summary">
           <h2 id="panelTitle" data-i18n="cards.design.new"></h2>
-
-          <div class="form-group">
-            <label for="cardType" data-i18n="cards.design.cardType"></label>
-            <input
-              type="text"
-              id="cardType"
-              data-i18n-placeholder="cards.design.cardTypePlaceholder"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="cardWidth" data-i18n="cards.design.dimensions"></label>
-            <div class="grid-2">
-              <input type="number" id="cardWidth" min="30" max="150" aria-label="Width" />
-              <input type="number" id="cardHeight" min="30" max="150" aria-label="Height" />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="borderColor" data-i18n="cards.design.border"></label>
-            <div class="grid-2">
-              <input type="color" id="borderColor" />
+        </summary>
+        <div class="main-grid">
+          <section class="panel">
+            <div class="form-group">
+              <label for="cardType" data-i18n="cards.design.cardType"></label>
               <input
-                type="number"
-                id="borderThickness"
-                min="1"
-                max="20"
-                data-i18n-placeholder="cards.design.thickness"
-                data-i18n-aria-label="cards.design.thickness"
+                type="text"
+                id="cardType"
+                data-i18n-placeholder="cards.design.cardTypePlaceholder"
               />
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="borderRadius" data-i18n="cards.design.borderRadius"></label>
-            <input type="number" id="borderRadius" min="0" max="50" />
-          </div>
+            <div class="form-group">
+              <label for="cardWidth" data-i18n="cards.design.dimensions"></label>
+              <div class="grid-2">
+                <input type="number" id="cardWidth" min="30" max="150" aria-label="Width" />
+                <input type="number" id="cardHeight" min="30" max="150" aria-label="Height" />
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label for="backgroundColor" data-i18n="cards.design.background"></label>
-            <input type="color" id="backgroundColor" />
-          </div>
+            <div class="form-group">
+              <label for="borderColor" data-i18n="cards.design.border"></label>
+              <div class="grid-2">
+                <input type="color" id="borderColor" />
+                <input
+                  type="number"
+                  id="borderThickness"
+                  min="1"
+                  max="20"
+                  data-i18n-placeholder="cards.design.thickness"
+                  data-i18n-aria-label="cards.design.thickness"
+                />
+              </div>
+            </div>
 
-          <h3 data-i18n="cards.design.frontSide"></h3>
-          <div class="form-group">
-            <label for="frontTopText" data-i18n="cards.design.topText"></label>
-            <input type="text" id="frontTopText" />
-            <div class="grid-2 tight">
-              <input type="color" id="frontTopColor" />
+            <div class="form-group">
+              <label for="borderRadius" data-i18n="cards.design.borderRadius"></label>
+              <input type="number" id="borderRadius" min="0" max="50" />
+            </div>
+
+            <div class="form-group">
+              <label for="backgroundColor" data-i18n="cards.design.background"></label>
+              <input type="color" id="backgroundColor" />
+            </div>
+
+            <h3 data-i18n="cards.design.frontSide"></h3>
+            <div class="form-group">
+              <label for="frontTopText" data-i18n="cards.design.topText"></label>
+              <input type="text" id="frontTopText" />
+              <div class="grid-2 tight">
+                <input type="color" id="frontTopColor" />
+                <input
+                  type="number"
+                  id="frontTopSize"
+                  min="8"
+                  max="50"
+                  data-i18n-placeholder="cards.design.size"
+                  data-i18n-aria-label="cards.design.size"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="frontBottomText" data-i18n="cards.design.bottomText"></label>
+              <input type="text" id="frontBottomText" />
+              <div class="grid-2 tight">
+                <input type="color" id="frontBottomColor" />
+                <input
+                  type="number"
+                  id="frontBottomSize"
+                  min="8"
+                  max="50"
+                  data-i18n-placeholder="cards.design.size"
+                  data-i18n-aria-label="cards.design.size"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="check"
+                ><input type="checkbox" id="frontShowSVG" />
+                <span data-i18n="cards.design.showSvg"></span
+              ></label>
+            </div>
+            <div class="form-group" id="frontSVGControls" hidden>
+              <label for="frontSVGNumber" data-i18n="cards.design.svgNumber"></label>
+              <input type="number" id="frontSVGNumber" min="0" max="9999999" />
+              <label for="frontSVGSize" data-i18n="cards.design.svgSize"></label>
               <input
                 type="number"
-                id="frontTopSize"
-                min="8"
-                max="50"
-                data-i18n-placeholder="cards.design.size"
-                data-i18n-aria-label="cards.design.size"
+                id="frontSVGSize"
+                min="10"
+                max="200"
+                data-i18n-placeholder="cards.design.svgSizeHint"
               />
             </div>
-          </div>
-          <div class="form-group">
-            <label for="frontBottomText" data-i18n="cards.design.bottomText"></label>
-            <input type="text" id="frontBottomText" />
-            <div class="grid-2 tight">
-              <input type="color" id="frontBottomColor" />
+
+            <h3 data-i18n="cards.design.rearSide"></h3>
+            <div class="form-group">
+              <label for="rearTopText" data-i18n="cards.design.topText"></label>
+              <input type="text" id="rearTopText" />
+              <div class="grid-2 tight">
+                <input type="color" id="rearTopColor" />
+                <input
+                  type="number"
+                  id="rearTopSize"
+                  min="8"
+                  max="50"
+                  data-i18n-placeholder="cards.design.size"
+                  data-i18n-aria-label="cards.design.size"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rearBottomText" data-i18n="cards.design.bottomText"></label>
+              <input type="text" id="rearBottomText" />
+              <div class="grid-2 tight">
+                <input type="color" id="rearBottomColor" />
+                <input
+                  type="number"
+                  id="rearBottomSize"
+                  min="8"
+                  max="50"
+                  data-i18n-placeholder="cards.design.size"
+                  data-i18n-aria-label="cards.design.size"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="check"
+                ><input type="checkbox" id="rearShowSVG" />
+                <span data-i18n="cards.design.showSvg"></span
+              ></label>
+            </div>
+            <div class="form-group" id="rearSVGControls" hidden>
+              <label for="rearSVGNumber" data-i18n="cards.design.svgNumber"></label>
+              <input type="number" id="rearSVGNumber" min="0" max="9999999" />
+              <label for="rearSVGSize" data-i18n="cards.design.svgSize"></label>
               <input
                 type="number"
-                id="frontBottomSize"
-                min="8"
-                max="50"
-                data-i18n-placeholder="cards.design.size"
-                data-i18n-aria-label="cards.design.size"
+                id="rearSVGSize"
+                min="10"
+                max="200"
+                data-i18n-placeholder="cards.design.svgSizeHint"
               />
             </div>
-          </div>
-          <div class="form-group">
-            <label class="check"
-              ><input type="checkbox" id="frontShowSVG" />
-              <span data-i18n="cards.design.showSvg"></span
-            ></label>
-          </div>
-          <div class="form-group" id="frontSVGControls" hidden>
-            <label for="frontSVGNumber" data-i18n="cards.design.svgNumber"></label>
-            <input type="number" id="frontSVGNumber" min="0" max="9999999" />
-            <label for="frontSVGSize" data-i18n="cards.design.svgSize"></label>
-            <input
-              type="number"
-              id="frontSVGSize"
-              min="10"
-              max="200"
-              data-i18n-placeholder="cards.design.svgSizeHint"
-            />
-          </div>
 
-          <h3 data-i18n="cards.design.rearSide"></h3>
-          <div class="form-group">
-            <label for="rearTopText" data-i18n="cards.design.topText"></label>
-            <input type="text" id="rearTopText" />
-            <div class="grid-2 tight">
-              <input type="color" id="rearTopColor" />
-              <input
-                type="number"
-                id="rearTopSize"
-                min="8"
-                max="50"
-                data-i18n-placeholder="cards.design.size"
-                data-i18n-aria-label="cards.design.size"
-              />
+            <div class="button-bar">
+              <button
+                type="button"
+                class="btn btn-outline"
+                id="saveCardBtn"
+                data-i18n="cards.design.saveNew"
+              ></button>
+              <button
+                type="button"
+                class="btn btn-outline"
+                id="cancelBtn"
+                data-i18n="cards.design.cancel"
+                hidden
+              ></button>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="rearBottomText" data-i18n="cards.design.bottomText"></label>
-            <input type="text" id="rearBottomText" />
-            <div class="grid-2 tight">
-              <input type="color" id="rearBottomColor" />
-              <input
-                type="number"
-                id="rearBottomSize"
-                min="8"
-                max="50"
-                data-i18n-placeholder="cards.design.size"
-                data-i18n-aria-label="cards.design.size"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="check"
-              ><input type="checkbox" id="rearShowSVG" />
-              <span data-i18n="cards.design.showSvg"></span
-            ></label>
-          </div>
-          <div class="form-group" id="rearSVGControls" hidden>
-            <label for="rearSVGNumber" data-i18n="cards.design.svgNumber"></label>
-            <input type="number" id="rearSVGNumber" min="0" max="9999999" />
-            <label for="rearSVGSize" data-i18n="cards.design.svgSize"></label>
-            <input
-              type="number"
-              id="rearSVGSize"
-              min="10"
-              max="200"
-              data-i18n-placeholder="cards.design.svgSizeHint"
-            />
-          </div>
+          </section>
 
-          <div class="button-bar">
-            <button
-              type="button"
-              class="btn btn-outline"
-              id="saveCardBtn"
-              data-i18n="cards.design.saveNew"
-            ></button>
-            <button
-              type="button"
-              class="btn btn-outline"
-              id="cancelBtn"
-              data-i18n="cards.design.cancel"
-              hidden
-            ></button>
-          </div>
-        </section>
-
-        <!-- Preview -->
-        <section class="panel preview-panel">
-          <h2 data-i18n="cards.preview.title"></h2>
-          <div class="card-preview" id="preview"></div>
-        </section>
-      </div>
+          <!-- Preview -->
+          <section class="panel preview-panel">
+            <h2 data-i18n="cards.preview.title"></h2>
+            <div class="card-preview" id="preview"></div>
+          </section>
+        </div>
+      </details>
 
       <!-- Saved cards -->
       <section class="panel">
