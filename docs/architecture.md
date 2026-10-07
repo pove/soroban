@@ -114,7 +114,7 @@ dependency, and lets users download the settings, edit them and load them back.
 - `public/sw.js` precaches both pages and the scripts/styles they reference when it installs, serves pages
   network-first (always the newest version when online) and fingerprinted assets stale-while-revalidate.
 - The build uses `base: './'`, so asset URLs are relative and the same output works under `/repo/` on GitHub Pages,
-  on a custom domain, or from a plain folder.
+  or from a plain folder.
 - `public/manifest.json` makes the app installable.
 
 ## Testing strategy

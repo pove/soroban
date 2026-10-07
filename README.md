@@ -106,10 +106,7 @@ Read the [architecture notes](docs/architecture.md) for how the pieces fit toget
 
 Every push to `main` runs the checks and, if they pass, publishes the site to **GitHub Pages**
 (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)). The build uses relative URLs, so it works unchanged on a
-project site (`https://<user>.github.io/<repo>/`), on a custom domain, or from any folder of a static web server.
-
-To use a custom domain, add a `public/CNAME` file containing the domain and point a DNS `CNAME` record at
-`<user>.github.io`.
+project site (`https://<user>.github.io/<repo>/`) or from any folder of a static web server.
 
 ## Privacy
 

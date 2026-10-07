@@ -31,7 +31,6 @@ export default {
   'cards.design.saveNew': '💾 Save New Card',
   'cards.design.saveEdit': '💾 Edit selected Card',
   'cards.design.cancel': '✖ Cancel',
-  'cards.design.defaultType': 'Default',
   'cards.design.sampleFrontTop': 'Top Text',
   'cards.design.sampleFrontBottom': 'Bottom Text',
   'cards.design.sampleRearTop': 'Rear Top',

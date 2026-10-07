@@ -492,3 +492,54 @@ test.describe('reading aids and keyboard flow', () => {
     await expect(page.locator('#printInfo')).toContainText('32 tarjetas');
   });
 });
+
+test.describe('collapsible card designer', () => {
+  test.use({ locale: 'en-US' });
+
+  test.beforeEach(({ page }) => {
+    page.on('dialog', (dialog) => dialog.accept());
+  });
+
+  test('is open on a fresh page', async ({ page, cardsPath }) => {
+    await page.goto(cardsPath);
+    await expect(page.locator('#cardType')).toBeVisible();
+  });
+
+  test('collapses once a deck is generated, loaded from the sample or opened from a file', async ({
+    page,
+    cardsPath,
+  }) => {
+    await page.goto(cardsPath);
+    await page.locator('#btnLoadSample').click();
+    await expect(page.locator('#cardType')).toBeHidden();
+    await expect(page.locator('#savedCards .card-item').first()).toBeInViewport();
+
+    await page.locator('#designer summary').click(); // reopen by hand
+    await expect(page.locator('#cardType')).toBeVisible();
+
+    await page.locator('#btnAutoGen').click();
+    await page.locator('#btnGenerate').click();
+    await expect(page.locator('#cardType')).toBeHidden();
+
+    await page.locator('#designer summary').click();
+    await chooseFile(page, '#btnLoadProject', fixture('legacy-project.json'));
+    await expect(page.locator('#cardCount')).toHaveText('152');
+    await expect(page.locator('#cardType')).toBeHidden();
+  });
+
+  test('stays as the user left it after saving a card', async ({ page, cardsPath }) => {
+    await page.goto(cardsPath);
+    await page.locator('#saveCardBtn').click();
+    await expect(page.locator('#cardCount')).toHaveText('1');
+    await expect(page.locator('#cardType')).toBeVisible();
+  });
+
+  test('editing a card reopens the designer with that card', async ({ page, cardsPath }) => {
+    await page.goto(cardsPath);
+    await page.locator('#btnLoadSample').click();
+    await expect(page.locator('#cardType')).toBeHidden();
+    await page.locator('button[aria-label="Edit card"]').first().click();
+    await expect(page.locator('#cardType')).toBeVisible();
+    await expect(page.locator('#cancelBtn')).toBeVisible();
+  });
+});

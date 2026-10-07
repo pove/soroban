@@ -77,12 +77,13 @@ await shot('game-simple-style', {
 await shot('cards-designer', {
   viewport: { width: 1280, height: 900 },
   path: '/cards/index.html',
+});
+
+await shot('cards-deck', {
+  viewport: { width: 1280, height: 900 },
+  path: '/cards/index.html',
   actions: async (page) => {
-    page.on('dialog', (dialog) => dialog.accept());
-    await page.locator('#btnLoadSample').click();
-    await page.locator('#btnLoadSample').scrollIntoViewIfNeeded();
-    await page.locator('#savedCards').scrollIntoViewIfNeeded();
-    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.locator('#btnLoadSample').click(); // the designer folds away, the deck shows
   },
 });
 
