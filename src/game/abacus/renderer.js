@@ -20,7 +20,8 @@ export class AbacusRenderer {
     this.layout = getLayout(1, 1);
     this.current = new Map(); // bead key -> currently drawn y
     this.frame = 0;
-    this.reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    this.reducedMotion =
+      globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   }
 
   setTheme(name) {
@@ -63,7 +64,8 @@ export class AbacusRenderer {
     cancelAnimationFrame(this.frame);
     this.current.clear();
     if (!this.columns) return;
-    for (const bead of beadTargets(this.columns, this.layout)) this.current.set(keyOf(bead), bead.y);
+    for (const bead of beadTargets(this.columns, this.layout))
+      this.current.set(keyOf(bead), bead.y);
   }
 
   startAnimation() {
@@ -98,7 +100,12 @@ export class AbacusRenderer {
 
     ctx.strokeStyle = theme.frame;
     ctx.lineWidth = frameThickness;
-    ctx.strokeRect(frameThickness / 2, frameThickness / 2, width - frameThickness, height - frameThickness);
+    ctx.strokeRect(
+      frameThickness / 2,
+      frameThickness / 2,
+      width - frameThickness,
+      height - frameThickness,
+    );
 
     // Rods
     ctx.strokeStyle = theme.rod;
@@ -143,7 +150,15 @@ export class AbacusRenderer {
     // Shadow
     ctx.fillStyle = 'rgba(0,0,0,0.25)';
     ctx.beginPath();
-    ctx.ellipse(x + radius * 0.08, y + radius * 0.15, radius * 0.95, vertical * 0.8, 0, 0, Math.PI * 2);
+    ctx.ellipse(
+      x + radius * 0.08,
+      y + radius * 0.15,
+      radius * 0.95,
+      vertical * 0.8,
+      0,
+      0,
+      Math.PI * 2,
+    );
     ctx.fill();
 
     // Body
@@ -153,21 +168,42 @@ export class AbacusRenderer {
     ctx.fill();
 
     if (flat) {
-      this.shade(x, y, radius, vertical, [x - radius * 0.25, y - vertical * 0.4, 0, radius * 1.2], [
-        [0, 'rgba(255,255,255,0.6)'],
-        [0.4, 'rgba(255,255,255,0.2)'],
-        [1, 'rgba(255,255,255,0)'],
-      ]);
-      this.shade(x, y, radius, vertical, [x, y + vertical * 0.3, 0, radius * 0.8], [
-        [0, 'rgba(0,0,0,0)'],
-        [0.7, 'rgba(0,0,0,0.15)'],
-        [1, 'rgba(0,0,0,0.25)'],
-      ]);
+      this.shade(
+        x,
+        y,
+        radius,
+        vertical,
+        [x - radius * 0.25, y - vertical * 0.4, 0, radius * 1.2],
+        [
+          [0, 'rgba(255,255,255,0.6)'],
+          [0.4, 'rgba(255,255,255,0.2)'],
+          [1, 'rgba(255,255,255,0)'],
+        ],
+      );
+      this.shade(
+        x,
+        y,
+        radius,
+        vertical,
+        [x, y + vertical * 0.3, 0, radius * 0.8],
+        [
+          [0, 'rgba(0,0,0,0)'],
+          [0.7, 'rgba(0,0,0,0.15)'],
+          [1, 'rgba(0,0,0,0.25)'],
+        ],
+      );
     } else {
-      this.shade(x, y, radius, vertical, [x - radius * 0.3, y - radius * 0.3, 0, radius], [
-        [0, 'rgba(255,255,255,0.4)'],
-        [1, 'rgba(255,255,255,0)'],
-      ]);
+      this.shade(
+        x,
+        y,
+        radius,
+        vertical,
+        [x - radius * 0.3, y - radius * 0.3, 0, radius],
+        [
+          [0, 'rgba(255,255,255,0.4)'],
+          [1, 'rgba(255,255,255,0)'],
+        ],
+      );
     }
 
     // Outline

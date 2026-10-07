@@ -43,7 +43,8 @@ export default {
 
   // Saved cards
   'cards.saved.title': 'Tarjetas guardadas',
-  'cards.saved.empty': 'Aún no hay tarjetas. Diseña una, carga el ejemplo o genera un lote automático.',
+  'cards.saved.empty':
+    'Aún no hay tarjetas. Diseña una, carga el ejemplo o genera un lote automático.',
   'cards.action.printAll': '🖨️ Imprimir todas',
   'cards.action.printSelected': '🖨️ Imprimir seleccionadas',
   'cards.action.selectByType': '☑️ Seleccionar por tipo',
@@ -53,6 +54,7 @@ export default {
   'cards.action.deleteSelected': '🗑️ Borrar seleccionadas',
   'cards.action.deselectAll': '✖',
   'cards.action.deselectAllTitle': 'Quitar la selección',
+  'cards.action.select': 'Seleccionar tarjeta',
   'cards.action.edit': 'Editar tarjeta',
   'cards.action.delete': 'Borrar tarjeta',
 
@@ -117,7 +119,8 @@ export default {
   'cards.auto.downloadSampleTitle': 'Descarga un archivo de ejemplo para personalizarlo',
   'cards.auto.perLevel': 'Tarjetas por nivel de dificultad',
   'cards.auto.types': 'Tipos de tarjeta a generar:',
-  'cards.auto.note': 'Las tarjetas existentes se conservan y las duplicadas se eliminan automáticamente.',
+  'cards.auto.note':
+    'Las tarjetas existentes se conservan y las duplicadas se eliminan automáticamente.',
   'cards.auto.noteLabel': 'Nota:',
   'cards.auto.generate': 'Generar tarjetas',
   'cards.auto.cancel': 'Cancelar',
@@ -157,7 +160,8 @@ export default {
   'cards.msg.noCardsToProcess': '¡No hay tarjetas que procesar!',
   'cards.msg.noCardsToPrint': '¡No hay tarjetas que imprimir!',
   'cards.msg.noCardsAvailable': '¡No hay tarjetas disponibles!',
-  'cards.msg.noneSelected': '¡No hay tarjetas seleccionadas! Haz clic en las tarjetas para seleccionarlas.',
+  'cards.msg.noneSelected':
+    '¡No hay tarjetas seleccionadas! Haz clic en las tarjetas para seleccionarlas.',
   'cards.msg.selectType': '¡Elige al menos un tipo de tarjeta!',
   'cards.msg.selectGenType': 'Elige al menos un tipo de tarjeta para generar.',
   'cards.msg.confirmDelete': '¿Borrar esta tarjeta?',
@@ -174,7 +178,8 @@ export default {
   'cards.msg.settingsLoaded':
     'Configuración personalizada cargada. Ya puedes generar tarjetas con ella.',
   'cards.msg.settingsError': 'Error al cargar el archivo de configuración: {message}',
-  'cards.msg.confirmAdd': 'Se AÑADIRÁN tarjetas nuevas a las {count} tarjetas existentes. ¿Continuar?',
+  'cards.msg.confirmAdd':
+    'Se AÑADIRÁN tarjetas nuevas a las {count} tarjetas existentes. ¿Continuar?',
   'cards.msg.confirmGenerate': '¿Generar unas {count} tarjetas?',
   'cards.msg.generated': 'Se generaron {count} tarjetas nuevas. Total: {total}.',
   'cards.msg.generatedDuplicates': 'Se eliminaron automáticamente {count} tarjeta(s) duplicada(s).',

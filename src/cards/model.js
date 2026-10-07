@@ -10,8 +10,24 @@
  * `group` places the field in the type editor; `formId` is the id of the design-form input.
  */
 export const CARD_FIELDS = [
-  { key: 'width', kind: 'int', group: 'appearance', formId: 'cardWidth', min: 30, max: 150, fallback: 70 },
-  { key: 'height', kind: 'int', group: 'appearance', formId: 'cardHeight', min: 30, max: 150, fallback: 70 },
+  {
+    key: 'width',
+    kind: 'int',
+    group: 'appearance',
+    formId: 'cardWidth',
+    min: 30,
+    max: 150,
+    fallback: 70,
+  },
+  {
+    key: 'height',
+    kind: 'int',
+    group: 'appearance',
+    formId: 'cardHeight',
+    min: 30,
+    max: 150,
+    fallback: 70,
+  },
   { key: 'borderRadius', kind: 'int', group: 'appearance', min: 0, max: 50, fallback: 8 },
   { key: 'borderColor', kind: 'color', group: 'appearance', fallback: '#2563eb' },
   { key: 'borderThickness', kind: 'int', group: 'appearance', min: 1, max: 20, fallback: 4 },
@@ -75,7 +91,8 @@ export function coerceField(field, value) {
     case 'color': {
       if (typeof value !== 'string') return field.fallback;
       const short = value.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
-      if (short) return `#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}`.toLowerCase();
+      if (short)
+        return `#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}`.toLowerCase();
       return /^#[0-9a-f]{6}$/i.test(value) ? value.toLowerCase() : field.fallback;
     }
     default:
@@ -104,9 +121,12 @@ export function countByType(cards, indices = null) {
   return counts;
 }
 
-const SORT_KEYS = [typeOf, ...['frontTopText', 'frontBottomText', 'rearTopText', 'rearBottomText'].map(
-  (key) => (card) => card[key] || '',
-)];
+const SORT_KEYS = [
+  typeOf,
+  ...['frontTopText', 'frontBottomText', 'rearTopText', 'rearBottomText'].map(
+    (key) => (card) => card[key] || '',
+  ),
+];
 
 /** Stable ordering used everywhere: by type, then by the texts on the card. */
 export function sortCards(cards) {

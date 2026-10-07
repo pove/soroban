@@ -119,10 +119,13 @@ export function initTypeEditor({ getState, onApply }) {
         const option = document.createElement('option');
         option.value = type;
         option.selected = fromSelection; // selection-based editing starts with every type chosen
-        option.textContent = t(fromSelection ? 'cards.editor.typeOptionSelected' : 'cards.editor.typeOption', {
-          type,
-          count: counts[type],
-        });
+        option.textContent = t(
+          fromSelection ? 'cards.editor.typeOptionSelected' : 'cards.editor.typeOption',
+          {
+            type,
+            count: counts[type],
+          },
+        );
         selector.append(option);
       }
 

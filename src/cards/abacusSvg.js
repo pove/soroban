@@ -36,7 +36,9 @@ function beadSvg(x, y, radius, fill, gradientId) {
  * @param {number} height px
  */
 export function abacusSvg(number, width, height) {
-  const columns = numberToColumns(Math.max(0, Math.min(10 ** COLUMNS - 1, Math.trunc(number) || 0)));
+  const columns = numberToColumns(
+    Math.max(0, Math.min(10 ** COLUMNS - 1, Math.trunc(number) || 0)),
+  );
 
   const padding = width * 0.05;
   const innerWidth = width - 2 * padding;
@@ -59,7 +61,9 @@ export function abacusSvg(number, width, height) {
 
   columns.forEach((column, i) => {
     const x = padding + colWidth * (i + 0.5);
-    parts.push(`<line x1="${x}" y1="2" x2="${x}" y2="${height - 2}" stroke="${ROD}" stroke-width="2"/>`);
+    parts.push(
+      `<line x1="${x}" y1="2" x2="${x}" y2="${height - 2}" stroke="${ROD}" stroke-width="2"/>`,
+    );
     parts.push(beadSvg(x, column.upperActive ? dividerY - offset : top, radius, BEAD, gradientId));
 
     // Hundreds and hundred-thousands rods get a red first bead as a reading aid.

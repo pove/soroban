@@ -35,16 +35,19 @@ function createItem(card, index, selected, hooks) {
   const item = document.createElement('div');
   item.className = 'card-item';
   item.classList.toggle('selected', selected);
-  item.setAttribute('role', 'button');
-  item.setAttribute('aria-pressed', String(selected));
-  item.tabIndex = 0;
 
-  const toggle = () => hooks.onToggle(index);
-  item.addEventListener('click', toggle);
-  item.addEventListener('keydown', (event) => {
-    if (event.target !== item || (event.key !== 'Enter' && event.key !== ' ')) return;
-    event.preventDefault();
-    toggle();
+  // The whole tile toggles the selection for pointer users; the checkbox serves the keyboard
+  // and screen readers.
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'card-select';
+  checkbox.checked = selected;
+  checkbox.dataset.cardIndex = index;
+  checkbox.setAttribute('aria-label', `${t('cards.action.select')}: ${typeOf(card)}`);
+  checkbox.addEventListener('change', () => hooks.onToggle(index));
+
+  item.addEventListener('click', (event) => {
+    if (!event.target.closest('.card-actions, .card-select')) hooks.onToggle(index);
   });
 
   const label = document.createElement('p');
@@ -57,7 +60,7 @@ function createItem(card, index, selected, hooks) {
   wrapper.className = 'card-wrapper';
   wrapper.append(thumbnail);
 
-  item.append(label, wrapper, createActions(index, hooks));
+  item.append(checkbox, label, wrapper, createActions(index, hooks));
   return item;
 }
 
@@ -67,9 +70,15 @@ function createItem(card, index, selected, hooks) {
  */
 export function renderSavedCards(state, hooks) {
   const container = byId('savedCards');
+  // The list is rebuilt on every change, so keep keyboard focus on the same card.
+  const focusedIndex = document.activeElement?.dataset?.cardIndex;
   container.replaceChildren(
     ...state.cards.map((card, index) => createItem(card, index, state.selected.has(index), hooks)),
   );
+
+  if (focusedIndex !== undefined) {
+    container.querySelector(`.card-select[data-card-index="${focusedIndex}"]`)?.focus();
+  }
 
   const selected = state.selected.size;
   byId('cardCount').textContent = state.cards.length;

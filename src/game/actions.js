@@ -13,7 +13,8 @@ function nextRound(state) {
 /** Generates a new "Represent" target and lays the abacus out accordingly. */
 export function newTarget(state, rng = Math.random) {
   const value = generateTarget(state.difficulty, rng);
-  const columns = state.representMode === 'abacusToNumber' ? numberToColumns(value) : createColumns();
+  const columns =
+    state.representMode === 'abacusToNumber' ? numberToColumns(value) : createColumns();
   return { ...nextRound(state), target: { value, manual: false }, columns };
 }
 
@@ -54,12 +55,19 @@ export function resetAbacus(state) {
 
 /** Starts a custom "Operate" question typed by the player. */
 export function useCustomProblem(state, problem) {
-  return { ...nextRound(state), mode: 'operate', problem, operation: problem.op, columns: createColumns() };
+  return {
+    ...nextRound(state),
+    mode: 'operate',
+    problem,
+    operation: problem.op,
+    columns: createColumns(),
+  };
 }
 
 /** Starts a custom "Represent" number typed by the player. */
 export function useCustomTarget(state, value) {
-  const columns = state.representMode === 'abacusToNumber' ? numberToColumns(value) : createColumns();
+  const columns =
+    state.representMode === 'abacusToNumber' ? numberToColumns(value) : createColumns();
   return { ...nextRound(state), target: { value, manual: true }, columns };
 }
 

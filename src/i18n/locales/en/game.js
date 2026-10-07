@@ -51,7 +51,8 @@ export default {
   'game.custom.error.range': 'Enter a valid number between 0 and 9999999',
   'game.custom.error.format': 'Invalid format. Use: number operator number. Example: 23+45',
   'game.custom.error.divideByZero': 'You cannot divide by zero',
-  'game.custom.error.inexact': 'This division is not exact. Use numbers with a whole-number result.',
+  'game.custom.error.inexact':
+    'This division is not exact. Use numbers with a whole-number result.',
   'game.custom.error.resultRange': 'The result must be between 0 and 9999999',
 
   'game.abacus.label': 'Soroban abacus',

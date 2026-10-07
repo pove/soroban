@@ -53,6 +53,7 @@ export default {
   'cards.action.deleteSelected': '🗑️ Delete Selected',
   'cards.action.deselectAll': '✖',
   'cards.action.deselectAllTitle': 'Deselect all',
+  'cards.action.select': 'Select card',
   'cards.action.edit': 'Edit card',
   'cards.action.delete': 'Delete card',
 
@@ -107,7 +108,8 @@ export default {
 
   // Auto-generate dialog
   'cards.auto.title': 'Auto-Generate Cards',
-  'cards.auto.description': 'Configure which cards to generate and how many of each difficulty level.',
+  'cards.auto.description':
+    'Configure which cards to generate and how many of each difficulty level.',
   'cards.auto.currentSettings': 'Current settings:',
   'cards.auto.defaultSettings': 'Default settings',
   'cards.auto.customSettings': 'Custom settings loaded ✓',
@@ -117,7 +119,8 @@ export default {
   'cards.auto.downloadSampleTitle': 'Download example settings file to customize',
   'cards.auto.perLevel': 'Cards per difficulty level',
   'cards.auto.types': 'Card Types to Generate:',
-  'cards.auto.note': 'Existing cards will be preserved and duplicates will be automatically removed.',
+  'cards.auto.note':
+    'Existing cards will be preserved and duplicates will be automatically removed.',
   'cards.auto.noteLabel': 'Note:',
   'cards.auto.generate': 'Generate Cards',
   'cards.auto.cancel': 'Cancel',
@@ -144,7 +147,8 @@ export default {
 
   // Select-by-type dialog
   'cards.select.title': 'Select Cards by Type',
-  'cards.select.description': 'Choose one or more card types to select. Hold Ctrl/Cmd to select multiple.',
+  'cards.select.description':
+    'Choose one or more card types to select. Hold Ctrl/Cmd to select multiple.',
   'cards.select.types': 'Card Types',
   'cards.select.addToSelection': 'Add to current selection (keep existing selections)',
   'cards.select.confirm': 'Select Cards',

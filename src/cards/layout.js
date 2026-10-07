@@ -70,6 +70,8 @@ export function buildPages(cards, { duplex }) {
 /** Numbers shown in the print dialog. */
 export function summarize(cards, options) {
   const pages = buildPages(cards, options);
-  const grid = cards.length ? gridFor(groupBySize(cards)[0][0]) : { perRow: 0, perCol: 0, perPage: 0 };
+  const grid = cards.length
+    ? gridFor(groupBySize(cards)[0][0])
+    : { perRow: 0, perCol: 0, perPage: 0 };
   return { ...grid, pages: pages.length, mixedSizes: groupBySize(cards).length > 1 };
 }

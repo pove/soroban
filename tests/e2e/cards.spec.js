@@ -8,7 +8,10 @@ test.beforeEach(({ page }) => {
 });
 
 async function autoGenerate(page, perLevel) {
-  await page.getByRole('button', { name: /Auto-generate/i }).first().click();
+  await page
+    .getByRole('button', { name: /Auto-generate/i })
+    .first()
+    .click();
   await page.locator('#autoGenCount').fill(String(perLevel));
   await page.getByRole('button', { name: /^Generate Cards$/i }).click();
 }

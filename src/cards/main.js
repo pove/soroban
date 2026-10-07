@@ -99,7 +99,11 @@ const autoGenerate = initAutoGenerate({
       const { state: next, duplicatesRemoved } = actions.appendCards(state, cards);
       store.set(next);
       const message = t('cards.msg.generated', { count: cards.length, total: next.cards.length });
-      notify(duplicatesRemoved ? `${message} ${t('cards.msg.generatedDuplicates', { count: duplicatesRemoved })}` : message);
+      notify(
+        duplicatesRemoved
+          ? `${message} ${t('cards.msg.generatedDuplicates', { count: duplicatesRemoved })}`
+          : message,
+      );
       autoGenerate.close();
     } catch (error) {
       notify(t('cards.msg.generateError', { message: error.message }), 'error');
@@ -107,9 +111,9 @@ const autoGenerate = initAutoGenerate({
   },
 });
 
-document.querySelectorAll('[data-close-dialog]').forEach((button) =>
-  button.addEventListener('click', () => button.closest('dialog').close()),
-);
+document
+  .querySelectorAll('[data-close-dialog]')
+  .forEach((button) => button.addEventListener('click', () => button.closest('dialog').close()));
 
 // --- Project actions -------------------------------------------------------------------------
 
@@ -130,7 +134,10 @@ byId('btnLoadProject').addEventListener('click', async () => {
     notify(t('cards.msg.projectLoaded', { count: cards.length }));
   } catch (error) {
     const invalid = error.message === 'Invalid project file';
-    notify(t(invalid ? 'cards.msg.invalidProject' : 'cards.msg.loadError', { message: error.message }), 'error');
+    notify(
+      t(invalid ? 'cards.msg.invalidProject' : 'cards.msg.loadError', { message: error.message }),
+      'error',
+    );
   }
 });
 
@@ -153,15 +160,22 @@ const requireCards = (messageKey) => {
 
 function print(selectedOnly) {
   const state = store.get();
-  if (selectedOnly && state.selected.size === 0) return notify(t('cards.msg.noneSelected'), 'error');
+  if (selectedOnly && state.selected.size === 0)
+    return notify(t('cards.msg.noneSelected'), 'error');
   if (!selectedOnly && !requireCards('cards.msg.noCardsToPrint')) return;
   openPrintView(actions.cardsToPrint(state, { selectedOnly }));
 }
 byId('btnPrintAll').addEventListener('click', () => print(false));
 byId('btnPrintSelected').addEventListener('click', () => print(true));
 
-byId('btnSelectByType').addEventListener('click', () => requireCards('cards.msg.noCardsAvailable') && selectByType.open());
-byId('btnEditByType').addEventListener('click', () => requireCards('cards.msg.noCardsToEdit') && typeEditor.open());
+byId('btnSelectByType').addEventListener(
+  'click',
+  () => requireCards('cards.msg.noCardsAvailable') && selectByType.open(),
+);
+byId('btnEditByType').addEventListener(
+  'click',
+  () => requireCards('cards.msg.noCardsToEdit') && typeEditor.open(),
+);
 
 byId('btnCleanDuplicates').addEventListener('click', () => {
   if (!requireCards('cards.msg.noCardsToProcess')) return;

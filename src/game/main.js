@@ -80,7 +80,9 @@ function refreshLanguage(language) {
   syncLanguageSelect(language);
   editor.refreshLanguage();
   document.title = t('game.title');
-  document.getElementById('appVersion').textContent = t('footer.version', { version: __APP_VERSION__ });
+  document.getElementById('appVersion').textContent = t('footer.version', {
+    version: __APP_VERSION__,
+  });
   render(dom, store.get(), helpers);
 }
 onLanguageChange(refreshLanguage);
@@ -101,7 +103,9 @@ attachAbacusInput(dom.canvas, {
 
 // --- Buttons ---------------------------------------------------------------------------------
 
-dom.modeButtons.forEach(([mode, button]) => button.addEventListener('click', () => apply(actions.setMode, mode)));
+dom.modeButtons.forEach(([mode, button]) =>
+  button.addEventListener('click', () => apply(actions.setMode, mode)),
+);
 
 document.getElementById('btnReset').addEventListener('click', () => {
   if (!isAbacusLocked(store.get())) apply(actions.resetAbacus);

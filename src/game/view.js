@@ -17,6 +17,7 @@ export function getDom() {
     container: document.querySelector('.abacus-container'),
     hint: byId('abacusHint'),
     numberDisplay: byId('numberDisplay'),
+    prompt: byId('prompt'),
     numberInput: byId('numberInput'),
     representPanel: byId('representPanel'),
     operatePanel: byId('operatePanel'),
@@ -41,12 +42,14 @@ export function getDom() {
 }
 
 /** True when the abacus shows a number the player must read, so the beads must not be moved. */
-export const isAbacusLocked = (state) => state.mode === 'represent' && state.representMode === 'abacusToNumber';
+export const isAbacusLocked = (state) =>
+  state.mode === 'represent' && state.representMode === 'abacusToNumber';
 
 /** Localized text of a verdict. */
 export function feedbackText(feedback, { t, formatNumber }) {
   if (feedback.kind === 'correct') return t('game.result.correct');
-  if ('answer' in feedback) return t('game.result.wrongOperate', { answer: formatNumber(feedback.answer) });
+  if ('answer' in feedback)
+    return t('game.result.wrongOperate', { answer: formatNumber(feedback.answer) });
   const key = feedback.written ? 'game.result.wrongWritten' : 'game.result.wrongRepresent';
   return t(key, { value: formatNumber(feedback.value), target: formatNumber(feedback.target) });
 }
@@ -95,8 +98,13 @@ export function render(dom, state, helpers) {
   // Represent panel
   dom.representQuestion.textContent = reading
     ? t('game.question.read')
-    : t('game.question.represent', { number: state.target ? formatNumber(state.target.value) : '?' });
-  renderToggleGroup(dom.representModeButtons, (button) => button.dataset.mode === state.representMode);
+    : t('game.question.represent', {
+        number: state.target ? formatNumber(state.target.value) : '?',
+      });
+  renderToggleGroup(
+    dom.representModeButtons,
+    (button) => button.dataset.mode === state.representMode,
+  );
   renderFeedback(
     {
       result: dom.representResult,
@@ -117,6 +125,14 @@ export function render(dom, state, helpers) {
     isOperate ? state.feedback : null,
     helpers,
   );
+
+  // The question is repeated above the abacus on narrow screens.
+  dom.prompt.textContent = isRepresent
+    ? dom.representQuestion.textContent
+    : isOperate
+      ? dom.question.textContent
+      : '';
+  dom.prompt.hidden = state.mode === 'free';
 
   // Difficulty chips live in both panels; none is highlighted for a player-typed question.
   const customQuestion = isRepresent ? state.target?.manual : state.problem?.manual;

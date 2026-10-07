@@ -40,7 +40,9 @@ export function detectLanguage({ param = null, stored = null, browserLanguages =
 /** Looks a key up in a language, falling back to English and finally to the key itself. */
 export function translate(language, key, vars = {}) {
   const template = DICTIONARIES[language]?.[key] ?? DICTIONARIES[FALLBACK_LANGUAGE][key] ?? key;
-  return template.replace(/\{(\w+)\}/g, (match, name) => (name in vars ? String(vars[name]) : match));
+  return template.replace(/\{(\w+)\}/g, (match, name) =>
+    name in vars ? String(vars[name]) : match,
+  );
 }
 
 export const getLanguage = () => current;
@@ -68,7 +70,9 @@ export function applyTranslations(root = document) {
     ['data-i18n-aria-label', (el, text) => el.setAttribute('aria-label', text)],
   ];
   for (const [attribute, apply] of targets) {
-    root.querySelectorAll(`[${attribute}]`).forEach((el) => apply(el, t(el.getAttribute(attribute))));
+    root
+      .querySelectorAll(`[${attribute}]`)
+      .forEach((el) => apply(el, t(el.getAttribute(attribute))));
   }
 }
 

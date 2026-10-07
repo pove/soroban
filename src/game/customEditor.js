@@ -34,7 +34,8 @@ export function createCustomEditor({ t, onOperation, onNumber }) {
   function syncKeyboardDisplay() {
     if (!touch || !input) return;
     keyboardDisplay.textContent =
-      input.value || t(kind === 'operate' ? 'game.custom.keyboardOperation' : 'game.custom.keyboardNumber');
+      input.value ||
+      t(kind === 'operate' ? 'game.custom.keyboardOperation' : 'game.custom.keyboardNumber');
   }
 
   function showError(message) {

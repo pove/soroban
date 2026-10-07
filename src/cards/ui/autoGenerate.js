@@ -9,7 +9,9 @@ const typeCheckboxes = () => [...document.querySelectorAll('#autoGenDialog input
 
 function renderStatus(customSettings) {
   const status = byId('settingsStatus');
-  status.textContent = t(customSettings ? 'cards.auto.customSettings' : 'cards.auto.defaultSettings');
+  status.textContent = t(
+    customSettings ? 'cards.auto.customSettings' : 'cards.auto.defaultSettings',
+  );
   status.classList.toggle('status-ok', Boolean(customSettings));
 }
 
@@ -31,7 +33,12 @@ export function initAutoGenerate({ getState, onSettingsLoaded, onGenerate, notif
       notify(t('cards.msg.settingsLoaded'));
     } catch (error) {
       const invalid = error.message === 'Invalid settings file';
-      notify(t(invalid ? 'cards.msg.invalidSettings' : 'cards.msg.settingsError', { message: error.message }), 'error');
+      notify(
+        t(invalid ? 'cards.msg.invalidSettings' : 'cards.msg.settingsError', {
+          message: error.message,
+        }),
+        'error',
+      );
     }
   });
 

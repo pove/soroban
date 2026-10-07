@@ -19,9 +19,27 @@
 
     <main class="game">
       <div class="modes" role="group" data-i18n-aria-label="game.modes">
-        <button type="button" id="btnFree" class="mode-tab active" aria-pressed="true" data-i18n="game.mode.free"></button>
-        <button type="button" id="btnRepresent" class="mode-tab" aria-pressed="false" data-i18n="game.mode.represent"></button>
-        <button type="button" id="btnOperate" class="mode-tab" aria-pressed="false" data-i18n="game.mode.operate"></button>
+        <button
+          type="button"
+          id="btnFree"
+          class="mode-tab active"
+          aria-pressed="true"
+          data-i18n="game.mode.free"
+        ></button>
+        <button
+          type="button"
+          id="btnRepresent"
+          class="mode-tab"
+          aria-pressed="false"
+          data-i18n="game.mode.represent"
+        ></button>
+        <button
+          type="button"
+          id="btnOperate"
+          class="mode-tab"
+          aria-pressed="false"
+          data-i18n="game.mode.operate"
+        ></button>
         <button
           type="button"
           id="btnReset"
@@ -44,6 +62,8 @@
         <aside class="side">
           <div class="display">
             <div class="number-display" id="numberDisplay" aria-live="polite">0</div>
+            <!-- Mirrors the question on narrow screens, where the panel sits below the abacus -->
+            <p class="prompt" id="prompt" aria-hidden="true"></p>
             <input
               type="number"
               id="numberInput"
@@ -59,53 +79,166 @@
           <!-- Represent mode -->
           <section class="game-panel" id="representPanel">
             <div class="button-row" role="group">
-              <button type="button" class="chip mode-repres active" data-mode="numberToAbacus" data-i18n="game.represent.numberToAbacus"></button>
-              <button type="button" class="chip mode-repres" data-mode="abacusToNumber" data-i18n="game.represent.abacusToNumber"></button>
+              <button
+                type="button"
+                class="chip mode-repres active"
+                data-mode="numberToAbacus"
+                data-i18n="game.represent.numberToAbacus"
+              ></button>
+              <button
+                type="button"
+                class="chip mode-repres"
+                data-mode="abacusToNumber"
+                data-i18n="game.represent.abacusToNumber"
+              ></button>
             </div>
             <div class="button-row" role="group" data-i18n-aria-label="game.difficulty.label">
-              <button type="button" class="chip diff-btn" data-diff="veryEasy" data-i18n="game.difficulty.veryEasy"></button>
-              <button type="button" class="chip diff-btn" data-diff="easy" data-i18n="game.difficulty.easy"></button>
-              <button type="button" class="chip diff-btn" data-diff="medium" data-i18n="game.difficulty.medium"></button>
-              <button type="button" class="chip diff-btn" data-diff="hard" data-i18n="game.difficulty.hard"></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="veryEasy"
+                data-i18n="game.difficulty.veryEasy"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="easy"
+                data-i18n="game.difficulty.easy"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="medium"
+                data-i18n="game.difficulty.medium"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="hard"
+                data-i18n="game.difficulty.hard"
+              ></button>
             </div>
             <div class="question-row">
               <div class="question" id="representQuestion"></div>
-              <button type="button" class="icon-button" id="btnCustomNumber" data-i18n-title="game.action.customTitle" data-i18n-aria-label="game.action.customTitle">✎</button>
+              <button
+                type="button"
+                class="link-button"
+                id="btnCustomNumber"
+                data-i18n-title="game.action.customTitle"
+              >
+                ✎ <span data-i18n="game.action.custom"></span>
+              </button>
             </div>
             <div class="custom-editor" id="representEditor" hidden></div>
-            <button type="button" class="btn btn-primary" id="btnValidateRepresent" data-i18n="game.action.validate"></button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="btnValidateRepresent"
+              data-i18n="game.action.validate"
+            ></button>
             <div class="result" id="representResult" role="status"></div>
-            <button type="button" class="btn" id="btnNewRepresent" data-i18n="game.action.newNumber"></button>
+            <button
+              type="button"
+              class="btn"
+              id="btnNewRepresent"
+              data-i18n="game.action.newNumber"
+            ></button>
           </section>
 
           <!-- Operate mode -->
           <section class="game-panel" id="operatePanel">
             <div class="button-row" role="group" data-i18n-aria-label="game.operation.label">
-              <button type="button" class="chip op-btn active" data-op="+" data-i18n="game.operation.add"></button>
-              <button type="button" class="chip op-btn" data-op="-" data-i18n="game.operation.subtract"></button>
-              <button type="button" class="chip op-btn" data-op="×" data-i18n="game.operation.multiply"></button>
-              <button type="button" class="chip op-btn" data-op="÷" data-i18n="game.operation.divide"></button>
+              <button
+                type="button"
+                class="chip op-btn active"
+                data-op="+"
+                data-i18n="game.operation.add"
+              ></button>
+              <button
+                type="button"
+                class="chip op-btn"
+                data-op="-"
+                data-i18n="game.operation.subtract"
+              ></button>
+              <button
+                type="button"
+                class="chip op-btn"
+                data-op="×"
+                data-i18n="game.operation.multiply"
+              ></button>
+              <button
+                type="button"
+                class="chip op-btn"
+                data-op="÷"
+                data-i18n="game.operation.divide"
+              ></button>
             </div>
             <div class="button-row" role="group" data-i18n-aria-label="game.difficulty.label">
-              <button type="button" class="chip diff-btn" data-diff="veryEasy" data-i18n="game.difficulty.veryEasy"></button>
-              <button type="button" class="chip diff-btn" data-diff="easy" data-i18n="game.difficulty.easy"></button>
-              <button type="button" class="chip diff-btn" data-diff="medium" data-i18n="game.difficulty.medium"></button>
-              <button type="button" class="chip diff-btn" data-diff="hard" data-i18n="game.difficulty.hard"></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="veryEasy"
+                data-i18n="game.difficulty.veryEasy"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="easy"
+                data-i18n="game.difficulty.easy"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="medium"
+                data-i18n="game.difficulty.medium"
+              ></button>
+              <button
+                type="button"
+                class="chip diff-btn"
+                data-diff="hard"
+                data-i18n="game.difficulty.hard"
+              ></button>
             </div>
             <div class="question-row">
               <div class="question" id="question"></div>
-              <button type="button" class="icon-button" id="btnCustomOperation" data-i18n-title="game.action.customTitle" data-i18n-aria-label="game.action.customTitle">✎</button>
+              <button
+                type="button"
+                class="link-button"
+                id="btnCustomOperation"
+                data-i18n-title="game.action.customTitle"
+              >
+                ✎ <span data-i18n="game.action.custom"></span>
+              </button>
             </div>
             <div class="custom-editor" id="operateEditor" hidden></div>
-            <button type="button" class="btn btn-primary" id="btnValidate" data-i18n="game.action.validate"></button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="btnValidate"
+              data-i18n="game.action.validate"
+            ></button>
             <div class="result" id="result" role="status"></div>
-            <button type="button" class="btn" id="btnNewQuestion" data-i18n="game.action.newQuestion"></button>
+            <button
+              type="button"
+              class="btn"
+              id="btnNewQuestion"
+              data-i18n="game.action.newQuestion"
+            ></button>
           </section>
 
           <section class="stats" id="stats" aria-label="Statistics" hidden>
-            <div class="stat"><span class="stat-value" id="statSolved">0</span><span class="stat-label" data-i18n="game.stats.solved"></span></div>
-            <div class="stat"><span class="stat-value" id="statStreak">0</span><span class="stat-label" data-i18n="game.stats.streak"></span></div>
-            <div class="stat"><span class="stat-value" id="statBest">0</span><span class="stat-label" data-i18n="game.stats.best"></span></div>
+            <div class="stat">
+              <span class="stat-value" id="statSolved">0</span
+              ><span class="stat-label" data-i18n="game.stats.solved"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="statStreak">0</span
+              ><span class="stat-label" data-i18n="game.stats.streak"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="statBest">0</span
+              ><span class="stat-label" data-i18n="game.stats.best"></span>
+            </div>
           </section>
 
           <a class="promo" id="promoCards" href="./cards/">
@@ -136,9 +269,21 @@
         <button type="button" class="key" data-key="3">3</button>
         <button type="button" class="key key-operator" data-key="-">-</button>
         <button type="button" class="key key-wide" data-key="0">0</button>
-        <button type="button" class="key key-danger" data-key="backspace" data-i18n-aria-label="game.custom.backspace">⌫</button>
+        <button
+          type="button"
+          class="key key-danger"
+          data-key="backspace"
+          data-i18n-aria-label="game.custom.backspace"
+        >
+          ⌫
+        </button>
         <button type="button" class="key key-operator" data-key="+">+</button>
-        <button type="button" class="key key-done" data-key="done" data-i18n="game.custom.accept"></button>
+        <button
+          type="button"
+          class="key key-done"
+          data-key="done"
+          data-i18n="game.custom.accept"
+        ></button>
       </div>
     </div>
 

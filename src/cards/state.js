@@ -112,7 +112,9 @@ export function applyTypeEdit(state, types, updates) {
 
 /** Cards the print view should use: the selection, or everything. */
 export function cardsToPrint(state, { selectedOnly }) {
-  return selectedOnly ? [...state.selected].sort((a, b) => a - b).map((i) => state.cards[i]) : state.cards;
+  return selectedOnly
+    ? [...state.selected].sort((a, b) => a - b).map((i) => state.cards[i])
+    : state.cards;
 }
 
 export const setCustomSettings = (state, customSettings) => ({ ...state, customSettings });

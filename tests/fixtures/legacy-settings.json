@@ -1,0 +1,133 @@
+{
+  "numPerCombination": 10,
+  "maxGameValue": 9999999,
+  "cardTypes": ["Añade-Quita", "Representar", "Sumar", "Restar"],
+  "difficulties": [
+    {
+      "key": "fácil",
+      "borderColor": "#10b40e"
+    },
+    {
+      "key": "medio",
+      "borderColor": "#feb22f"
+    },
+    {
+      "key": "difícil",
+      "borderColor": "#ff2424"
+    }
+  ],
+  "ranges": {
+    "Añade-Quita": {
+      "fácil": [1, 20],
+      "medio": [50, 200],
+      "difícil": [200, 999]
+    },
+    "Representar": {
+      "fácil": [1, 99],
+      "medio": [100, 999],
+      "difícil": [10000, 9999999]
+    },
+    "Sumar": {
+      "fácil": [1, 20],
+      "medio": [10, 99],
+      "difícil": [100, 999]
+    },
+    "Restar": {
+      "fácil": [1, 20],
+      "medio": [10, 99],
+      "difícil": [100, 999]
+    }
+  },
+  "baseTemplates": {
+    "Añade-Quita": {
+      "width": 90,
+      "height": 65,
+      "borderRadius": 8,
+      "borderThickness": 8,
+      "backgroundColor": "#ffffff",
+      "frontTopText": "Añade",
+      "frontTopColor": "#0a0fa3",
+      "frontTopSize": 30,
+      "frontBottomColor": "#000000",
+      "frontBottomSize": 80,
+      "frontShowSVG": false,
+      "frontSVGNumber": 0,
+      "frontSVGSize": 0,
+      "rearTopText": "Quita",
+      "rearTopColor": "#0a0fa3",
+      "rearTopSize": 30,
+      "rearBottomColor": "#000000",
+      "rearBottomSize": 80,
+      "rearShowSVG": false,
+      "rearSVGNumber": 0,
+      "rearSVGSize": 0
+    },
+    "Representar": {
+      "width": 90,
+      "height": 65,
+      "borderRadius": 8,
+      "borderThickness": 8,
+      "backgroundColor": "#ffffff",
+      "frontTopText": "Interpreta",
+      "frontTopColor": "#0a0fa3",
+      "frontTopSize": 30,
+      "frontBottomText": "Bottom Text",
+      "frontBottomColor": "#000000",
+      "frontBottomSize": 0,
+      "frontShowSVG": true,
+      "frontSVGSize": 130,
+      "rearTopText": "Representa",
+      "rearTopColor": "#0a0fa3",
+      "rearTopSize": 30,
+      "rearBottomColor": "#000000",
+      "rearBottomSize": 60,
+      "rearShowSVG": false,
+      "rearSVGNumber": 0,
+      "rearSVGSize": 0
+    },
+    "Sumar": {
+      "width": 90,
+      "height": 65,
+      "borderRadius": 8,
+      "borderThickness": 8,
+      "backgroundColor": "#ffffff",
+      "frontTopText": "Sumar",
+      "frontTopColor": "#0a0fa3",
+      "frontTopSize": 30,
+      "frontBottomColor": "#000000",
+      "frontBottomSize": 50,
+      "frontShowSVG": false,
+      "frontSVGNumber": 0,
+      "frontSVGSize": 0,
+      "rearTopText": "Sumar - Respuesta",
+      "rearTopColor": "#666666",
+      "rearTopSize": 10,
+      "rearBottomColor": "#000000",
+      "rearBottomSize": 30,
+      "rearShowSVG": true,
+      "rearSVGSize": 130
+    },
+    "Restar": {
+      "width": 90,
+      "height": 65,
+      "borderRadius": 8,
+      "borderThickness": 8,
+      "backgroundColor": "#ffffff",
+      "frontTopText": "Restar",
+      "frontTopColor": "#0a0fa3",
+      "frontTopSize": 30,
+      "frontBottomColor": "#000000",
+      "frontBottomSize": 50,
+      "frontShowSVG": false,
+      "frontSVGNumber": 0,
+      "frontSVGSize": 0,
+      "rearTopText": "Restar - Respuesta",
+      "rearTopColor": "#666666",
+      "rearTopSize": 10,
+      "rearBottomColor": "#000000",
+      "rearBottomSize": 30,
+      "rearShowSVG": true,
+      "rearSVGSize": 130
+    }
+  }
+}

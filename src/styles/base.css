@@ -15,7 +15,13 @@
   --shadow: 0 8px 32px rgba(20, 10, 60, 0.22);
   --focus: #1b1464;
   font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
   color-scheme: light;
 }
 
@@ -229,5 +235,29 @@ body {
   .chip,
   .nav-link {
     min-height: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    gap: 8px 10px;
+    padding-top: 10px;
+  }
+
+  .brand {
+    font-size: 1.5rem;
+  }
+
+  .site-title {
+    flex-basis: calc(100% - 50px);
+  }
+
+  .site-nav {
+    flex: 1;
+  }
+
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 0.85rem;
   }
 }

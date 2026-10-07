@@ -59,17 +59,35 @@ body.game-page {
 
 /* --- Layout ------------------------------------------------------------------------------ */
 
+/*
+ * One grid, two arrangements. Narrow screens: number + question, abacus, then the control panel.
+ * Wide screens: the abacus on the left, everything else stacked on the right.
+ */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
+  gap: 14px;
   align-items: start;
 }
 
 .side {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: contents;
+}
+
+.display {
+  order: 1;
+}
+.board {
+  order: 2;
+}
+.game-panel {
+  order: 3;
+}
+.stats {
+  order: 4;
+}
+.promo {
+  order: 5;
 }
 
 @media (min-width: 900px), (orientation: landscape) and (min-width: 700px) {
@@ -77,12 +95,27 @@ body.game-page {
     grid-template-columns: minmax(0, 1fr) 380px;
   }
 
-  /* keep the abacus and its controls inside the viewport on laptops */
   .board {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    order: 0;
+    /* keep the abacus and its controls inside the viewport on laptops */
     max-width: calc((100dvh - 200px) * 1.6667);
     min-width: min(100%, 420px);
     width: 100%;
     margin-inline: auto;
+  }
+
+  .display,
+  .game-panel,
+  .stats,
+  .promo {
+    grid-column: 2;
+    order: 0;
+  }
+
+  .prompt {
+    display: none;
   }
 }
 
@@ -169,6 +202,14 @@ body.game-page {
   box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
 }
 
+.prompt {
+  margin: 0 0 4px;
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  font-weight: 700;
+  color: var(--brand-2);
+  font-variant-numeric: tabular-nums;
+}
+
 .game-panel {
   display: none;
   padding: 14px;
@@ -239,9 +280,9 @@ body.game-page {
 
 .question-row {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 2px;
 }
 
 .question {
@@ -251,20 +292,19 @@ body.game-page {
   font-variant-numeric: tabular-nums;
 }
 
-.icon-button {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  background: #fff;
+.link-button {
+  padding: 4px 8px;
+  border: 0;
+  background: none;
   color: var(--muted);
-  font-size: 1rem;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-.icon-button:hover {
+.link-button:hover {
   color: var(--brand-1);
-  border-color: var(--brand-1);
 }
 
 .game-panel > .btn {
@@ -488,6 +528,15 @@ body.keyboard-open {
 @media (max-width: 600px) {
   .game {
     padding-inline: 10px;
+  }
+
+  .mode-tab {
+    padding: 8px 14px;
+  }
+
+  /* the question is shown above the abacus on narrow screens */
+  .question-row .question {
+    display: none;
   }
 
   .site-header {

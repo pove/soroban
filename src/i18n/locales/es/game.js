@@ -35,7 +35,8 @@ export default {
 
   'game.result.correct': '¡Correcto! 🎉',
   'game.result.wrongOperate': 'Incorrecto. La respuesta correcta es {answer}',
-  'game.result.wrongRepresent': 'Incorrecto. Has representado {value}. El número correcto era {target}',
+  'game.result.wrongRepresent':
+    'Incorrecto. Has representado {value}. El número correcto era {target}',
   'game.result.wrongWritten': 'Incorrecto. Has escrito {value}. El número correcto era {target}',
 
   'game.input.numberPlaceholder': 'Escribe el Nº',

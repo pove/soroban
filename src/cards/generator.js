@@ -152,7 +152,9 @@ const LEGACY_LEVELS = {
 };
 
 function renameKeys(object, mapping) {
-  return Object.fromEntries(Object.entries(object).map(([key, value]) => [mapping[key] ?? key, value]));
+  return Object.fromEntries(
+    Object.entries(object).map(([key, value]) => [mapping[key] ?? key, value]),
+  );
 }
 
 /**
@@ -180,7 +182,10 @@ export function normalizeSettings(raw) {
     },
     difficulties: (raw.difficulties ?? []).map((d) => ({ ...d, key: levels[d.key] ?? d.key })),
     ranges: Object.fromEntries(
-      Object.entries(renameKeys(raw.ranges, types)).map(([type, byLevel]) => [type, renameKeys(byLevel, levels)]),
+      Object.entries(renameKeys(raw.ranges, types)).map(([type, byLevel]) => [
+        type,
+        renameKeys(byLevel, levels),
+      ]),
     ),
     baseTemplates: renameKeys(raw.baseTemplates, types),
   };
@@ -189,7 +194,15 @@ export function normalizeSettings(raw) {
 // --- Generation -------------------------------------------------------------------------------
 
 /** Distinct (a, b) pairs; `shape` can rewrite a candidate pair (e.g. sort for subtraction). */
-function uniquePairs(lo, hi, wanted, maxResult, rng, shape = (a, b) => [a, b], combine = (a, b) => a + b) {
+function uniquePairs(
+  lo,
+  hi,
+  wanted,
+  maxResult,
+  rng,
+  shape = (a, b) => [a, b],
+  combine = (a, b) => a + b,
+) {
   const used = new Set();
   const pairs = [];
   const maxAttempts = (hi - lo + 1) ** 2 * 3;
@@ -228,11 +241,13 @@ const CONTENT = {
     })),
 
   subtract: ({ lo, hi, count, rng, maxResult }) =>
-    uniquePairs(lo, hi, count, maxResult, rng, sortDescending, (a, b) => a - b).map(({ a, b, result }) => ({
-      frontBottomText: `${a} - ${b}`,
-      rearBottomText: String(result),
-      rearSVGNumber: result,
-    })),
+    uniquePairs(lo, hi, count, maxResult, rng, sortDescending, (a, b) => a - b).map(
+      ({ a, b, result }) => ({
+        frontBottomText: `${a} - ${b}`,
+        rearBottomText: String(result),
+        rearSVGNumber: result,
+      }),
+    ),
 };
 
 /**
@@ -260,7 +275,12 @@ export function generateCards(settings, { rng = Math.random, now = new Date() } 
       });
       for (const fields of content) {
         cards.push(
-          normalizeCard({ ...base, cardType: `${typeLabel} ${levelLabel}`, borderColor, ...fields }),
+          normalizeCard({
+            ...base,
+            cardType: `${typeLabel} ${levelLabel}`,
+            borderColor,
+            ...fields,
+          }),
         );
       }
     }

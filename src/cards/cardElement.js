@@ -31,7 +31,11 @@ export function createCardElement(card, side) {
   middle.className = 'card-middle';
   if (face.showSVG) {
     const scale = face.svgSize / 100;
-    middle.innerHTML = abacusSvg(face.svgNumber, card.width * 2.5 * scale, card.height * 1.5 * scale);
+    middle.innerHTML = abacusSvg(
+      face.svgNumber,
+      card.width * 2.5 * scale,
+      card.height * 1.5 * scale,
+    );
   }
 
   element.append(

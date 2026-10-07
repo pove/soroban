@@ -48,7 +48,11 @@ test.describe('free mode', () => {
     await expect(page.locator(ui.display)).toHaveText('0');
   });
 
-  test('restores the abacus from the saved state with locale formatting', async ({ page, openGame, ui }) => {
+  test('restores the abacus from the saved state with locale formatting', async ({
+    page,
+    openGame,
+    ui,
+  }) => {
     await openGame({ state: { ...baseState, abacusColumns: columnsFor(1234567) } });
     await expect(page.locator(ui.display)).toHaveText('1.234.567');
   });
@@ -65,7 +69,11 @@ test.describe('free mode', () => {
 });
 
 test.describe('operate mode', () => {
-  test('generates a deterministic addition and rejects a wrong answer', async ({ page, openGame, ui }) => {
+  test('generates a deterministic addition and rejects a wrong answer', async ({
+    page,
+    openGame,
+    ui,
+  }) => {
     await openGame({ random: 0.5 });
     await page.locator(ui.operateMode).click();
     await expect(page.locator(ui.operatePanel)).toBeVisible();
@@ -107,8 +115,14 @@ test.describe('operate mode', () => {
     expect(text).toMatch(/^[\d.]+ [+\-×÷] [\d.]+ = \?$/);
   });
 
-  test('supports typing a custom operation (double click on the question)', async ({ page, openGame, ui }) => {
-    await openGame({ state: { ...baseState, mode: 'juego', gameData: { a: 1, b: 2, op: '+', answer: 3 } } });
+  test('supports typing a custom operation (double click on the question)', async ({
+    page,
+    openGame,
+    ui,
+  }) => {
+    await openGame({
+      state: { ...baseState, mode: 'juego', gameData: { a: 1, b: 2, op: '+', answer: 3 } },
+    });
     await page.locator(ui.question).dblclick();
     const input = page.locator(ui.manualInput);
     await expect(input).toBeVisible();
@@ -178,7 +192,11 @@ test.describe('represent mode', () => {
     );
   });
 
-  test('switching to represent mode generates a deterministic number', async ({ page, openGame, ui }) => {
+  test('switching to represent mode generates a deterministic number', async ({
+    page,
+    openGame,
+    ui,
+  }) => {
     await openGame({ random: 0.5 });
     await page.locator(ui.representMode).click();
     await expect(page.locator(ui.representQuestion)).toHaveText('Representa el número: 500');
