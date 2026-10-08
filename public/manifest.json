@@ -2,6 +2,7 @@
   "name": "Soroban - Ábaco Japonés",
   "short_name": "Soroban",
   "description": "Japanese abacus (soroban) game and printable practice cards / Juego del ábaco japonés y tarjetas imprimibles",
+  "id": "/soroban/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
