@@ -145,7 +145,7 @@ test.describe('represent mode', () => {
     });
     await expect(page.locator(ui.representPanel)).toBeVisible();
     await expect(page.locator(ui.representQuestion)).toHaveText('Representa el número: 345');
-    await expect(page.locator(ui.display)).toHaveText('?');
+    await expect(page.locator(ui.display)).toBeHidden();
 
     await page.locator(ui.validateRepresent).click();
     await expect(page.locator(ui.representResult)).toHaveText(
