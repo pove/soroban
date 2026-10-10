@@ -13,6 +13,7 @@ import {
 import { registerServiceWorker } from '../shared/registerServiceWorker.js';
 import { mountSiteHeader, syncLanguageSelect } from '../shared/siteHeader.js';
 import { showToast } from '../shared/toast.js';
+import { versionText } from '../shared/version.js';
 import { createDefaultSettings, generateCards } from './generator.js';
 import { parseProject, buildSample, projectFilename, serializeProject } from './project.js';
 import * as actions from './state.js';
@@ -229,12 +230,14 @@ initPrintView();
 onLanguageChange((language) => {
   syncLanguageSelect(language);
   document.title = t('cards.title');
+  byId('appVersion').textContent = versionText(t);
   render(store.get());
   updatePreview();
   refreshPrintView();
 });
 
 document.title = t('cards.title');
+byId('appVersion').textContent = versionText(t);
 syncLanguageSelect(getLanguage());
 render(store.get());
 registerServiceWorker('../sw.js');

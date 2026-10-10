@@ -34,7 +34,7 @@ An interactive **soroban** (Japanese abacus) for learning to read numbers and ca
 - **Layout for every screen**: on computers and landscape tablets the abacus sits next to the controls; on phones the
   question sits above the abacus, the modes move to a bottom tab bar within reach of the thumb, and everything fits on
   one screen.
-- **Light and dark themes** that follow the system setting.
+- **Light and dark themes**: automatic (like the device) or chosen in the menu.
 
 ![Phone layout](docs/images/game-mobile.png)
 

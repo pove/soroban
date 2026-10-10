@@ -324,6 +324,18 @@ svg[aria-hidden='true'] {
   font-size: 0.9rem;
 }
 
+/* --- Footer ------------------------------------------------------------------------------ */
+
+.site-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 20px 20px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* --- Toasts ------------------------------------------------------------------------------ */
 
 .toast-region {

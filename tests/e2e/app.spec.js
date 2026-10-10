@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
   COLUMNS,
@@ -549,4 +550,50 @@ test.describe('collapsible card designer', () => {
     await expect(page.locator('#cardType')).toBeVisible();
     await expect(page.locator('#cancelBtn')).toBeVisible();
   });
+});
+
+test.describe('light and dark theme', () => {
+  const theme = (page) => page.locator('html');
+  const background = (page) => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+
+  test('follows the system by default', async ({ page, openGame }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await openGame();
+    await expect(theme(page)).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('#themeSelect')).toHaveValue('auto');
+    await page.emulateMedia({ colorScheme: 'light' });
+    await expect(theme(page)).toHaveAttribute('data-theme', 'light');
+  });
+
+  test('the menu choice wins over the system and is remembered', async ({ page, openGame }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openGame();
+    const light = await background(page);
+    await chooseOption(page, '#themeSelect', 'dark');
+    await expect(theme(page)).toHaveAttribute('data-theme', 'dark');
+    expect(await background(page)).not.toBe(light);
+
+    await page.reload();
+    await expect(theme(page)).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('#themeSelect')).toHaveValue('dark');
+
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await chooseOption(page, '#themeSelect', 'light');
+    await expect(theme(page)).toHaveAttribute('data-theme', 'light');
+  });
+});
+
+test('both pages show the version and the commit they were built from', async ({
+  page,
+  gamePath,
+  cardsPath,
+}) => {
+  const { version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url)));
+  // major.minor of package.json, then the commit in place of the patch number: v3.5.1ee99ec
+  const majorMinor = version.split('.').slice(0, 2).join('\\.');
+  const footer = new RegExp(`^Pove · v${majorMinor}\\.[0-9a-f]{7,}$`);
+  for (const path of [gamePath, cardsPath]) {
+    await page.goto(path);
+    await expect(page.locator('#appVersion')).toHaveText(footer);
+  }
 });

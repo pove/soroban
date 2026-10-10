@@ -74,6 +74,10 @@ export default {
 
   'game.settings.style': 'Ábaco',
   'game.settings.confetti': 'Confeti',
+  'game.settings.theme': 'Tema',
+  'game.theme.auto': 'Automático',
+  'game.theme.light': 'Claro',
+  'game.theme.dark': 'Oscuro',
   'game.style.classic': 'Ábaco Clásico',
   'game.style.simple': 'Ábaco Simple',
 

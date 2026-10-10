@@ -1,30 +1,30 @@
 /* Game page */
 
-@media (prefers-color-scheme: dark) {
-  :root:has(body.game-page) {
-    --paper: #14161d;
-    --paper-2: #1f222c;
-    --card: #1a1d26;
-    --ink: #eeeae3;
-    --muted: #9b98a3;
-    --line: #2c303c;
-    --accent: #f0625a;
-    --accent-strong: #ff7b73;
-    --accent-soft: rgba(240, 98, 90, 0.16);
-    --indigo: #9aa8ff;
-    --indigo-soft: rgba(154, 168, 255, 0.14);
-    --ok: #3cc58b;
-    --ok-soft: rgba(60, 197, 139, 0.16);
-    --accent-fill: #c53a31;
-    --accent-fill-strong: #a92e26;
-    --ok-fill: #127a51;
-    --bad: #ff6b6b;
-    --bad-soft: rgba(255, 107, 107, 0.15);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
-    --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.45);
-    --focus: #9aa8ff;
-    color-scheme: dark;
-  }
+/* Dark theme: chosen in the menu, or following the system (see src/shared/theme.js) */
+:root[data-theme='dark'] {
+  --paper: #14161d;
+  --paper-2: #1f222c;
+  --card: #1a1d26;
+  --ink: #eeeae3;
+  --muted: #9b98a3;
+  --line: #2c303c;
+  --accent: #f0625a;
+  --accent-strong: #ff7b73;
+  --accent-soft: rgba(240, 98, 90, 0.16);
+  --indigo: #9aa8ff;
+  --indigo-soft: rgba(154, 168, 255, 0.14);
+  --ok: #3cc58b;
+  --ok-soft: rgba(60, 197, 139, 0.16);
+  --accent-fill: #c53a31;
+  --accent-fill-strong: #a92e26;
+  --ok-fill: #127a51;
+  --bad: #ff6b6b;
+  --bad-soft: rgba(255, 107, 107, 0.15);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.45);
+  --focus: #9aa8ff;
+  color-scheme: dark;
+  color-scheme: dark;
 }
 
 body.game-page {
@@ -974,18 +974,6 @@ body.keyboard-open {
   background: var(--accent-fill);
   color: #fff;
   font-size: 1.1rem;
-}
-
-/* --- Footer ------------------------------------------------------------------------------ */
-
-.site-footer {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px 20px 20px;
-  font-size: 0.75rem;
-  color: var(--muted);
 }
 
 /* --- Narrow screens ---------------------------------------------------------------------- */
