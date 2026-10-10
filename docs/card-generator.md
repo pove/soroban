@@ -12,8 +12,8 @@ link in the game header, or go to `/cards/`.
 3. Click **Print All** and, in the preview, choose how you will print (see below).
 4. Cut the cards along the borders.
 
-Prefer to look first? **Load Sample** fills the page with a small example deck. When a deck is generated or loaded the
-designer folds away so the cards are the first thing you see; click its title to open it again.
+Prefer to look first? **Load Sample** fills the page with a small example deck. The deck is shown right under the
+start buttons; when a deck is generated or loaded the designer below it folds away (click its title to open it again).
 
 ![A generated deck](images/cards-deck.png)
 
@@ -35,7 +35,7 @@ the cards follows the language selected in the header when you generate them.
 
 ## Printing
 
-Click **Print All** (or select some cards and click **Print Selected**) to open the print preview. It shows exactly
+Click **Print All** (or select some cards and click **Print Selected** in the bar that appears at the bottom) to open the print preview. It shows exactly
 the A4 pages that will be printed and how many cards fit per page.
 
 ![Print preview](images/cards-print.png)
@@ -58,10 +58,12 @@ Cards of different sizes are printed on separate pages, so you can mix sizes in 
 ## Designing your own cards
 
 - The designer is collapsible (click its title). It reopens by itself when you edit a card.
-- Fill the form on the left: type name, size in millimetres, border and background, and for each side a top text, a
-  bottom text (with colour and size) and optionally an **abacus picture** showing any number from 0 to 9 999 999.
+- Fill the form on the left, organised in three tabs: **Format** (type name, size in millimetres, border and
+  background), **Front Side** and **Rear Side** (a top text, a bottom text with colour and size, and optionally an
+  **abacus picture** showing any number from 0 to 9 999 999).
 - The preview on the right updates as you type. **Save New Card** adds it to the list.
-- Click a card's ✏️ to edit it or 🗑️ to delete it. Click a card (or tick its checkbox) to select it.
+- Click a card's pencil to edit it or the bin to delete it. Click a card (or tick its checkbox) to select it; a bar at
+  the bottom shows how many are selected and lets you print or delete them.
 - **Select by Type** selects every card of one or more types. **Edit by Type** (or **Edit Selected**) changes chosen
   properties on all of them at once — tick the property, set the value, apply. Only ticked properties change.
 - **Clean Duplicates** removes cards that are identical in every property.

@@ -17,7 +17,7 @@ import { createDefaultSettings, generateCards } from './generator.js';
 import { parseProject, buildSample, projectFilename, serializeProject } from './project.js';
 import * as actions from './state.js';
 import { initAutoGenerate } from './ui/autoGenerate.js';
-import { initDesigner, renderMode, updatePreview, writeCard } from './ui/designer.js';
+import { initDesigner, renderMode, showTab, updatePreview, writeCard } from './ui/designer.js';
 import { downloadText, pickTextFile } from './ui/files.js';
 import { initPrintView, openPrintView, refreshPrintView } from './ui/printView.js';
 import { renderSavedCards } from './ui/savedCards.js';
@@ -57,13 +57,19 @@ const designer = byId('designer');
 function editCard(index) {
   apply(actions.startEditing, index);
   writeCard(store.get().cards[index]);
+  showTab('tabFormat');
   designer.open = true;
   designer.scrollIntoView({ behavior: 'smooth' });
 }
 
-/** A freshly loaded or generated deck is what people want to see, not the long form. */
+byId('linkDesigner').addEventListener('click', () => {
+  designer.open = true;
+});
+
+/** A freshly loaded or generated deck is what people want to see: fold the form and show the deck. */
 const collapseDesigner = () => {
   designer.open = false;
+  document.querySelector('.deck').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
 // --- Dialogs ---------------------------------------------------------------------------------

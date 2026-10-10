@@ -64,6 +64,32 @@ export function updatePreview() {
   }
 }
 
+/** Shows one of the form tabs (format, front, rear). */
+export function showTab(id) {
+  for (const tab of document.querySelectorAll('.designer-form [role="tab"]')) {
+    const active = tab.getAttribute('aria-controls') === id;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', String(active));
+    tab.tabIndex = active ? 0 : -1;
+    byId(tab.getAttribute('aria-controls')).hidden = !active;
+  }
+}
+
+function initTabs() {
+  const tabs = [...document.querySelectorAll('.designer-form [role="tab"]')];
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => showTab(tab.getAttribute('aria-controls')));
+    tab.addEventListener('keydown', (event) => {
+      const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+      if (!step) return;
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      showTab(next.getAttribute('aria-controls'));
+      next.focus();
+    });
+  });
+  showTab('tabFormat');
+}
+
 /** Switches the form between "new card" and "edit card" labels. */
 export function renderMode(isEditing) {
   byId('panelTitle').textContent = t(isEditing ? 'cards.design.edit' : 'cards.design.new');
@@ -77,6 +103,7 @@ export function renderMode(isEditing) {
  * @param {() => void} hooks.onCancel
  */
 export function initDesigner({ onSave, onCancel }) {
+  initTabs();
   writeCard(defaultCard());
 
   for (const id of ['cardType', ...CARD_FIELDS.map(formIdOf)]) {
