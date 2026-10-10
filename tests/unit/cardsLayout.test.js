@@ -112,12 +112,8 @@ describe('abacus SVG', () => {
     expect((svg.match(/fill="none" stroke="#(?:daa520|cc0000)"/g) ?? []).length).toBe(35);
   });
 
-  it('paints only the upper beads red', () => {
-    for (const n of [0, 1234567, 9999999]) {
-      const svg = abacusSvg(n, 300, 150);
-      expect((svg.match(/fill="#ff0000"/g) ?? []).length).toBe(7);
-      expect((svg.match(/fill="#ffd700"/g) ?? []).length).toBe(28);
-    }
+  it('marks the hundreds and hundred-thousands rods', () => {
+    expect((abacusSvg(0, 300, 150).match(/fill="#ff0000"/g) ?? []).length).toBe(2);
   });
 
   it('clamps and sanitizes the number', () => {

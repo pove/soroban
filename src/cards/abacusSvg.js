@@ -7,11 +7,10 @@ import { COLUMNS, LOWER_BEADS, numberToColumns } from '../core/abacus.js';
 const FRAME = '#5d3a1a';
 const BEAM = '#3d2812';
 const ROD = '#c9b18a';
-// Upper beads (worth 5) are red; lower beads (worth 1) are yellow.
-const UPPER = '#ff0000';
-const UPPER_OUTLINE = '#cc0000';
-const LOWER = '#ffd700';
-const LOWER_OUTLINE = '#daa520';
+const BEAD = '#ffd700';
+const BEAD_OUTLINE = '#daa520';
+const ACCENT = '#ff0000';
+const ACCENT_OUTLINE = '#cc0000';
 const BEAD_SCALE = 1.35;
 
 let gradientCount = 0;
@@ -19,7 +18,7 @@ let gradientCount = 0;
 function beadSvg(x, y, radius, fill, gradientId) {
   const rx = radius * BEAD_SCALE;
   const ry = rx * 0.45;
-  const outline = fill === UPPER ? UPPER_OUTLINE : LOWER_OUTLINE;
+  const outline = fill === ACCENT ? ACCENT_OUTLINE : BEAD_OUTLINE;
   const ellipse = (attributes, cx = x, cy = y, w = rx, h = ry) =>
     `<ellipse cx="${cx}" cy="${cy}" rx="${w}" ry="${h}" ${attributes}/>`;
 
@@ -65,15 +64,18 @@ export function abacusSvg(number, width, height) {
     parts.push(
       `<line x1="${x}" y1="2" x2="${x}" y2="${height - 2}" stroke="${ROD}" stroke-width="2"/>`,
     );
-    parts.push(beadSvg(x, column.upperActive ? dividerY - offset : top, radius, UPPER, gradientId));
+    parts.push(beadSvg(x, column.upperActive ? dividerY - offset : top, radius, BEAD, gradientId));
 
+    // Hundreds and hundred-thousands rods get a red first bead as a reading aid.
+    const fromRight = COLUMNS - 1 - i;
+    const accented = fromRight === 2 || fromRight === 5;
     const inactive = LOWER_BEADS - column.lowerActive;
     for (let j = 0; j < LOWER_BEADS; j++) {
       const y =
         j < column.lowerActive
           ? dividerY + offset + j * spacing
           : bottom - (inactive - 1 - (j - column.lowerActive)) * spacing;
-      parts.push(beadSvg(x, y, radius, LOWER, gradientId));
+      parts.push(beadSvg(x, y, radius, j === 0 && accented ? ACCENT : BEAD, gradientId));
     }
   });
 
