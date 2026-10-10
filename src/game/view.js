@@ -160,7 +160,7 @@ export function render(dom, state, helpers) {
     cell.textContent = columnDigit(state.columns[i]);
     cell.classList.toggle('zero', firstUsed === -1 || i < firstUsed);
   });
-  dom.digits[0].parentElement.hidden = isRepresent;
+  dom.digits[0].parentElement.hidden = isRepresent || isOperate;
 
   // Abacus chrome and settings
   dom.container.classList.toggle('simple-style', state.abacusStyle === 'simple');
