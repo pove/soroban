@@ -74,6 +74,10 @@ export default {
 
   'game.settings.style': 'Abacus',
   'game.settings.confetti': 'Confetti',
+  'game.settings.theme': 'Theme',
+  'game.theme.auto': 'Automatic',
+  'game.theme.light': 'Light',
+  'game.theme.dark': 'Dark',
   'game.style.classic': 'Classic abacus',
   'game.style.simple': 'Simple abacus',
 

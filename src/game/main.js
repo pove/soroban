@@ -13,6 +13,7 @@ import {
   t,
 } from '../i18n/index.js';
 import { registerServiceWorker } from '../shared/registerServiceWorker.js';
+import { getThemeChoice, initTheme, setThemeChoice } from '../shared/theme.js';
 import { mountSiteHeader, syncLanguageSelect } from '../shared/siteHeader.js';
 import * as actions from './actions.js';
 import { AbacusRenderer } from './abacus/renderer.js';
@@ -23,6 +24,7 @@ import { loadState, saveState } from './state.js';
 import { getDom, isAbacusLocked, render } from './view.js';
 
 initLanguage();
+initTheme();
 const { extras } = mountSiteHeader(document.getElementById('siteHeader'), {
   active: 'game',
   links: { game: './', cards: './cards/' },
@@ -154,6 +156,9 @@ dom.numberInput.addEventListener('keydown', (event) => {
 });
 
 // Settings
+const themeSelect = document.getElementById('themeSelect');
+themeSelect.value = getThemeChoice();
+themeSelect.addEventListener('change', () => setThemeChoice(themeSelect.value));
 dom.confettiMode.addEventListener('change', () =>
   store.set({ ...store.get(), confettiMode: dom.confettiMode.value }),
 );

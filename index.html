@@ -8,8 +8,22 @@
       name="description"
       content="Learn to calculate with the Japanese abacus (soroban): free play, number reading and arithmetic practice. Printable practice cards included."
     />
-    <meta name="theme-color" content="#f6f1e9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14161d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f1e9" />
+    <script>
+      // Applies the saved light/dark theme before the first paint (see src/shared/theme.js).
+      (function () {
+        var choice = null;
+        try {
+          choice = JSON.parse(localStorage.getItem('sorobanTheme'));
+        } catch (error) {
+          // storage unavailable: follow the system
+        }
+        if (choice !== 'light' && choice !== 'dark') {
+          choice = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = choice;
+      })();
+    </script>
     <link rel="manifest" href="./manifest.json" />
     <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png" />
@@ -305,6 +319,13 @@
     <!-- Moved into the header menu by main.js -->
     <template id="gameSettings"
       ><label class="menu-field"
+        ><span class="menu-label" data-i18n="game.settings.theme"></span>
+        <select id="themeSelect" data-i18n-aria-label="game.settings.theme">
+          <option value="auto" data-i18n="game.theme.auto"></option>
+          <option value="light" data-i18n="game.theme.light"></option>
+          <option value="dark" data-i18n="game.theme.dark"></option></select
+      ></label>
+      <label class="menu-field"
         ><span class="menu-label" data-i18n="game.settings.style"></span>
         <select id="abacusStyle" data-i18n-aria-label="game.settings.style">
           <option value="classic" data-i18n="game.style.classic"></option>
