@@ -589,7 +589,9 @@ test('both pages show the version and the commit they were built from', async ({
   cardsPath,
 }) => {
   const { version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url)));
-  const footer = new RegExp(`^Pove · v${version.replaceAll('.', '\\.')} · [0-9a-f]{7,}$`);
+  // major.minor of package.json, then the commit in place of the patch number: v3.5.1ee99ec
+  const majorMinor = version.split('.').slice(0, 2).join('\\.');
+  const footer = new RegExp(`^Pove · v${majorMinor}\\.[0-9a-f]{7,}$`);
   for (const path of [gamePath, cardsPath]) {
     await page.goto(path);
     await expect(page.locator('#appVersion')).toHaveText(footer);
