@@ -359,11 +359,13 @@ test.describe('card generator', () => {
   test('edits an existing card', async ({ page, cardsPath }) => {
     await page.goto(cardsPath);
     await page.locator('#cardType').fill('Mine');
+    await page.getByRole('tab', { name: 'Front Side' }).click();
     await page.locator('#frontTopText').fill('Hello');
     await page.locator('#saveCardBtn').click();
     await page.locator('button[aria-label="Edit card"]').click();
     await expect(page.locator('#cardType')).toHaveValue('Mine');
     await expect(page.locator('#cancelBtn')).toBeVisible();
+    await page.getByRole('tab', { name: 'Front Side' }).click();
     await page.locator('#frontTopText').fill('Changed');
     await page.locator('#saveCardBtn').click();
     await expect(page.locator('#cardCount')).toHaveText('1');

@@ -2,12 +2,22 @@ export default {
   'cards.title': 'Generador de tarjetas',
   'cards.subtitle': 'Diseña e imprime tarjetas de práctica para un soroban físico',
 
+  // Start screen
+  'cards.hero.title': 'Tarjetas de práctica para tu soroban',
+  'cards.hero.autoGenText':
+    'Un mazo completo con un clic: cuatro tipos de tarjeta en cuatro niveles',
+  'cards.hero.sampleText': 'Mira cómo quedan las tarjetas',
+  'cards.hero.loadText': 'Sigue con un mazo que guardaste',
+  'cards.hero.designText': 'Tus propios textos, colores y ábaco',
+  'cards.design.format': 'Formato',
+  'cards.saved.selected': 'seleccionada(s)',
+
   // Project bar
   'cards.project.title': 'Proyecto',
-  'cards.project.save': '💾 Guardar proyecto',
-  'cards.project.load': '📂 Cargar proyecto',
-  'cards.project.sample': '📋 Cargar ejemplo',
-  'cards.project.autoGen': '🤖 Generar lote automático',
+  'cards.project.save': 'Guardar proyecto',
+  'cards.project.load': 'Cargar proyecto',
+  'cards.project.sample': 'Cargar ejemplo',
+  'cards.project.autoGen': 'Generar lote automático',
 
   // Card designer
   'cards.design.new': 'Diseñar tarjeta nueva',
@@ -28,9 +38,9 @@ export default {
   'cards.design.svgNumber': 'Número del ábaco',
   'cards.design.svgSize': 'Tamaño del SVG (%)',
   'cards.design.svgSizeHint': '% de la tarjeta',
-  'cards.design.saveNew': '💾 Guardar tarjeta nueva',
-  'cards.design.saveEdit': '💾 Guardar cambios de la tarjeta',
-  'cards.design.cancel': '✖ Cancelar',
+  'cards.design.saveNew': 'Guardar tarjeta nueva',
+  'cards.design.saveEdit': 'Guardar cambios de la tarjeta',
+  'cards.design.cancel': 'Cancelar',
   'cards.design.sampleFrontTop': 'Texto superior',
   'cards.design.sampleFrontBottom': 'Texto inferior',
   'cards.design.sampleRearTop': 'Reverso superior',
@@ -44,13 +54,13 @@ export default {
   'cards.saved.title': 'Tarjetas guardadas',
   'cards.saved.empty':
     'Aún no hay tarjetas. Diseña una, carga el ejemplo o genera un lote automático.',
-  'cards.action.printAll': '🖨️ Imprimir todas',
-  'cards.action.printSelected': '🖨️ Imprimir seleccionadas',
-  'cards.action.selectByType': '☑️ Seleccionar por tipo',
-  'cards.action.editByType': '✏️ Editar por tipo',
-  'cards.action.editSelected': '✏️ Editar seleccionadas',
-  'cards.action.cleanDuplicates': '🔁 Quitar duplicadas',
-  'cards.action.deleteSelected': '🗑️ Borrar seleccionadas',
+  'cards.action.printAll': 'Imprimir todas',
+  'cards.action.printSelected': 'Imprimir seleccionadas',
+  'cards.action.selectByType': 'Seleccionar por tipo',
+  'cards.action.editByType': 'Editar por tipo',
+  'cards.action.editSelected': 'Editar seleccionadas',
+  'cards.action.cleanDuplicates': 'Quitar duplicadas',
+  'cards.action.deleteSelected': 'Borrar seleccionadas',
   'cards.action.deselectAll': '✖',
   'cards.action.deselectAllTitle': 'Quitar la selección',
   'cards.action.select': 'Seleccionar tarjeta',
@@ -58,8 +68,8 @@ export default {
   'cards.action.delete': 'Borrar tarjeta',
 
   // Print view
-  'cards.print.close': '✖ Cerrar vista previa',
-  'cards.print.print': '🖨️ Imprimir',
+  'cards.print.close': 'Cerrar vista previa',
+  'cards.print.print': 'Imprimir',
   'cards.print.duplex': 'Impresión a doble cara automática (alterna páginas de anverso y reverso)',
   'cards.print.info':
     '{perRow} x {perCol} = {perPage} tarjetas por página. Se imprimen {count} tarjetas ({pages} páginas en total).',
@@ -112,9 +122,9 @@ export default {
   'cards.auto.currentSettings': 'Configuración actual:',
   'cards.auto.defaultSettings': 'Configuración por defecto',
   'cards.auto.customSettings': 'Configuración personalizada cargada ✓',
-  'cards.auto.loadSettings': '📂 Cargar configuración',
+  'cards.auto.loadSettings': 'Cargar configuración',
   'cards.auto.loadSettingsTitle': 'Cargar una configuración de generación desde un archivo JSON',
-  'cards.auto.downloadSample': '📥 Descargar configuración de ejemplo',
+  'cards.auto.downloadSample': 'Descargar configuración de ejemplo',
   'cards.auto.downloadSampleTitle': 'Descarga un archivo de ejemplo para personalizarlo',
   'cards.auto.perLevel': 'Tarjetas por nivel de dificultad',
   'cards.auto.types': 'Tipos de tarjeta a generar:',

@@ -70,6 +70,7 @@ export default {
   'game.stats.solved': 'Aciertos',
   'game.stats.streak': 'Racha',
   'game.stats.best': 'Mejor racha',
+  'game.stats.label': 'Puntuación',
 
   'game.settings.style': 'Ábaco',
   'game.settings.confetti': 'Confeti',

@@ -1,143 +1,431 @@
 /* Game page */
 
+@media (prefers-color-scheme: dark) {
+  :root:has(body.game-page) {
+    --paper: #14161d;
+    --paper-2: #1f222c;
+    --card: #1a1d26;
+    --ink: #eeeae3;
+    --muted: #9b98a3;
+    --line: #2c303c;
+    --accent: #f0625a;
+    --accent-strong: #ff7b73;
+    --accent-soft: rgba(240, 98, 90, 0.16);
+    --indigo: #9aa8ff;
+    --indigo-soft: rgba(154, 168, 255, 0.14);
+    --ok: #3cc58b;
+    --ok-soft: rgba(60, 197, 139, 0.16);
+    --bad: #ff6b6b;
+    --bad-soft: rgba(255, 107, 107, 0.15);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.45);
+    --focus: #9aa8ff;
+    color-scheme: dark;
+  }
+}
+
 body.game-page {
-  background: var(--brand-gradient);
-  background-attachment: fixed;
-  color: #fff;
+  --tabbar-height: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: env(safe-area-inset-bottom);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, var(--accent-soft), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, var(--indigo-soft), transparent 60%), var(--paper);
+  background-attachment: fixed;
+  color: var(--ink);
+  padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
 }
 
 .game {
   width: 100%;
-  max-width: 1400px;
-  padding: 8px 20px 0;
+  max-width: 1320px;
+  padding: 4px 20px 0;
 }
 
-/* --- Mode tabs --------------------------------------------------------------------------- */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
 
+/* --- Mode switcher ----------------------------------------------------------------------- */
+
+/* A segmented control in the header on tablets and computers (main.js moves it there). */
 .modes {
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  flex: none;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper-2);
 }
 
 .mode-tab {
-  padding: 10px 22px;
-  font-weight: 600;
-  border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
   font: inherit;
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  font-size: 0.98rem;
+  font-weight: 650;
   cursor: pointer;
-  backdrop-filter: blur(10px);
   transition:
     background 0.2s,
-    transform 0.15s;
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+.mode-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
 }
 
 .mode-tab:hover {
-  background: rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
+  color: var(--ink);
 }
 
 .mode-tab.active {
-  background: #fff;
-  color: var(--brand-2);
-  border-color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: var(--card);
+  color: var(--accent);
+  box-shadow: var(--shadow);
 }
 
-.mode-tab--icon {
-  padding-inline: 16px;
+@media (min-width: 700px) {
+  .site-header .modes {
+    margin-inline: auto;
+  }
+
+  .site-header:has(.modes) .site-title {
+    flex: 0 1 auto;
+  }
+}
+
+/* Phones: a bottom tab bar, within reach of the thumb. */
+@media (max-width: 699px) {
+  body.game-page {
+    --tabbar-height: 68px;
+  }
+
+  .modes {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 60;
+    gap: 0;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    background: color-mix(in srgb, var(--card) 88%, transparent);
+    backdrop-filter: saturate(1.6) blur(16px);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  }
+
+  .site-header .modes {
+    margin: 0;
+  }
+
+  .mode-tab {
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 3px;
+    min-height: 56px;
+    padding: 4px;
+    font-size: 0.75rem;
+    font-weight: 650;
+  }
+
+  .mode-icon {
+    width: 46px;
+    height: 28px;
+    padding: 3px 12px;
+    border-radius: 999px;
+    transition: background 0.2s;
+  }
+
+  .mode-tab.active {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .mode-tab.active .mode-icon {
+    background: var(--accent-soft);
+  }
 }
 
 /* --- Layout ------------------------------------------------------------------------------ */
 
 /*
- * One grid, two arrangements. Narrow screens: number + question, abacus, then the control panel.
- * Wide screens: the abacus on the left, everything else stacked on the right.
+ * Phones and portrait tablets: one column (question, abacus, controls).
+ * Computers and landscape tablets: the abacus on the left, everything else stacked on the right.
  */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   align-items: start;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
-.side {
-  display: contents;
-}
-
-.display {
-  order: 1;
-}
-.board {
-  order: 2;
-}
-.game-panel {
-  order: 3;
-}
-.stats {
-  order: 4;
-}
-.intro {
-  order: 5;
-}
-.promo {
-  order: 6;
-}
-
-@media (min-width: 900px), (orientation: landscape) and (min-width: 700px) {
+@media (min-width: 1000px), (orientation: landscape) and (min-width: 700px) {
   .layout {
-    grid-template-columns: minmax(0, 1fr) 380px;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+    grid-auto-flow: row dense;
+    gap: 20px;
+    max-width: none;
   }
 
   .board {
     grid-column: 1;
-    grid-row: 1 / span 6;
-    order: 0;
-    /* keep the abacus and its controls inside the viewport on laptops */
-    max-width: calc((100dvh - 200px) * 1.6667);
-    min-width: min(100%, 420px);
+    grid-row: 1 / span 5;
+    /* keep the abacus inside the viewport on laptops */
     width: 100%;
+    max-width: calc((100dvh - 150px) * 1.6667);
+    min-width: min(100%, 420px);
     margin-inline: auto;
   }
 
-  .display,
-  .game-panel,
-  .stats,
-  .intro,
-  .promo {
+  .layout > :not(.board) {
     grid-column: 2;
-    order: 0;
   }
+}
 
-  .prompt {
-    display: none;
-  }
+/* --- Question / number card -------------------------------------------------------------- */
+
+.display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+}
+
+.question-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.question-row:not(:has(> :not([hidden]))) {
+  display: none;
+}
+
+.question {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: clamp(1.5rem, 6.4vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  cursor: default;
+}
+
+.pill-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-left: auto;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+
+.pill-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pill-button:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.value-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.value-row:not(:has(> :not([hidden]))) {
+  display: none !important;
+}
+
+.value-row .number-display {
+  grid-column: 2;
+}
+
+.value-row .icon-button {
+  grid-column: 3;
+}
+
+/* Free mode: the value on the abacus is the protagonist */
+.number-display {
+  font-size: clamp(2.6rem, 11vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* While answering: a small live read-out of the abacus under the question */
+.display:not([data-mode='free']) .value-row {
+  display: flex;
+  margin-top: 6px;
+}
+
+.display:not([data-mode='free']) .icon-button {
+  width: 40px;
+  height: 40px;
+  box-shadow: none;
+}
+
+.display:not([data-mode='free']) .number-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.display:not([data-mode='free']) .number-display::before {
+  content: '';
+  width: 18px;
+  height: 12px;
+  background: var(--accent);
+  clip-path: polygon(0 50%, 28% 0, 72% 0, 100% 50%, 72% 100%, 28% 100%);
+}
+
+#numberInput {
+  width: 100%;
+  margin: 8px 0 2px;
+  padding: 12px 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+#numberInput::placeholder {
+  color: var(--muted);
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+#numberInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* --- Score ------------------------------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 12px -18px -16px;
+  border-top: 1px solid var(--line);
+}
+
+.stat {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px 4px;
+  white-space: nowrap;
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--line);
+}
+
+.stat-icon {
+  color: var(--ok);
+  font-size: 0.85rem;
+}
+
+.stat--best .stat-icon {
+  color: #e0a100;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 /* --- Abacus ------------------------------------------------------------------------------ */
 
 .abacus-container {
-  padding: clamp(10px, 2.4vw, 18px);
-  border-radius: 20px;
-  background: linear-gradient(145deg, #8b4513, #654321);
-  border: 5px solid #5d3a1a;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: clamp(8px, 1.8vw, 16px);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.12)),
+    repeating-linear-gradient(
+      100deg,
+      rgba(0, 0, 0, 0) 0 14px,
+      rgba(0, 0, 0, 0.05) 14px 16px,
+      rgba(0, 0, 0, 0) 16px 31px
+    ),
+    #5b3519;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(40, 20, 5, 0.2),
+    0 22px 44px -12px rgba(40, 20, 5, 0.45);
 }
 
 .abacus-container.simple-style {
-  background: linear-gradient(145deg, #e6d5b8, #d4a76a);
-  border-color: #d4a76a;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.06)), #d9b07a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 4px rgba(80, 50, 10, 0.15),
+    0 22px 44px -12px rgba(80, 50, 10, 0.35);
 }
 
 .abacus-container.locked canvas {
@@ -148,219 +436,300 @@ body.game-page {
   display: block;
   width: 100%;
   aspect-ratio: 5 / 3;
-  border-radius: 6px;
+  border-radius: 10px;
   touch-action: none;
   cursor: grab;
   user-select: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 #abacusCanvas:active {
   cursor: grabbing;
 }
 
-.hint {
-  margin: 8px 0 0;
-  text-align: center;
-  font-size: 0.85rem;
-  opacity: 0.85;
-}
+/* --- Digits under the rods --------------------------------------------------------------- */
 
-/* --- Display and panels ------------------------------------------------------------------ */
-
-.display,
-.game-panel,
-.stats {
-  background: var(--surface);
-  color: var(--text);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.display {
-  padding: 8px 12px;
-  text-align: center;
-}
-
-.number-display {
-  font-size: clamp(2rem, 8vw, 3.6rem);
+.digit-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0 2%;
+  padding-top: 8px;
+  font-size: clamp(0.95rem, 2.6vw, 1.3rem);
   font-weight: 800;
-  line-height: 1.15;
-  color: var(--brand-1);
   font-variant-numeric: tabular-nums;
-}
-
-#numberInput {
-  width: 90%;
-  max-width: 320px;
-  margin: 6px 0;
-  padding: 12px;
-  font-size: 1.8rem;
   text-align: center;
-  border: 2px solid var(--brand-1);
-  border-radius: var(--radius-sm);
-  color: var(--text);
+  color: #f6e3c4;
 }
 
-#numberInput:focus {
-  outline: none;
-  border-color: var(--brand-2);
-  box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
+.digit-strip .zero {
+  opacity: 0.35;
 }
 
-.prompt {
-  margin: 0 0 4px;
-  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
-  font-weight: 700;
-  color: var(--brand-2);
-  font-variant-numeric: tabular-nums;
+.simple-style .digit-strip {
+  color: #5c3d14;
 }
+
+.board-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding-inline: 4px;
+}
+
+.hint {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition:
+    background 0.2s,
+    transform 0.3s var(--ease);
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-button:hover {
+  background: var(--paper-2);
+}
+
+.icon-button:active svg {
+  transform: rotate(-120deg);
+  transition: transform 0.25s var(--ease);
+}
+
+.icon-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Controls ---------------------------------------------------------------------------- */
 
 .game-panel {
   display: none;
+  flex-direction: column;
+  gap: 12px;
   padding: 14px;
-  text-align: center;
 }
 
 .game-panel.active {
-  display: block;
+  display: flex;
 }
 
-.button-row {
+.segmented {
   display: flex;
-  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--paper-2);
+}
+
+.segment {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
   justify-content: center;
   gap: 6px;
-  margin-bottom: 12px;
-}
-
-.chip {
-  padding: 7px 12px;
-  border-radius: 8px;
-  border: 2px solid rgba(102, 126, 234, 0.35);
-  background: rgba(102, 126, 234, 0.1);
-  color: var(--brand-1);
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.15;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 
-.chip:hover {
-  background: rgba(102, 126, 234, 0.22);
+.segment:hover {
+  color: var(--ink);
 }
 
-.chip.active {
-  background: var(--brand-1);
-  border-color: var(--brand-1);
-  color: #fff;
+.segment.active {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.chip.diff-btn {
-  border-color: rgba(118, 75, 162, 0.35);
-  background: rgba(118, 75, 162, 0.1);
-  color: var(--brand-2);
+.op-symbol {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
-.chip.diff-btn:hover {
-  background: rgba(118, 75, 162, 0.22);
+.op-btn.active .op-symbol {
+  color: var(--accent);
 }
 
-.chip.diff-btn.active {
-  background: var(--brand-2);
-  border-color: var(--brand-2);
-  color: #fff;
+/* Difficulty: ascending bars, like a signal meter */
+.diff-btn {
+  flex-direction: column;
+  gap: 4px;
+  min-height: 48px;
 }
 
-.chip.mode-repres {
-  border-color: rgba(46, 158, 91, 0.4);
-  background: rgba(46, 158, 91, 0.1);
-  color: var(--ok);
+.level {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10px;
 }
 
-.chip.mode-repres.active {
+.level i {
+  width: 4px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.level i:nth-child(1) {
+  height: 4px;
+}
+.level i:nth-child(2) {
+  height: 6px;
+}
+.level i:nth-child(3) {
+  height: 8px;
+}
+.level i:nth-child(4) {
+  height: 10px;
+}
+
+.diff-btn.active .level i {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions .btn {
+  min-height: 52px;
+  border-radius: 14px;
+}
+
+.actions .btn-primary,
+.actions .btn-next {
+  flex: 1 1 auto;
+  width: 100%;
+  font-size: 1.05rem;
+}
+
+.btn-next {
   background: var(--ok);
   border-color: var(--ok);
   color: #fff;
-}
-
-.question-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.question {
-  font-size: clamp(1.25rem, 4vw, 1.6rem);
   font-weight: 700;
-  color: var(--brand-1);
-  font-variant-numeric: tabular-nums;
+  box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--ok) 70%, transparent);
 }
 
-.link-button {
-  padding: 4px 8px;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.85rem;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.link-button:hover {
-  color: var(--brand-1);
-}
-
-.game-panel > .btn {
-  margin-top: 12px;
+.btn-next:hover {
+  background: color-mix(in srgb, var(--ok) 85%, #000);
+  border-color: transparent;
 }
 
 .result {
-  display: none;
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: clamp(1.05rem, 3.4vw, 1.4rem);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 1.02rem;
   font-weight: 700;
+  line-height: 1.3;
+}
+
+.result::before {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   color: #fff;
+  font-size: 0.95rem;
 }
 
 .result.correct {
+  background: var(--ok-soft);
+  color: var(--ok);
+  animation: pop 0.45s var(--ease);
+}
+
+.result.correct::before {
+  content: '✓';
   background: var(--ok);
 }
 
 .result.incorrect {
+  background: var(--bad-soft);
+  color: var(--bad);
+  animation: shake 0.4s ease-out;
+}
+
+.result.incorrect::before {
+  content: '✕';
   background: var(--bad);
 }
 
 /* Custom question editor */
 
 .custom-editor {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .custom-form {
   display: flex;
   gap: 6px;
-  justify-content: center;
 }
 
 #manualInput {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 8px 10px;
-  font-size: 1.3rem;
-  text-align: center;
-  border: 3px solid var(--brand-1);
+  padding: 10px 12px;
+  border: 2px solid var(--accent);
   border-radius: var(--radius-sm);
-  background: rgba(102, 126, 234, 0.05);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 #manualInput:focus {
   outline: none;
-  border-color: var(--brand-2);
-  box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .form-error {
@@ -370,73 +739,92 @@ body.game-page {
   font-weight: 600;
 }
 
-/* --- Stats and promo --------------------------------------------------------------------- */
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--brand-2);
-}
-
-.stat-label {
-  font-size: 0.8rem;
-  color: #55536b;
-}
+/* --- Intro and promo --------------------------------------------------------------------- */
 
 .intro {
-  padding: 14px;
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow);
-  font-size: 0.9rem;
-  line-height: 1.45;
+  padding: 18px;
+  font-size: 0.93rem;
+  line-height: 1.55;
 }
 
 .intro h2 {
-  margin: 0 0 6px;
-  font-size: 1.05rem;
-  color: var(--brand-2);
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
 }
 
 .intro p {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  color: var(--muted);
 }
 
 .intro p:last-child {
   margin-bottom: 0;
 }
 
+.intro-legend {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.bead {
+  width: 26px;
+  height: 14px;
+  clip-path: polygon(0 50%, 26% 0, 74% 0, 100% 50%, 74% 100%, 26% 100%);
+}
+
+.bead--upper {
+  background: linear-gradient(180deg, #ef5a5f, #b81c34);
+}
+
+.bead--lower {
+  background: linear-gradient(180deg, #5b5f6b, #121318);
+}
+
 .promo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  gap: 14px;
+  padding: 16px 18px;
   border-radius: var(--radius);
-  border: 2px dashed rgba(255, 255, 255, 0.55);
+  background:
+    radial-gradient(400px 160px at 100% 0, rgba(255, 255, 255, 0.16), transparent 70%),
+    linear-gradient(120deg, #1f2330, #2f3d8f);
   color: #fff;
   text-decoration: none;
-  transition: background 0.2s;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s var(--ease);
 }
 
 .promo:hover {
-  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-2px);
 }
 
 .promo-icon {
-  font-size: 1.8rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.promo-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .promo-text {
@@ -446,61 +834,81 @@ body.game-page {
 }
 
 .promo-text small {
-  opacity: 0.9;
+  opacity: 0.8;
+  font-size: 0.86rem;
 }
 
 /* --- On-screen keyboard ------------------------------------------------------------------ */
 
 body.keyboard-open {
-  padding-bottom: 340px;
+  padding-bottom: 360px;
 }
 
 .keyboard {
   position: fixed;
   inset: auto 0 0 0;
   z-index: 1000;
-  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-  background: #fff;
-  color: var(--text);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+  animation: sheet-in 0.22s var(--ease);
+}
+
+.keyboard::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 0 auto 10px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
 }
 
 .keyboard-display {
-  max-width: 400px;
-  min-height: 52px;
+  max-width: 420px;
+  min-height: 54px;
   margin: 0 auto 10px;
   padding: 12px;
-  border: 2px solid var(--brand-1);
   border-radius: var(--radius-sm);
-  background: #f5f5f5;
+  background: var(--paper-2);
   text-align: center;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .keyboard-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  max-width: 400px;
+  max-width: 420px;
   margin: 0 auto;
 }
 
 .key {
-  padding: 14px;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  background: #f5f5f5;
-  color: #000;
+  min-height: 52px;
+  padding: 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--paper-2);
+  color: var(--ink);
   font: inherit;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
 .key:active {
-  transform: scale(0.95);
-  background: #e0e0e0;
+  transform: scale(0.94);
 }
 
 .key:disabled {
@@ -512,19 +920,20 @@ body.keyboard-open {
 }
 
 .key-operator {
-  background: var(--brand-2);
-  color: #fff;
+  background: var(--indigo-soft);
+  color: var(--indigo);
 }
 
 .key-danger {
-  background: var(--bad);
-  color: #fff;
+  background: var(--bad-soft);
+  color: var(--bad);
 }
 
 .key-done {
   grid-column: span 4;
-  background: var(--ok);
+  background: var(--accent);
   color: #fff;
+  font-size: 1.1rem;
 }
 
 /* --- Footer ------------------------------------------------------------------------------ */
@@ -532,98 +941,84 @@ body.keyboard-open {
 .site-footer {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px 16px;
   width: 100%;
-  max-width: 1400px;
-  margin-top: 16px;
+  margin-top: 20px;
   padding: 12px 20px 20px;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.75rem;
+  color: var(--muted);
 }
 
-.site-footer .version {
-  font-size: 0.7rem;
-  opacity: 0.85;
-}
+/* --- Narrow screens ---------------------------------------------------------------------- */
 
-@media (max-width: 600px) {
-  .game {
-    padding-inline: 10px;
-  }
-
-  .mode-tab {
-    padding: 8px 14px;
-  }
-
-  /* the question is shown above the abacus on narrow screens */
-  .question-row .question {
-    display: none;
-  }
-
+@media (max-width: 699px) {
   .site-header {
+    padding: 10px 14px;
+  }
+
+  .game {
     padding-inline: 12px;
   }
 
-  .site-footer {
-    justify-content: center;
+  .layout {
+    gap: 12px;
+  }
+
+  .display {
+    padding: 14px 16px;
+  }
+
+  .stats {
+    margin-inline: -16px;
+    margin-bottom: -14px;
+  }
+
+  .game-panel {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .hint {
+    font-size: 0.85rem;
   }
 }
 
-/* --- Digits under the rods --------------------------------------------------------------- */
+@media (max-width: 479px) {
+  /* The operator symbol alone is clear; the word stays for screen readers. */
+  .op-btn .op-symbol + span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 
-.digit-strip {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-top: 8px;
-  font-size: clamp(0.95rem, 2.6vw, 1.35rem);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-  color: #f5deb3;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  .op-symbol {
+    font-size: 1.45rem;
+  }
+
+  .segment {
+    font-size: 0.8rem;
+  }
+
+  .pill-button span {
+    display: none;
+  }
+
+  .pill-button {
+    padding: 9px;
+  }
 }
 
-.digit-strip .zero {
-  opacity: 0.35;
-}
-
-.simple-style .digit-strip {
-  color: #6b4a1f;
-  text-shadow: none;
-}
-
-/* --- Feedback ---------------------------------------------------------------------------- */
-
-.result.correct {
-  animation: pop 0.45s ease-out;
-}
-
-.result.incorrect {
-  animation: shake 0.4s ease-out;
-}
-
-#btnNewQuestion,
-#btnNewRepresent {
-  background: var(--ok);
-  border-color: var(--ok);
-  color: #fff;
-  font-weight: 700;
-}
-
-#btnNewQuestion:hover,
-#btnNewRepresent:hover {
-  background: #258a4d;
-}
+/* --- Feedback animations ----------------------------------------------------------------- */
 
 @keyframes pop {
   0% {
-    transform: scale(0.85);
+    transform: scale(0.9);
     opacity: 0;
   }
   60% {
-    transform: scale(1.04);
+    transform: scale(1.02);
   }
 }
 

@@ -1,19 +1,41 @@
 /* Design tokens, reset and components shared by the game and the card generator. */
 
+/*
+ * Palette inspired by the soroban itself: washi paper, sumi ink, vermilion (shu-iro) and indigo
+ * (ai-iro). The game page also defines a dark variant (see game.css).
+ */
 :root {
-  --brand-1: #667eea;
-  --brand-2: #764ba2;
-  --brand-gradient: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
-  --surface: rgba(255, 255, 255, 0.96);
-  --text: #2a2740;
-  --muted: #6a6880;
-  --border: #dcdcec;
-  --ok: #2e9e5b;
-  --bad: #d9363e;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 8px 32px rgba(20, 10, 60, 0.22);
-  --focus: #1b1464;
+  --paper: #f6f1e9;
+  --paper-2: #efe7da;
+  --card: #fffdf9;
+  --ink: #1f2330;
+  --muted: #6c6a73;
+  --line: #e6ddcf;
+  --accent: #d9453b;
+  --accent-strong: #b9342b;
+  --accent-soft: rgba(217, 69, 59, 0.1);
+  --indigo: #2f3d8f;
+  --indigo-soft: rgba(47, 61, 143, 0.09);
+  --ok: #188a5c;
+  --ok-soft: rgba(24, 138, 92, 0.12);
+  --bad: #d23a3a;
+  --bad-soft: rgba(210, 58, 58, 0.1);
+  --on-accent: #fff;
+
+  /* Names used by the card generator */
+  --brand-1: var(--indigo);
+  --brand-2: var(--accent);
+  --brand-gradient: linear-gradient(120deg, #1f2330 0%, #2f3d8f 100%);
+  --surface: var(--card);
+  --text: var(--ink);
+  --border: var(--line);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 1px 2px rgba(31, 35, 48, 0.06), 0 8px 24px rgba(31, 35, 48, 0.08);
+  --shadow-lg: 0 2px 6px rgba(31, 35, 48, 0.08), 0 24px 48px rgba(31, 35, 48, 0.16);
+  --focus: var(--indigo);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   font-family:
     system-ui,
     -apple-system,
@@ -33,6 +55,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: contain; /* no accidental pull-to-refresh while dragging beads */
 }
 
@@ -40,13 +63,12 @@ body {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  color: var(--text);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9);
 }
 
 .sr-only {
@@ -65,39 +87,54 @@ body {
   display: none !important;
 }
 
+/* Line icons of the interface (never the abacus pictures printed on the cards) */
+svg[aria-hidden='true'] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* --- Site header ------------------------------------------------------------------------- */
 
 .site-header {
   position: relative;
+  z-index: 40;
   width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 14px 20px 6px;
-  color: #fff;
+  padding: 12px 20px;
+  color: var(--ink);
 }
 
 .brand {
   display: block;
   flex: none;
   line-height: 0;
+  border-radius: 10px;
 }
 
 .brand-mark {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .site-title {
   flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
-  font-size: clamp(1.15rem, 3.6vw, 1.9rem);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .menu-wrap {
@@ -106,37 +143,60 @@ body {
 }
 
 .menu-button {
+  display: grid;
+  place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.45);
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
-  font-size: 1.4rem;
-  line-height: 1;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: var(--shadow);
+  transition:
+    background 0.2s,
+    transform 0.15s var(--ease);
+}
+
+.menu-button svg {
+  width: 22px;
+  height: 22px;
 }
 
 .menu-button:hover,
 .menu-button[aria-expanded='true'] {
-  background: rgba(255, 255, 255, 0.32);
+  background: var(--paper-2);
+}
+
+.menu-button:active {
+  transform: scale(0.95);
 }
 
 .site-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
   z-index: 50;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: min(280px, calc(100vw - 24px));
-  padding: 12px;
+  gap: 12px;
+  width: min(300px, calc(100vw - 24px));
+  padding: 14px;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow);
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top right;
+  animation: menu-in 0.18s var(--ease);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
 }
 
 .menu-extras {
@@ -146,63 +206,94 @@ body {
 .site-nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .nav-link {
-  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
-  border: 2px solid var(--border);
-  color: var(--text);
+  color: var(--ink);
+  font-weight: 550;
   text-decoration: none;
   transition: background 0.2s;
 }
 
 .nav-link:hover {
-  background: #f1f1fb;
+  background: var(--paper-2);
 }
 
 .nav-link[aria-current='page'] {
-  border-color: var(--brand-1);
-  background: rgba(102, 126, 234, 0.12);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
   font-weight: 700;
+}
+
+.nav-icon {
+  font-size: 1.15rem;
+}
+
+.menu-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .site-menu select {
   width: 100%;
-  padding: 9px 10px;
+  padding: 10px 36px 10px 12px;
   border-radius: var(--radius-sm);
-  border: 2px solid var(--border);
-  background: #fff;
-  color: var(--text);
+  border: 1px solid var(--line);
+  background: var(--paper)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c6a73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    no-repeat right 10px center / 18px;
+  color: var(--ink);
   font: inherit;
+  appearance: none;
   cursor: pointer;
 }
 
 /* --- Buttons ----------------------------------------------------------------------------- */
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 10px 18px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: #fff;
-  color: var(--text);
+  background: var(--card);
+  color: var(--ink);
   font: inherit;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition:
     background 0.2s,
-    transform 0.15s,
+    border-color 0.2s,
+    transform 0.15s var(--ease),
     box-shadow 0.2s;
 }
 
 .btn:hover {
-  background: #f1f1fb;
-  transform: translateY(-1px);
+  background: var(--paper-2);
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: scale(0.97);
 }
 
 .btn:disabled {
@@ -212,14 +303,16 @@ body {
 }
 
 .btn-primary {
-  background: var(--brand-1);
-  border-color: var(--brand-1);
-  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
   font-weight: 700;
+  box-shadow: 0 6px 16px -6px rgba(217, 69, 59, 0.6);
 }
 
 .btn-primary:hover {
-  background: #5568d3;
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
 }
 
 .btn-small {
@@ -245,9 +338,9 @@ body {
 .toast {
   padding: 12px 16px;
   border-radius: var(--radius-sm);
-  background: #26233a;
+  background: #1f2330;
   color: #fff;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   font-size: 0.95rem;
   animation: toast-in 0.2s ease-out;
 }
@@ -274,7 +367,6 @@ body {
 
 @media (pointer: coarse) {
   .btn,
-  .chip,
   .nav-link {
     min-height: 44px;
   }

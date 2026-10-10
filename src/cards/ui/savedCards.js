@@ -5,6 +5,16 @@ import { typeOf } from '../model.js';
 
 const byId = (id) => document.getElementById(id);
 
+/** Width of a thumbnail in CSS px; the card is scaled down to fit it whatever its size. */
+const THUMB_WIDTH = 116;
+const PX_PER_MM = 96 / 25.4;
+
+const ICONS = {
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4" />',
+  delete:
+    '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" />',
+};
+
 /** Actions overlaying each thumbnail. */
 function createActions(index, { onEdit, onDelete }) {
   const actions = document.createElement('div');
@@ -13,8 +23,8 @@ function createActions(index, { onEdit, onDelete }) {
   const make = (className, icon, labelKey, handler) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `btn btn-small ${className}`;
-    button.textContent = icon;
+    button.className = `card-action ${className}`;
+    button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>`;
     button.title = t(labelKey);
     button.setAttribute('aria-label', t(labelKey));
     button.addEventListener('click', (event) => {
@@ -25,8 +35,8 @@ function createActions(index, { onEdit, onDelete }) {
   };
 
   actions.append(
-    make('btn-primary', '✏️', 'cards.action.edit', onEdit),
-    make('btn-danger', '🗑️', 'cards.action.delete', onDelete),
+    make('card-action--edit', 'edit', 'cards.action.edit', onEdit),
+    make('card-action--delete', 'delete', 'cards.action.delete', onDelete),
   );
   return actions;
 }
@@ -56,11 +66,15 @@ function createItem(card, index, selected, hooks) {
 
   const thumbnail = createCardElement(card, 'front');
   thumbnail.classList.add('card-thumbnail');
+  const scale = THUMB_WIDTH / (card.width * PX_PER_MM);
+  thumbnail.style.transform = `scale(${scale})`;
   const wrapper = document.createElement('div');
   wrapper.className = 'card-wrapper';
+  wrapper.style.width = `${THUMB_WIDTH}px`;
+  wrapper.style.height = `${card.height * PX_PER_MM * scale}px`;
   wrapper.append(thumbnail);
 
-  item.append(checkbox, label, wrapper, createActions(index, hooks));
+  item.append(checkbox, wrapper, label, createActions(index, hooks));
   return item;
 }
 
@@ -85,6 +99,9 @@ export function renderSavedCards(state, hooks) {
   byId('selectedCount').textContent = selected;
   byId('selectedCountToDelete').textContent = selected;
   byId('emptyNote').hidden = state.cards.length > 0;
+  byId('deckTools').hidden = state.cards.length === 0;
+  byId('selectionBar').hidden = selected === 0;
+  document.body.classList.toggle('has-selection', selected > 0);
 
   const label = byId('editByTypeLabel');
   label.dataset.i18n = selected > 0 ? 'cards.action.editSelected' : 'cards.action.editByType';

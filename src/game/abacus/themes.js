@@ -2,15 +2,16 @@
 
 export const THEMES = {
   classic: {
-    background: '#d4a574',
-    frame: '#5d3a1a',
-    beam: '#3d2812',
-    rod: '#8b7355',
+    background: '#dcb483',
+    frame: '#4a2a12',
+    beam: '#2e1b0c',
+    rod: '#8a6a45',
     beamDot: '#f5deb3',
-    upper: { fill: '#c41e3a', stroke: '#8b1a1a' },
-    lower: { fill: '#1a1a1a', stroke: '#000000' },
+    upper: { fill: '#c8283a', stroke: '#7d1020' },
+    lower: { fill: '#2a2c33', stroke: '#0b0c0f' },
     accent: null,
-    flatBeads: false,
+    // Double-cone beads, like the ones on a real soroban
+    beadShape: 'bicone',
     beadScale: 1,
   },
   simple: {
@@ -23,7 +24,7 @@ export const THEMES = {
     lower: { fill: '#ffd700', stroke: '#daa520' },
     // The first lower bead of the hundreds and hundred-thousands rods is red, as a reading aid.
     accent: { fill: '#ff0000', stroke: '#cc0000', rodsFromRight: [2, 5] },
-    flatBeads: true,
+    beadShape: 'flat',
     beadScale: 1.35,
   },
 };
