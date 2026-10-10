@@ -19,8 +19,11 @@ export function getDom() {
     promo: byId('promoCards'),
     intro: byId('intro'),
     digits: [...document.querySelectorAll('#digitStrip span')],
+    display: byId('display'),
     numberDisplay: byId('numberDisplay'),
-    prompt: byId('prompt'),
+    reset: byId('btnReset'),
+    customNumber: byId('btnCustomNumber'),
+    customOperation: byId('btnCustomOperation'),
     numberInput: byId('numberInput'),
     representPanel: byId('representPanel'),
     operatePanel: byId('operatePanel'),
@@ -62,7 +65,7 @@ function renderFeedback({ result, validate, next }, feedback, helpers) {
   validate.style.display = solved ? 'none' : '';
   next.style.display = solved ? '' : 'none';
 
-  result.style.display = feedback ? 'block' : 'none';
+  result.hidden = !feedback;
   result.className = feedback ? `result ${solved ? 'correct' : 'incorrect'}` : 'result';
   result.textContent = feedback ? feedbackText(feedback, helpers) : '';
 }
@@ -131,13 +134,12 @@ export function render(dom, state, helpers) {
     helpers,
   );
 
-  // The question is repeated above the abacus on narrow screens.
-  dom.prompt.textContent = isRepresent
-    ? dom.representQuestion.textContent
-    : isOperate
-      ? dom.question.textContent
-      : '';
-  dom.prompt.hidden = state.mode === 'free';
+  // Only the question of the current mode is shown in the question card.
+  dom.display.dataset.mode = state.mode;
+  dom.representQuestion.hidden = !isRepresent;
+  dom.question.hidden = !isOperate;
+  dom.customNumber.hidden = !isRepresent;
+  dom.customOperation.hidden = !isOperate;
 
   // Difficulty chips live in both panels; none is highlighted for a player-typed question.
   const customQuestion = isRepresent ? state.target?.manual : state.problem?.manual;
@@ -165,6 +167,7 @@ export function render(dom, state, helpers) {
   // Abacus chrome and settings
   dom.container.classList.toggle('simple-style', state.abacusStyle === 'simple');
   dom.container.classList.toggle('locked', reading);
+  dom.reset.hidden = reading;
   dom.hint.hidden = !reading && state.mode !== 'free';
   dom.hint.textContent = t(reading ? 'game.abacus.locked' : 'game.abacus.hint');
   dom.confettiMode.value = state.confettiMode;

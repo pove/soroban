@@ -70,6 +70,7 @@ export default {
   'game.stats.solved': 'Solved',
   'game.stats.streak': 'Streak',
   'game.stats.best': 'Best streak',
+  'game.stats.label': 'Score',
 
   'game.settings.style': 'Abacus',
   'game.settings.confetti': 'Confetti',

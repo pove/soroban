@@ -1,7 +1,7 @@
 /* Card generator page */
 
 body.cards-page {
-  background: #f3f4fb;
+  background: var(--paper);
 }
 
 body.cards-page .site-header {
@@ -9,6 +9,7 @@ body.cards-page .site-header {
   margin: 0;
   padding: 12px max(20px, calc((100vw - 1200px) / 2));
   background: var(--brand-gradient);
+  color: #fff;
 }
 
 .container {

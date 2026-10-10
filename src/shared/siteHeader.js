@@ -16,27 +16,30 @@ import { getLanguage, setLanguage } from '../i18n/index.js';
 export function mountSiteHeader(container, { active, links, titleKey }) {
   container.innerHTML = `
     <a class="brand" href="${links.game}" aria-label="Soroban">
-      <img class="brand-mark" src="${links.game}images/icon-96x96.png" alt="" width="40" height="40" />
+      <img class="brand-mark" src="${links.game}images/icon-96x96.png" alt="" width="36" height="36" />
     </a>
     <h1 class="site-title" data-i18n="${titleKey}"></h1>
     <div class="menu-wrap">
       <button type="button" id="menuButton" class="menu-button" aria-expanded="false"
         aria-controls="siteMenu" data-i18n-aria-label="nav.menu" data-i18n-title="nav.menu">
-        <span aria-hidden="true">☰</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
       </button>
       <div id="siteMenu" class="site-menu" hidden>
         <nav class="site-nav" data-i18n-aria-label="nav.label">
           <a class="nav-link" href="${links.game}" ${active === 'game' ? 'aria-current="page"' : ''}>
-            <span aria-hidden="true">🧮</span> <span data-i18n="nav.game"></span>
+            <span class="nav-icon" aria-hidden="true">🧮</span> <span data-i18n="nav.game"></span>
           </a>
           <a class="nav-link nav-link--cta" href="${links.cards}" ${active === 'cards' ? 'aria-current="page"' : ''}>
-            <span aria-hidden="true">🖨️</span> <span data-i18n="nav.cards"></span>
+            <span class="nav-icon" aria-hidden="true">🖨️</span> <span data-i18n="nav.cards"></span>
           </a>
         </nav>
-        <select id="languageSelect" data-i18n-aria-label="language.label">
-          <option value="es">Español</option>
-          <option value="en">English</option>
-        </select>
+        <label class="menu-field">
+          <span class="menu-label" data-i18n="language.label"></span>
+          <select id="languageSelect" data-i18n-aria-label="language.label">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
+        </label>
         <div class="menu-extras" data-menu-extras></div>
       </div>
     </div>

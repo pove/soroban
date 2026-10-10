@@ -97,6 +97,12 @@ export class AbacusRenderer {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = theme.background;
     ctx.fillRect(0, 0, width, height);
+    // Soft light from above
+    const light = ctx.createLinearGradient(0, 0, 0, height);
+    light.addColorStop(0, 'rgba(255,255,255,0.18)');
+    light.addColorStop(1, 'rgba(0,0,0,0.08)');
+    ctx.fillStyle = light;
+    ctx.fillRect(0, 0, width, height);
 
     ctx.strokeStyle = theme.frame;
     ctx.lineWidth = frameThickness;
@@ -142,10 +148,73 @@ export class AbacusRenderer {
     }
   }
 
-  drawBead(x, y, { fill, stroke }) {
+  drawBead(x, y, colors) {
+    if (this.theme.beadShape === 'bicone') this.drawBicone(x, y, colors);
+    else this.drawRound(x, y, colors);
+  }
+
+  /** Seen from the front, a double-cone bead is a hexagon with softened corners. */
+  traceBicone(x, y, radius, vertical) {
+    const { ctx } = this;
+    const flat = radius * 0.34;
+    const bend = radius * 0.72;
+    ctx.beginPath();
+    ctx.moveTo(x - radius, y);
+    ctx.quadraticCurveTo(x - bend, y - vertical, x - flat, y - vertical);
+    ctx.lineTo(x + flat, y - vertical);
+    ctx.quadraticCurveTo(x + bend, y - vertical, x + radius, y);
+    ctx.quadraticCurveTo(x + bend, y + vertical, x + flat, y + vertical);
+    ctx.lineTo(x - flat, y + vertical);
+    ctx.quadraticCurveTo(x - bend, y + vertical, x - radius, y);
+    ctx.closePath();
+  }
+
+  drawBicone(x, y, { fill, stroke }) {
+    const { ctx } = this;
+    const radius = this.layout.beadRadius * this.theme.beadScale * 1.08;
+    const vertical = this.layout.beadRadius * 0.78;
+
+    // Shadow
+    ctx.fillStyle = 'rgba(40,20,5,0.22)';
+    this.traceBicone(x, y + vertical * 0.18, radius * 0.98, vertical);
+    ctx.fill();
+
+    // Body: lit from above, with a bright ridge where both cones meet
+    const body = ctx.createLinearGradient(0, y - vertical, 0, y + vertical);
+    body.addColorStop(0, shadeColor(fill, 0.35));
+    body.addColorStop(0.44, fill);
+    body.addColorStop(0.5, shadeColor(fill, 0.22));
+    body.addColorStop(0.56, shadeColor(fill, -0.18));
+    body.addColorStop(1, shadeColor(fill, -0.45));
+    ctx.fillStyle = body;
+    this.traceBicone(x, y, radius, vertical);
+    ctx.fill();
+
+    // Specular highlight on the upper cone
+    const gloss = ctx.createRadialGradient(
+      x - radius * 0.25,
+      y - vertical * 0.5,
+      0,
+      x - radius * 0.25,
+      y - vertical * 0.5,
+      radius * 0.6,
+    );
+    gloss.addColorStop(0, 'rgba(255,255,255,0.45)');
+    gloss.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gloss;
+    this.traceBicone(x, y, radius, vertical);
+    ctx.fill();
+
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = Math.max(1, radius * 0.05);
+    this.traceBicone(x, y, radius, vertical);
+    ctx.stroke();
+  }
+
+  drawRound(x, y, { fill, stroke }) {
     const { ctx, theme } = this;
     const radius = this.layout.beadRadius * theme.beadScale;
-    const flat = theme.flatBeads;
+    const flat = theme.beadShape === 'flat';
     const vertical = radius * (flat ? 0.45 : 0.8);
 
     // Shadow
@@ -225,4 +294,12 @@ export class AbacusRenderer {
     ctx.ellipse(x, y, radius, vertical, 0, 0, Math.PI * 2);
     ctx.fill();
   }
+}
+
+/** Lightens (amount > 0) or darkens (amount < 0) a #rrggbb color. */
+function shadeColor(hex, amount) {
+  const target = amount > 0 ? 255 : 0;
+  const channels = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const mixed = channels.map((c) => Math.round(c + (target - c) * Math.abs(amount)));
+  return `rgb(${mixed.join(',')})`;
 }

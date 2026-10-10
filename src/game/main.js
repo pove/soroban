@@ -29,6 +29,8 @@ const { extras } = mountSiteHeader(document.getElementById('siteHeader'), {
   titleKey: 'game.title',
 });
 extras.append(document.getElementById('gameSettings').content);
+// The mode switcher sits in the header (a bottom tab bar on phones, see game.css).
+document.querySelector('.site-title').after(document.querySelector('.modes'));
 applyTranslations();
 
 const dom = getDom();
