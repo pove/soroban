@@ -202,3 +202,29 @@ test.describe('represent mode', () => {
     await expect(page.locator(ui.representQuestion)).toHaveText('Representa el número: 500');
   });
 });
+
+test.describe('small screens', () => {
+  for (const viewport of [
+    { width: 360, height: 640 },
+    { width: 375, height: 667 },
+    { width: 667, height: 375 },
+  ]) {
+    test(`the check button is visible without scrolling at ${viewport.width}x${viewport.height}`, async ({
+      page,
+      openGame,
+      ui,
+    }) => {
+      await page.setViewportSize(viewport);
+      await openGame({ state: { ...baseState, mode: 'representar' } });
+      const button = await page.locator(ui.validateRepresent).boundingBox();
+      // On phones held upright the modes are a tab bar fixed at the bottom of the screen.
+      const limit = await page.evaluate(() => {
+        const bar = document.querySelector('.modes');
+        return getComputedStyle(bar).position === 'fixed'
+          ? bar.getBoundingClientRect().top
+          : innerHeight;
+      });
+      expect(button.y + button.height).toBeLessThanOrEqual(limit);
+    });
+  }
+});

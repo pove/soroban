@@ -9,6 +9,7 @@ export default {
   'cards.hero.loadText': 'Continue a deck you saved',
   'cards.hero.designText': 'Your own texts, colors and abacus',
   'cards.design.format': 'Format',
+  'cards.saved.selectionLabel': 'Selected cards',
   'cards.saved.selected': 'selected',
 
   // Project bar

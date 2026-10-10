@@ -2,7 +2,7 @@
  * SVG picture of a soroban showing a number, used on the printed cards.
  * Returns markup (numbers only, no user text), ready for `innerHTML`.
  */
-import { COLUMNS, LOWER_BEADS, numberToColumns } from '../core/abacus.js';
+import { COLUMNS, LOWER_BEADS, columnsToNumber, numberToColumns } from '../core/abacus.js';
 
 const FRAME = '#5d3a1a';
 const BEAM = '#3d2812';
@@ -54,6 +54,8 @@ export function abacusSvg(number, width, height) {
 
   const parts = [
     `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img">`,
+    // Text alternative: the number the abacus shows
+    `<title>${columnsToNumber(columns)}</title>`,
     `<defs><radialGradient id="${gradientId}"><stop offset="0%" stop-color="#fff" stop-opacity="0.4"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>`,
     `<rect x="1" y="1" width="${width - 2}" height="${height - 2}" fill="none" stroke="${FRAME}" stroke-width="2"/>`,
     `<line x1="${padding}" y1="${dividerY}" x2="${padding + innerWidth}" y2="${dividerY}" stroke="${BEAM}" stroke-width="3"/>`,

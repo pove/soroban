@@ -148,7 +148,7 @@ h3 {
   border-color: transparent;
   background:
     radial-gradient(400px 200px at 100% 0, rgba(255, 255, 255, 0.18), transparent 70%),
-    linear-gradient(135deg, var(--accent), var(--accent-strong));
+    linear-gradient(135deg, var(--accent-fill), var(--accent-fill-strong));
   color: #fff;
   box-shadow: 0 12px 28px -12px rgba(217, 69, 59, 0.7);
 }
