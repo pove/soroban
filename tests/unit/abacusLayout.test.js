@@ -89,21 +89,15 @@ describe('abacus layout', () => {
 });
 
 describe('themes', () => {
-  it('colors upper and lower beads per theme', () => {
-    const upper = { col: 0, type: 'upper', index: 0 };
-    const lower = { col: 0, type: 'lower', index: 1 };
-    expect(beadColors(THEMES.classic, upper, 7).fill).not.toBe(
-      beadColors(THEMES.classic, lower, 7).fill,
-    );
-    expect(beadColors(THEMES.simple, upper, 7).fill).toBe(beadColors(THEMES.simple, lower, 7).fill);
-  });
-
-  it('marks the first bead of the hundreds and hundred-thousands rods in the simple theme', () => {
-    const accented = (col, index) =>
-      beadColors(THEMES.simple, { col, type: 'lower', index }, 7).fill;
-    expect(accented(4, 0)).toBe('#ff0000'); // hundreds (2 from the right)
-    expect(accented(1, 0)).toBe('#ff0000'); // hundred-thousands (5 from the right)
-    expect(accented(6, 0)).not.toBe('#ff0000');
-    expect(accented(4, 1)).not.toBe('#ff0000');
+  it('paints only the upper beads red in every theme', () => {
+    for (const theme of Object.values(THEMES)) {
+      for (let col = 0; col < 7; col++) {
+        const upper = beadColors(theme, { col, type: 'upper', index: 0 }).fill;
+        expect(upper).toMatch(/^#(c8283a|ff0000)$/);
+        for (let index = 0; index < 4; index++) {
+          expect(beadColors(theme, { col, type: 'lower', index }).fill).not.toBe(upper);
+        }
+      }
+    }
   });
 });

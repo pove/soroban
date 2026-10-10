@@ -144,7 +144,7 @@ export class AbacusRenderer {
 
     for (const bead of beadTargets(columns, layout)) {
       const y = this.current.get(keyOf(bead)) ?? bead.y;
-      this.drawBead(bead.x, y, beadColors(theme, bead, layout.columnCount));
+      this.drawBead(bead.x, y, beadColors(theme, bead));
     }
   }
 

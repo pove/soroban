@@ -29,7 +29,7 @@ An interactive **soroban** (Japanese abacus) for learning to read numbers and ca
 - **Keyboard**: Enter checks the answer and, once it is right, moves on to the next question.
 - **Your own questions**: type any operation (`23+45`, `12x4`, `84/7` all work) or any number to represent.
 - **Score**: solved questions, current streak and best streak (stored in your browser).
-- **Two abacus styles** (classic wood with double-cone red/black beads, like a real soroban, and a simple yellow one) and **ten celebration effects**
+- **Two abacus styles** (classic wood with double-cone red/black beads, like a real soroban, and a simple one with red upper and yellow lower beads) and **ten celebration effects**
   (from a tiny puff to dinosaurs, rainbows and "total madness"), plus "none" and a random surprise.
 - **Layout for every screen**: on computers and landscape tablets the abacus sits next to the controls; on phones the
   question sits above the abacus, the modes move to a bottom tab bar within reach of the thumb, and everything fits on
