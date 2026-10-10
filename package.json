@@ -1,6 +1,6 @@
 {
   "name": "soroban",
-  "version": "3.0.0",
+  "version": "3.5.0",
   "description": "Interactive Japanese abacus (soroban) game and printable practice-card generator",
   "private": true,
   "type": "module",

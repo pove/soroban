@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
   COLUMNS,
@@ -580,4 +581,17 @@ test.describe('light and dark theme', () => {
     await chooseOption(page, '#themeSelect', 'light');
     await expect(theme(page)).toHaveAttribute('data-theme', 'light');
   });
+});
+
+test('both pages show the version and the commit they were built from', async ({
+  page,
+  gamePath,
+  cardsPath,
+}) => {
+  const { version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url)));
+  const footer = new RegExp(`^Pove · v${version.replaceAll('.', '\\.')} · [0-9a-f]{7,}$`);
+  for (const path of [gamePath, cardsPath]) {
+    await page.goto(path);
+    await expect(page.locator('#appVersion')).toHaveText(footer);
+  }
 });

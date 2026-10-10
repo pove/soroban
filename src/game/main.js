@@ -14,6 +14,7 @@ import {
 } from '../i18n/index.js';
 import { registerServiceWorker } from '../shared/registerServiceWorker.js';
 import { getThemeChoice, initTheme, setThemeChoice } from '../shared/theme.js';
+import { versionText } from '../shared/version.js';
 import { mountSiteHeader, syncLanguageSelect } from '../shared/siteHeader.js';
 import * as actions from './actions.js';
 import { AbacusRenderer } from './abacus/renderer.js';
@@ -89,9 +90,7 @@ function refreshLanguage(language) {
   syncLanguageSelect(language);
   editor.refreshLanguage();
   document.title = t('game.title');
-  document.getElementById('appVersion').textContent = t('footer.version', {
-    version: __APP_VERSION__,
-  });
+  document.getElementById('appVersion').textContent = versionText(t);
   render(dom, store.get(), helpers);
 }
 onLanguageChange(refreshLanguage);
