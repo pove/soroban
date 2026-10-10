@@ -16,6 +16,8 @@ export function getDom() {
     canvas: byId('abacusCanvas'),
     container: document.querySelector('.abacus-container'),
     hint: byId('abacusHint'),
+    promo: byId('promoCards'),
+    intro: byId('intro'),
     digits: [...document.querySelectorAll('#digitStrip span')],
     numberDisplay: byId('numberDisplay'),
     prompt: byId('prompt'),
@@ -92,9 +94,11 @@ export function render(dom, state, helpers) {
   dom.operatePanel.classList.toggle('active', isOperate);
 
   // Number display: hidden while the player has to type the number they read on the abacus.
-  dom.numberDisplay.hidden = reading;
+  // In Represent/Operate the "?" or "0" placeholder adds a line and no information, so it is hidden.
+  const placeholder = (isRepresent && !state.feedback) || (isOperate && value === 0);
+  dom.numberDisplay.hidden = reading || placeholder;
   dom.numberInput.hidden = !reading;
-  dom.numberDisplay.textContent = isRepresent && !state.feedback ? '?' : formatNumber(value);
+  dom.numberDisplay.textContent = formatNumber(value);
 
   // Represent panel
   dom.representQuestion.textContent = reading
@@ -144,6 +148,8 @@ export function render(dom, state, helpers) {
 
   // Score
   dom.stats.hidden = state.mode === 'free';
+  dom.promo.hidden = state.mode !== 'free';
+  dom.intro.hidden = state.mode !== 'free';
   dom.statSolved.textContent = formatNumber(state.stats.solved);
   dom.statStreak.textContent = formatNumber(state.stats.streak);
   dom.statBest.textContent = formatNumber(state.stats.best);
@@ -159,6 +165,7 @@ export function render(dom, state, helpers) {
   // Abacus chrome and settings
   dom.container.classList.toggle('simple-style', state.abacusStyle === 'simple');
   dom.container.classList.toggle('locked', reading);
+  dom.hint.hidden = !reading && state.mode !== 'free';
   dom.hint.textContent = t(reading ? 'game.abacus.locked' : 'game.abacus.hint');
   dom.confettiMode.value = state.confettiMode;
   dom.abacusStyle.value = state.abacusStyle;
