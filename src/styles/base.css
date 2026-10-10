@@ -9,15 +9,19 @@
   --paper-2: #efe7da;
   --card: #fffdf9;
   --ink: #1f2330;
-  --muted: #6c6a73;
+  --muted: #5e5c66;
   --line: #e6ddcf;
-  --accent: #d9453b;
-  --accent-strong: #b9342b;
-  --accent-soft: rgba(217, 69, 59, 0.1);
+  --accent: #c93a31;
+  --accent-strong: #a92e26;
+  --accent-soft: rgba(201, 58, 49, 0.1);
+  /* Backgrounds behind white text (the dark theme brightens --accent and --ok for text only) */
+  --accent-fill: var(--accent);
+  --accent-fill-strong: var(--accent-strong);
   --indigo: #2f3d8f;
   --indigo-soft: rgba(47, 61, 143, 0.09);
-  --ok: #188a5c;
-  --ok-soft: rgba(24, 138, 92, 0.12);
+  --ok: #15805a;
+  --ok-soft: rgba(21, 128, 90, 0.12);
+  --ok-fill: var(--ok);
   --bad: #d23a3a;
   --bad-soft: rgba(210, 58, 58, 0.1);
   --on-accent: #fff;
@@ -257,7 +261,7 @@ svg[aria-hidden='true'] {
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--paper)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c6a73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235e5c66' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
     no-repeat right 10px center / 18px;
   color: var(--ink);
   font: inherit;
@@ -303,16 +307,16 @@ svg[aria-hidden='true'] {
 }
 
 .btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
   color: var(--on-accent);
   font-weight: 700;
-  box-shadow: 0 6px 16px -6px rgba(217, 69, 59, 0.6);
+  box-shadow: 0 6px 16px -6px rgba(201, 58, 49, 0.6);
 }
 
 .btn-primary:hover {
-  background: var(--accent-strong);
-  border-color: var(--accent-strong);
+  background: var(--accent-fill-strong);
+  border-color: var(--accent-fill-strong);
 }
 
 .btn-small {

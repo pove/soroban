@@ -10,6 +10,7 @@ export default {
   'cards.hero.loadText': 'Sigue con un mazo que guardaste',
   'cards.hero.designText': 'Tus propios textos, colores y ábaco',
   'cards.design.format': 'Formato',
+  'cards.saved.selectionLabel': 'Tarjetas seleccionadas',
   'cards.saved.selected': 'seleccionada(s)',
 
   // Project bar

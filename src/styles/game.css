@@ -15,6 +15,9 @@
     --indigo-soft: rgba(154, 168, 255, 0.14);
     --ok: #3cc58b;
     --ok-soft: rgba(60, 197, 139, 0.16);
+    --accent-fill: #c53a31;
+    --accent-fill-strong: #a92e26;
+    --ok-fill: #127a51;
     --bad: #ff6b6b;
     --bad-soft: rgba(255, 107, 107, 0.15);
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -98,7 +101,7 @@ body.game-page {
   box-shadow: var(--shadow);
 }
 
-@media (min-width: 700px) {
+@media (min-width: 700px), (orientation: landscape) {
   .site-header .modes {
     margin-inline: auto;
   }
@@ -108,8 +111,8 @@ body.game-page {
   }
 }
 
-/* Phones: a bottom tab bar, within reach of the thumb. */
-@media (max-width: 699px) {
+/* Phones held upright: a bottom tab bar, within reach of the thumb. */
+@media (max-width: 699px) and (orientation: portrait) {
   body.game-page {
     --tabbar-height: 68px;
   }
@@ -175,9 +178,9 @@ body.game-page {
   margin-inline: auto;
 }
 
-@media (min-width: 1000px), (orientation: landscape) and (min-width: 700px) {
+@media (min-width: 1000px), (orientation: landscape) and (min-width: 600px) {
   .layout {
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
     grid-auto-flow: row dense;
     gap: 20px;
     max-width: none;
@@ -225,7 +228,7 @@ body.game-page {
   line-height: 1.15;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   cursor: default;
 }
 
@@ -289,10 +292,47 @@ body.game-page {
   font-variant-numeric: tabular-nums;
 }
 
-/* While answering: a small live read-out of the abacus under the question */
-.display:not([data-mode='free']) .value-row {
-  display: flex;
-  margin-top: 6px;
+/*
+ * While answering: the question on the first row; under it a small live read-out of the abacus
+ * and the buttons (write my own, reset). The rows dissolve into one grid.
+ */
+.display:not([data-mode='free']) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: start;
+  gap: 6px 8px;
+}
+
+.display:not([data-mode='free']) :is(.question-row, .value-row) {
+  display: contents;
+}
+
+.display:not([data-mode='free']) .question {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.display:not([data-mode='free']) .pill-button {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  min-height: 36px;
+}
+
+.display:not([data-mode='free']) #btnReset {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.display:not([data-mode='free']) .number-display {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  justify-self: start;
+}
+
+.display:not([data-mode='free']) > :is(#numberInput, .custom-editor, .stats) {
+  grid-column: 1 / -1;
 }
 
 .display:not([data-mode='free']) .icon-button {
@@ -646,15 +686,15 @@ body.game-page {
 }
 
 .btn-next {
-  background: var(--ok);
-  border-color: var(--ok);
+  background: var(--ok-fill);
+  border-color: var(--ok-fill);
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--ok) 70%, transparent);
+  box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--ok-fill) 70%, transparent);
 }
 
 .btn-next:hover {
-  background: color-mix(in srgb, var(--ok) 85%, #000);
+  background: color-mix(in srgb, var(--ok-fill) 85%, #000);
   border-color: transparent;
 }
 
@@ -682,7 +722,7 @@ body.game-page {
 
 .result.correct {
   background: var(--ok-soft);
-  color: var(--ok);
+  color: color-mix(in srgb, var(--ok) 78%, var(--ink));
   animation: pop 0.45s var(--ease);
 }
 
@@ -693,7 +733,7 @@ body.game-page {
 
 .result.incorrect {
   background: var(--bad-soft);
-  color: var(--bad);
+  color: color-mix(in srgb, var(--bad) 78%, var(--ink));
   animation: shake 0.4s ease-out;
 }
 
@@ -931,7 +971,7 @@ body.keyboard-open {
 
 .key-done {
   grid-column: span 4;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: #fff;
   font-size: 1.1rem;
 }
@@ -979,6 +1019,172 @@ body.keyboard-open {
 
   .hint {
     font-size: 0.85rem;
+  }
+}
+
+/* Short phones (e.g. iPhone SE): tighter spacing so the main button stays above the tab bar */
+@media (max-width: 699px) and (max-height: 760px) and (orientation: portrait) {
+  body.game-page {
+    --tabbar-height: 60px;
+  }
+
+  .site-header {
+    padding-block: 6px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .menu-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .layout {
+    gap: 8px;
+  }
+
+  .display {
+    gap: 2px;
+    padding: 10px 14px;
+  }
+
+  .question {
+    font-size: 1.45rem;
+  }
+
+  .pill-button,
+  .display:not([data-mode='free']) .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stats {
+    margin: 8px -14px -10px;
+  }
+
+  .stat {
+    padding-block: 6px;
+  }
+
+  .game-panel {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .segment {
+    min-height: 36px;
+  }
+
+  .diff-btn {
+    min-height: 42px;
+  }
+
+  .actions .btn {
+    min-height: 46px;
+  }
+
+  .mode-tab {
+    min-height: 48px;
+  }
+
+  .mode-icon {
+    height: 24px;
+  }
+
+  #representQuestion {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 699px) and (max-height: 680px) and (orientation: portrait) {
+  .site-header {
+    padding-block: 4px;
+  }
+
+  .display {
+    padding-block: 8px;
+  }
+
+  .stats {
+    margin-top: 4px;
+  }
+
+  .diff-btn {
+    min-height: 40px;
+  }
+
+  .actions .btn {
+    min-height: 44px;
+  }
+}
+
+/* Landscape phones: the question card and the controls must fit next to the abacus */
+@media (orientation: landscape) and (max-height: 500px) {
+  .site-header {
+    padding-block: 6px;
+  }
+
+  /* The modes take the header; the page name stays for screen readers */
+  .site-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .game {
+    padding-inline: 16px;
+  }
+
+  .layout {
+    gap: 10px 16px;
+  }
+
+  .board {
+    max-width: calc((100dvh - 70px) * 1.6667);
+  }
+
+  .display {
+    padding: 8px 14px;
+  }
+
+  .question {
+    font-size: 1.5rem;
+  }
+
+  #representQuestion {
+    font-size: 1.15rem;
+  }
+
+  .stats {
+    margin: 6px -14px -8px;
+  }
+
+  .stat {
+    padding-block: 4px;
+  }
+
+  .game-panel {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .segment,
+  .diff-btn {
+    min-height: 34px;
+  }
+
+  .diff-btn .level {
+    display: none;
+  }
+
+  .actions .btn {
+    min-height: 42px;
   }
 }
 
