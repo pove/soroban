@@ -83,3 +83,15 @@ test('saves the project as a JSON download', async ({ page, cardsPath }) => {
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/^board-game-cards-\d{4}-\d{2}-\d{2}\.json$/);
 });
+
+test('interface styles do not leak into the abacus drawn on the cards', async ({
+  page,
+  cardsPath,
+}) => {
+  await page.goto(cardsPath);
+  await page.getByRole('button', { name: /Load Sample/i }).click();
+  const svg = page.locator('#savedCards .card svg').first();
+  // The bead bodies have a fill and no outline of their own; the rods have square ends.
+  await expect(svg.locator('ellipse').nth(1)).toHaveCSS('stroke', 'none');
+  await expect(svg.locator('line').first()).toHaveCSS('stroke-linecap', 'butt');
+});

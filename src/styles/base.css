@@ -87,7 +87,8 @@ body {
   display: none !important;
 }
 
-svg {
+/* Line icons of the interface (never the abacus pictures printed on the cards) */
+svg[aria-hidden='true'] {
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
