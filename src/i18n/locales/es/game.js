@@ -60,9 +60,9 @@ export default {
 
   'game.intro.title': '¿Qué es un soroban?',
   'game.intro.what':
-    'El soroban es el ábaco japonés: un marco con varillas verticales, cada una con una cuenta superior que vale 5 y cuatro cuentas inferiores que valen 1. Cada varilla es una cifra, de las unidades a la derecha hacia las decenas, centenas… a la izquierda.',
+    'Es el ábaco japonés. Cada varilla es una cifra: la de la derecha son las unidades y, hacia la izquierda, las decenas, las centenas… Una cuenta solo vale cuando toca la barra central: la de arriba vale 5 y cada una de abajo, 1.',
   'game.intro.how':
-    'Una cuenta cuenta solo cuando toca la barra central. Acerca cuentas a la barra para sumar y aléjalas para restar: la cuenta de arriba suma 5 y cada una de abajo suma 1, así que cada varilla representa del 0 al 9. Prueba a moverlas aquí.',
+    'Para formar un 7, baja la cuenta de arriba (5) y sube dos de abajo (2). Para el 36: tres cuentas de abajo en las decenas y, en las unidades, 5 + 1. Pruébalo aquí: con práctica sumarás, restarás, multiplicarás y dividirás muy rápido.',
 
   'game.promo.title': '¿Tienes un ábaco físico?',
   'game.promo.text': 'Genera e imprime tarjetas de práctica →',

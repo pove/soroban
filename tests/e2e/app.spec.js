@@ -440,6 +440,11 @@ test.describe('reading aids and keyboard flow', () => {
     await expect(page.locator('#digitStrip')).toBeHidden();
   });
 
+  test('is hidden in Operate mode too', async ({ page, openGame }) => {
+    await openGame({ state: { ...baseState, mode: 'juego' } });
+    await expect(page.locator('#digitStrip')).toBeHidden();
+  });
+
   test('Enter checks the answer, then moves on to the next question', async ({
     page,
     openGame,
