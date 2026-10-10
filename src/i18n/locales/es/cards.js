@@ -1,5 +1,5 @@
 export default {
-  'cards.title': 'Generador de tarjetas Soroban',
+  'cards.title': 'Generador de tarjetas',
   'cards.subtitle': 'Diseña e imprime tarjetas de práctica para un soroban físico',
 
   // Project bar

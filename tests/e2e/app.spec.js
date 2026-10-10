@@ -116,7 +116,7 @@ test.describe('language', () => {
 
     await chooseOption(page, '#languageSelect', 'es');
     await expect(page.locator('#btnAutoGen')).toContainText('Generar lote automático');
-    await expect(page).toHaveTitle('Generador de tarjetas Soroban');
+    await expect(page).toHaveTitle('Generador de tarjetas');
   });
 });
 
