@@ -228,3 +228,31 @@ test.describe('small screens', () => {
     });
   }
 });
+
+test('the abacus read-out is neutral until checked, then green or red', async ({
+  page,
+  openGame,
+  ui,
+}) => {
+  const verdict = () => page.locator('#display').getAttribute('data-verdict');
+  const color = () => page.locator(ui.display).evaluate((el) => getComputedStyle(el).color);
+  await openGame({
+    state: {
+      ...baseState,
+      mode: 'juego',
+      gameData: { a: 12, b: 30, op: '+', answer: 42, manual: false },
+      abacusColumns: columnsFor(7),
+    },
+  });
+  await expect(page.locator(ui.question)).toHaveText('12 + 30 = ?');
+  expect(await verdict()).toBe('');
+  const neutral = await color();
+
+  await page.locator(ui.validate).click(); // 7 is not the answer
+  await expect(page.locator('#display')).toHaveAttribute('data-verdict', 'wrong');
+  const wrong = await color();
+  expect(wrong).not.toBe(neutral);
+
+  await page.locator(ui.reset).click(); // moving the beads clears the verdict
+  await expect(page.locator('#display')).toHaveAttribute('data-verdict', '');
+});

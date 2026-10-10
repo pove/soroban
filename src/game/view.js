@@ -136,6 +136,8 @@ export function render(dom, state, helpers) {
 
   // Only the question of the current mode is shown in the question card.
   dom.display.dataset.mode = state.mode;
+  // The abacus read-out turns green or red with the verdict (neutral until the answer is checked)
+  dom.display.dataset.verdict = state.feedback?.kind ?? '';
   dom.representQuestion.hidden = !isRepresent;
   dom.question.hidden = !isOperate;
   dom.customNumber.hidden = !isRepresent;

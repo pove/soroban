@@ -270,7 +270,7 @@ body.game-page {
 }
 
 .value-row:not(:has(> :not([hidden]))) {
-  display: none !important;
+  display: none;
 }
 
 .value-row .number-display {
@@ -358,8 +358,19 @@ body.game-page {
   content: '';
   width: 18px;
   height: 12px;
-  background: var(--accent);
+  background: currentColor;
   clip-path: polygon(0 50%, 28% 0, 72% 0, 100% 50%, 72% 100%, 28% 100%);
+}
+
+/* After checking: green when right, red when wrong */
+.display[data-verdict='correct'] .number-display {
+  background: var(--ok-soft);
+  color: color-mix(in srgb, var(--ok) 78%, var(--ink));
+}
+
+.display[data-verdict='wrong'] .number-display {
+  background: var(--bad-soft);
+  color: color-mix(in srgb, var(--bad) 78%, var(--ink));
 }
 
 #numberInput {
