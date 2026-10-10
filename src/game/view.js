@@ -17,6 +17,7 @@ export function getDom() {
     container: document.querySelector('.abacus-container'),
     hint: byId('abacusHint'),
     promo: byId('promoCards'),
+    intro: byId('intro'),
     digits: [...document.querySelectorAll('#digitStrip span')],
     numberDisplay: byId('numberDisplay'),
     prompt: byId('prompt'),
@@ -148,6 +149,7 @@ export function render(dom, state, helpers) {
   // Score
   dom.stats.hidden = state.mode === 'free';
   dom.promo.hidden = state.mode !== 'free';
+  dom.intro.hidden = state.mode !== 'free';
   dom.statSolved.textContent = formatNumber(state.stats.solved);
   dom.statStreak.textContent = formatNumber(state.stats.streak);
   dom.statBest.textContent = formatNumber(state.stats.best);

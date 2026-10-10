@@ -58,6 +58,12 @@ export default {
   'game.abacus.hint': 'Tap a bead or drag it',
   'game.abacus.locked': 'Look at the abacus and type the number',
 
+  'game.intro.title': 'What is a soroban?',
+  'game.intro.what':
+    'The soroban is the Japanese abacus: a frame with vertical rods, each holding one upper bead worth 5 and four lower beads worth 1. Each rod is one digit, from the units on the right to tens, hundreds… on the left.',
+  'game.intro.how':
+    'A bead only counts when it touches the middle bar. Push beads toward the bar to add and away from it to subtract: the upper bead adds 5 and each lower bead adds 1, so every rod shows 0 to 9. Try moving them here.',
+
   'game.promo.title': 'Got a physical abacus?',
   'game.promo.text': 'Generate and print practice cards →',
 
